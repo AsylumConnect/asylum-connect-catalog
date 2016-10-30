@@ -1,6 +1,6 @@
 import json
 
-from flask import render_template, request
+from flask import render_template, request, redirect, url_for
 from flask.ext.login import login_required
 
 from .. import db
@@ -10,7 +10,38 @@ from . import main
 
 @main.route('/')
 def index():
-    return render_template('main/index.html')
+    return redirect(url_for('.city_view', city_name='seattle'))
+
+
+@main.route('/catalog/<string:city_name>')
+def city_view(city_name):
+    # TODO: use <city_name> to generate the correct resources, etc.
+    # for now, we just always render the seattle resources :(
+    city = "Seattle, Washington"
+    cities = [('Seattle', 'seattle'), ('Philadelphia', 'philadelphia')]
+    category_icons = ['housing', 'food', 'hygiene', 'computers', 'employment',
+                      'mail', 'recreation']
+
+    ''' RESOURCE STRUCTURE:
+        categories = list of string categories
+        features = list of string features
+        name = string
+        content = string (should be atomized to just the important fields!!)
+        supercategories = list of strings
+        address = string
+        lat =
+        long =
+        website = string
+    '''
+
+    resources = Resource.query.all()  # should really just be a specific city
+    resources_as_dicts = Resource.get_resources_as_dicts(resources)
+
+    return render_template('main/index.html',
+                           city=city,
+                           cities=cities,
+                           resources=resources_as_dicts,
+                           category_icons=category_icons)
 
 
 @main.route('/get-resources')
