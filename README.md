@@ -33,8 +33,8 @@ A Flask application template with the boilerplate code already done for you.
 1. Clone the repo
 
     ```
-    $ git clone https://github.com/hack4impact/maps4all.git
-    $ cd maps4all
+    $ git clone https://github.com/hack4impact/asylum-connect-catalog.git
+    $ cd asylum-connect-catalog
     ```
 
 2. Initialize a virtualenv
