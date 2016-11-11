@@ -14,7 +14,7 @@ phone_number:
   - After Hours & Weekend Crisis Line: 206-461-3222.
 email: Contact form: <http://consejonew.consejocounseling.org/get-help/>
 non_english_services: Spanish
-additonal_information: 
+additional_information: 
 categories:
   - Sexual Health
   - Housing

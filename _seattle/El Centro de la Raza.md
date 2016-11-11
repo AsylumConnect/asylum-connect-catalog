@@ -12,7 +12,7 @@ phone_numbers:
   - 206-957-4634
 email: 
 non_english_services: Spanish
-additonal_information: 
+additional_information: 
 categories:
   - Legal Aid
   - Food
