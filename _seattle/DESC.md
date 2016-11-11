@@ -7,7 +7,7 @@ long: -122.33122
 description: DESC's mission is not merely to offer shelter, but to end the homelessness of our community's most vulnerable people, through an integrated array of clinical services and supportive housing that allows men and women to reclaim their lives and reach their highest potential.
 website: http://www.desc.org/entry.html
 populations_served: Homeless adults, ages 18+
-hours: Mon-Fri 9am-5pm. Weekend and evening hours vary. Contact DESC for more information.
+hours: Mon-Fri 9am-5pm. Weekend and evening hours vary. Contact for more information.
 phone_numbers: 
   - 206-515-1545
 email: info@desc.org

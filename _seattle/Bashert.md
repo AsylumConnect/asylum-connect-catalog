@@ -9,7 +9,7 @@ website: <http://www.jewishinseattle.org/connect/peers/lgbtq>
  populations_served: Jewish LGBTQ individuals of all ages.
  hours:  Mon-Fri 9am-5pm
 phone_numbers:
-  - (206) 443-5400
+  - 206-443-5400
  email: Bashert@JewishInSeattle.org
  non_english_services: Hebrew
  additional_information: Sign-up (http://www.jewishinseattle.org/connect/enews-signup) to receive the Bashert newsletter.

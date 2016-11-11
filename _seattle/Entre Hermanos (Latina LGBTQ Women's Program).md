@@ -7,7 +7,7 @@ long: -122.30298
 description: Entre Hermanos seeks to address health disparities and social injustices affecting the Latino LGBTQ community in a culturally appropriate environment through disease prevention, education, support services, advocacy and community building.
 website: http://entrehermanos.org/?page_id=42
 populations_served: HIV Prevention Program: Latino gay and bisexual men, Medical Case Management Program: Latinos living with HIV, Latina LBTQ Women's Program: Latina women who identify as lesbian, bisexual, transgender, queer or gender-fluid. Ages 18+
-hours: Mon-Fri, 10am-5pm
+hours: Mon-Fri 10am-5pm
 phone_numbers: 
   - 206-322-7700
 email: info@entrehermanos.org

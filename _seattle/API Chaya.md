@@ -7,7 +7,7 @@ long:
 description: API Chaya is an anti-domestic violence agency serving the greater Seattle area.
 website: <http://www.apichaya.org>
 populations_served: Asian, South Asian, and Pacific Islander communities, ages 13+.
-hours: Monday-Friday, 9am-5pm
+hours: Monday-Friday 9am-5pm
 phone_numbers: 
   - Helpline Number: 206-325-0325
   - Toll Free Number: 1-877-922-4292
