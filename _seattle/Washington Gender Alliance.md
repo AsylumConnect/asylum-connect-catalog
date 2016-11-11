@@ -3,7 +3,15 @@ name: Washington Gender Alliance
 address: 910 14th St, Bellingham, WA 98225
 lat: 48.725119
 long: -122.500314
+description: Washington Gender Alliance is dedicated to helping people deal with the issues of gender identity and/or expression, be it their own, or those of someone in their lives. They do this primarily by conducting community-oriented, peer-facilitated, open support groups. The only requirement for participation is that participants' lives somehow be impacted by transgenderism.
 website: http://www.washingtongenderalliance.com/
+populations_served: Transgender adults, 18+
+hours: 
+phone_numbers: 
+  - 360-445-2411
+email: 
+non_english_services: 
+additional_information: For more information and updates request to join the Washington Gender Alliance Facebook group at: <https://www.facebook.com/groups/WashingtonGenderAlliance/>.
 categories:
   - Support Groups
 supercategories:
@@ -12,8 +20,6 @@ features:
   - confidential
   - free
 ---
-- **Description:** Washington Gender Alliance is dedicated to helping people deal with the issues of gender identity and/or expression, be it their own, or those of someone in their lives. They do this primarily by conducting community-oriented, peer-facilitated, open support groups. The only requirement for participation is that participants' lives somehow be impacted by transgenderism.
-- **Population served:** Transgender adults, 18+
 - **Address:** Support group locations include:
    - 910 14th St, Bellingham, WA 98225
    - 2624 Rockefeller Ave, Everett, WA 98201;
@@ -24,6 +30,3 @@ features:
   - *Everett:* Wed 7:30pm-9pm;
   - *Shoreline:* Mon 7:30pm-9pm; Thurs 7:30pm-9pm
   - *Walla Walla:* Thurs 7:30pm-9pm
-- **Phone Number:** 360-445-2411
-- **Website:** <http://www.washingtongenderalliance.com/>
-- **Additional Information:** For more information and updates request to join the Washington Gender Alliance Facebook group at: <https://www.facebook.com/groups/WashingtonGenderAlliance/>.
