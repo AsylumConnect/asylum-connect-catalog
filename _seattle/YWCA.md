@@ -1,9 +1,19 @@
 ---
+id: 
 name: YWCA
 address: 1118 Fifth Ave, First Floor, Seattle, WA 98101
 lat: 47.60792
 long: -122.33266
+description: The YWCA opens doors to opportunity and self-sufﬁciency for women and families facing poverty, violence and discrimination.
 website: http://www.ywcaworks.org/
+populations_served: Individuals of all ages, genders, and orientations, with a focus on women.
+hours: Mon-Fri 10am-4pm
+phone_numbers: 
+  - 206-720-5566 
+  - Toll Free: 1-888-292-1912
+email: 
+non_english_services: 
+additional_information:
 categories:
   - Medical Clinics
   - Food
@@ -20,9 +30,3 @@ features:
   - confidential
   - free
 ---
-- **Description:** The YWCA opens doors to opportunity and self-sufﬁciency for women and families facing poverty, violence and discrimination.
-- **Population served:** Individuals of all ages, genders, and orientations, with a focus on women.
-- **Address:** 1118 Fifth Ave, First Floor, Seattle, WA 98101.
-- **Hours:** Mon-Fri 10am-4pm
-- **Phone Number:** 206-720-5566 or toll free at 1-888-292-1912.
-- **Website:** <http://www.ywcaworks.org/>
