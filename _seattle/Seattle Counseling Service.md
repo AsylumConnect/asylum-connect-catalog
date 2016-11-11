@@ -11,7 +11,8 @@ hours: Mon-Thurs 8am-8pm, Fri 8am-5pm
 phone_numbers: 
   - 206-323-1768
 email: info@seattlecounseling.org
-non_english_services: Spanish
+non_english_services: 
+  - Spanish
 additional_information: Fees are assessed on a sliding scale dependent on income.
 categories:
   - Legal Aid

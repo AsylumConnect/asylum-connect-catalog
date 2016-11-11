@@ -11,7 +11,8 @@ populations_served: All welcome.
 phone_numbers:
   - 360-840-8499
  email: 
-non_english_services: Books in languages other than English are available.
+non_english_services: 
+  - Books in languages other than English are available.
  additional_information:
 categories:
   - Libraries

@@ -6,7 +6,6 @@ website: http://www.seattlefrontrunners.org/
 populations_served: LGBTQ adults and allies of all genders, 18+
 hours: Hours vary. See online calendar: <http://www.seattlefrontrunners.org/calendar>
 phone_numbers:
-  - 
 email: board2016@seattlefrontrunners.org
 non_english_services:
 additional_information: 

@@ -11,7 +11,8 @@ hours: Mon-Fri 10am-5pm
 phone_numbers: 
   - 206-322-7700
 email: info@entrehermanos.org
-non_english_services: Spanish
+non_english_services: 
+  - Spanish
 additional_information: Programs are usually delivered in Spanish or a bilingual format, as well as in a culturally appropriate manner by members of the community.
 categories:
   - Sexual Health

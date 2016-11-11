@@ -13,7 +13,15 @@ phone_numbers:
   - Toll Free Number: 1-877-922-4292
   - Office Number: 206-467-9976
 email: info@apichaya.org
-non_english_services: Arabic, Bengali, Farsi, Gujarati, Hindi, Kurdish, Punjabi, Urdu.
+non_english_services: 
+  - Arabic 
+  - Bengali 
+  - Farsi
+  - Gujarati 
+  - Hindi 
+  - Kurdish 
+  - Punjabi 
+  - Urdu.
 additional_information: The direct-services program provides advocacy-based counseling for survivors of domestic violence. Many clients have intersecting family and immigration law needs.
 categories:
   - Private Counseling

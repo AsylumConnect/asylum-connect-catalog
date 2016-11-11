@@ -11,7 +11,11 @@ hours: Wed-Thurs 6pm-9pm
 phone_numbers: 
   - 206-633-7650
 email: info@neighborcare.org
-non_english_services:45+ languages and dialects, including Somali, Spanish, and Vietnamese.
+non_english_services:
+  - Somali 
+  - Spanish 
+  - Vietnamese.
+  - 40+ other languages and dialects
 additional_information: Homeless youth services are provided on a drop-in basis only. No appointments.
 categories:
   - Medical Clinics

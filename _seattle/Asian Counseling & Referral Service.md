@@ -12,7 +12,25 @@ phone_numbers:
   - 206-695-7600 
   - 206-774-2417 in poor weather
 email: events@acrs.org
-non_english_services: Cambodian/Khmer, Cham, Chinese (Cantonese, Chaozhounese, Hangzhounese, Mandarin, Shangainese, Suzhounese, Szechuangee, Toishanes), English, Filipino (Bikol, Cebuano, Ilocano, Kankanaey, Tagalog), French, German, Hmong, Japanese, Kmhmu, Korean, Lao, Mien, Samoan, Spanish, Thai, Tongan, Vietnamese.
+non_english_services: 
+  - Cambodian/Khmer 
+  - Cham 
+  - Chinese (Cantonese, Chaozhounese, Hangzhounese, Mandarin, Shangainese, Suzhounese, Szechuangee, Toishanes) 
+  - English 
+  - Filipino (Bikol, Cebuano, Ilocano, Kankanaey, Tagalog) 
+  - French 
+  - German 
+  - Hmong 
+  - Japanese 
+  - Kmhmu 
+  - Korean 
+  - Lao 
+  - Mien 
+  - Samoan 
+  - Spanish 
+  - Thai 
+  - Tongan 
+  - Vietnamese.
 additional_information: Vocational and naturalization classes and services are free to people who meet income-eligibility guidelines.
 categories:
   - Legal Aid

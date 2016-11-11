@@ -13,7 +13,10 @@ phone_numbers:
   - Toll Free: 800-445-5771
   - If you are detained in the Northwest Detention Center: 253-383-0519
 email: 
-non_english_services: Spanish, Chinese, Japanese
+non_english_services: 
+  - Spanish 
+  - Chinese 
+  - Japanese
 additional_information: Pro bono (free) and sliding scale fee services are offered for eligible low income families and individuals.
 categories:
   - Legal Aid

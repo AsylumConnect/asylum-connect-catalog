@@ -11,7 +11,16 @@ hours: Mon-Fri 9am-5pm
 phone_numbers: 
   - 425-643-2221
 email: contactus@jfsseattle.org
-non_english_services: Cantonese, Mandarin, Russian, Spanish, Ukrainian, Vietnamese, Somali, Arabic, Farsi
+non_english_services: 
+  - Cantonese 
+  - Mandarin 
+  - Russian 
+  - Spanish 
+  - Ukrainian 
+  - Vietnamese 
+  - Somali 
+  - Arabic 
+  - Farsi
 additional_information: 
 categories:
   - Documentation

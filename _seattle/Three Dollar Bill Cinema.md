@@ -11,7 +11,8 @@ hours: See online calendar of events: <http://www.threedollarbillcinema.org/cale
 phone_numbers: 
   - 206-323-4274
 email: info@threedollarbillcinema.org
-non_english_services: Three Dollar Bill Cinema does include foreign-language and subtitled films in its programming. Refer to the online calendar of events for more information about when these films are being offered: <http://www.threedollarbillcinema.org/calendar>
+non_english_services: 
+  - Three Dollar Bill Cinema does include foreign-language and subtitled films in its programming. Refer to the online calendar of events for more information about when these films are being offered: <http://www.threedollarbillcinema.org/calendar>
 additional_information: 
 categories:
   - Recreation

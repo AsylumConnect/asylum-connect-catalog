@@ -12,6 +12,8 @@ phone_numbers:
   - 206-957-1600
   - Client Services Line: 206-957-1717
 email:
+non_english_services:
+additional_information: An application is required in order to receive dental care. Please contact the Dental Program Coordinator at 206-957-1716 to apply.
 categories:
   - Dental Care
   - Sexual Health
@@ -48,4 +50,3 @@ features:
   - [Health Insurance](http://lifelongaidsalliance.org/services/health-insurance-continuation): Call (206) 323-2834 or 1-800-945-4256 or send a message [here](http://lifelongaidsalliance.org/contact/Insurance).
   - [Food Program](http://lifelongaidsalliance.org/chickensoup): Call (206) 957-1686 or send a message [here](http://www.llaa.org/contact/chicken-soup-brigade).
   - [Dental Program](http://lifelongaidsalliance.org/services/lifelong-dental-program): Call (206) 957-1715 or send a message [here](http://lifelongaidsalliance.org/contact/dental).
-- **Additional Information:** An application is required in order to receive dental care. Please contact the Dental Program Coordinator at 206-957-1716 to apply.

@@ -11,7 +11,16 @@ hours: Mon-Fri 9am-5pm
 phone_numbers: 
   - 206-264-8999
 email: info@cmmlawfirm.com
-non_english_services: Variety of languages including Arabic, Berber, Chinese (Mandarin), English, French, Hebrew, Japanese, Russian and Spanish.
+non_english_services: 
+  - Arabic 
+  - Berber 
+  - Chinese (Mandarin) 
+  - English 
+  - French 
+  - Hebrew 
+  - Japanese 
+  - Russian 
+  - Spanish.
 additional_information: Your initial consultation is free of charge. Schedule an appointment online at: <http://www.cmmlawfirm.com/request-an-appointment/>
 categories:
   - Legal Aid
