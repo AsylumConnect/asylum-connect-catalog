@@ -1,5 +1,4 @@
 ---
-id:
 name: Lutheran Community Services Northwest
 address: 115 NE 100th St, Seattle, WA 98125
 lat: 47.70081
@@ -11,7 +10,9 @@ hours: Mon-Fri 9am-5pm
 phone_numbers:
   - 206-694-5713
   - En Español llame: 206-694-5755
-email: RICP@lcsnw.org. 
+email: RICP@lcsnw.org
+mailing_address:
+contact_form: http://www.lcsnw.org/contact.html
 non_english_services: 
   - Spanish
 additional_information: 
@@ -32,4 +33,3 @@ features:
   - free
   - translation
 ---
-Alternatively, use the contact form [here](http://www.lcsnw.org/contact.html).

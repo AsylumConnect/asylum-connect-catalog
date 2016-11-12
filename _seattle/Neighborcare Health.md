@@ -1,5 +1,4 @@
 ---
-id:
 name: Neighborcare Health
 address: 1200 12th Avenue S, Suite #901, Seattle, WA 98144
 lat: 47.59285
@@ -11,6 +10,8 @@ hours: Wed-Thurs 6pm-9pm
 phone_numbers: 
   - 206-633-7650
 email: info@neighborcare.org
+mailing_address:
+contact_form:
 non_english_services:
   - Somali 
   - Spanish 

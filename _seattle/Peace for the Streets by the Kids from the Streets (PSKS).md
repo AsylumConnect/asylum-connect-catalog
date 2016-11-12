@@ -1,5 +1,4 @@
 ---
-id: 
 name: Peace for the Streets by the Kids from the Streets (PSKS)
 address: 1609 19th Avenue, Seattle, WA 98122
 lat: 47.615401
@@ -11,6 +10,8 @@ hours: Mon-Fri 11AM-5PM
 phone_numbers: 
   - 206-726-8500
 email: 
+mailing_address:
+contact_form:
 non_english_services: 
 additional_information: 
 categories:

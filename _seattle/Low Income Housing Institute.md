@@ -1,5 +1,4 @@
 ---
-id: 
 name: Low Income Housing Institute
 address: 2407 1st Avenue, Seattle, WA 98121
 lat: 47.61417
@@ -11,6 +10,8 @@ hours:
 phone_numbers:
   - 1-206-443-9935
 email: housinginfo@lihi.org
+mailing_address:
+contact_form:
 non_english_services: 
 additional_information: Consultations and Urban Rest Stop services are free. Housing is not free.
 categories:

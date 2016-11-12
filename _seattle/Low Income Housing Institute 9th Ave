@@ -1,5 +1,4 @@
 ---
-id: 
 name: Low Income Housing Institute 9th Ave
 address: 1924 9th Ave. Seattle, WA 98101
 lat: 
@@ -11,6 +10,8 @@ hours: Mon-Fri 5:30-9:30pm, last laundry at 6pm, last shower at 6pm, closed Frid
 phone_numbers:
   - 1-206-443-9935
 email: housinginfo@lihi.org
+mailing_address:
+contact_form:
 non_english_services: 
 additional_information: Consultations and Urban Rest Stop services are free. Housing is not free.
 categories:

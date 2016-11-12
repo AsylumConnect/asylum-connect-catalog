@@ -1,5 +1,4 @@
 ---
-id: 
 name: People of Color Against AIDS Network South Office
 address: 4437 Rainier Avenue S., Seattle, WA 98118
 lat: 
@@ -11,6 +10,8 @@ hours: Mon-Fri 9am-5pm
 phone_numbers:
   - 206-322-7061
 email: 
+mailing_address:
+contact_form: <http://www.pocaan.org/contact.html>
 non_english_services: 
 additional_information:
 categories:
@@ -23,4 +24,3 @@ features:
   - confidential
   - free
 ---
-Contact form: <http://www.pocaan.org/contact.html>
