@@ -1,9 +1,10 @@
 ---
-id: 
 name: Asian Counseling & Referral Service
 address: 3639 Martin Luther King Jr. Way S, Seattle, WA 98144
 lat: 47.57167
 long: -122.29702
+mailing_address:
+contact_form:
 description: Asian Counseling and Referral Service (ACRS) is a nationally recognized nonprofit organization working for social justice and offering a broad array of behavioral health programs, human services and civic engagement activities for Asian Americans, Pacific Islanders and other underserved communities in King County and beyond.
 website: <http://www.acrs.org/>
 populations_served: Low-income, immigrant, refugee and American-born Asian Pacific persons of all ages. 

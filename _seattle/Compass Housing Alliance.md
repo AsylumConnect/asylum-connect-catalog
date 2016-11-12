@@ -1,9 +1,10 @@
 ---
-id: 
 name: Compass Housing Alliance
 address: 77 S. Washington St., 5th Floor, Seattle, WA 98104
 lat: 47.60071
 long: -122.33525
+mailing_address:
+contact_form:
 description: The Compass Housing Alliance offers a Clients Services Office providing linkage to social services, a Hygiene Center, and a shelter and community center called Peter's Place.
 website: http://www.compasshousingalliance.org/what-we-do-top/day-services/
 populations_served: All welcome.

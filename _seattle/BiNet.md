@@ -1,9 +1,10 @@
 ---
-id: 
 name: BiNet
 address: Location varies. Contact to learn locations.
 lat: 
 long: 
+mailing_address:
+contact_form: <http://www.binetseattle.org/topics/feedback.html>
 description: BiNet Seattle is a bisexual non-profit, mixed gender, social and support organization created to foster a visible community for bisexual, bi-curious people, and their partners in the Puget Sound area.
  website: http://www.binetseattle.org/index.html
  populations_served: Bisexual youth and adults, ages 13+.
@@ -20,4 +21,3 @@ features:
   - confidential
   - free
 ---
-Contact form: <http://www.binetseattle.org/topics/feedback.html>

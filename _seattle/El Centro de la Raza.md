@@ -1,9 +1,10 @@
 ---
-id:
 name: El Centro de La Raza (Frances Martinez Community Service Center)
 address: 2524 16th Avenue S, Seattle, Washington 98144
 lat: 47.58034
 long: -122.31135
+mailing_address:
+contact_form:
 description: El Centro de la Raza is a Latino community organization striving to build unity across all racial and economic sectors, to organize, empower, and defend.
 website: http://www.elcentrodelaraza.org/
 populations_served: All welcome.

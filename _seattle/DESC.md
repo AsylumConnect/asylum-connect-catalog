@@ -1,9 +1,10 @@
 ---
-id: 
 name: DESC
 address: 509 Third Avenue Seattle, WA 98104
 lat: 47.60224
 long: -122.33122
+mailing_address:
+contact_form: 
 description: DESC's mission is not merely to offer shelter, but to end the homelessness of our community's most vulnerable people, through an integrated array of clinical services and supportive housing that allows men and women to reclaim their lives and reach their highest potential.
 website: http://www.desc.org/entry.html
 populations_served: Homeless adults, ages 18+

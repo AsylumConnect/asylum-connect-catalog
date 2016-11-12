@@ -1,9 +1,10 @@
 ---
-id: 
 name: Bashert (Jewish Federation of Greater Seattle)
 address: 2031 Third Avenue, Seattle, WA 98121-2412
 lat: 47.61286
 long: -122.34205
+mailing_address:
+contact_form:
 description:  Bashert is the LGBTQ Initiative of the Jewish Federation of Greater Seattle. Bashert reaches out to LGBTQ Jews in Seattle in order to build a stronger, more inclusive Jewish community.
 website: <http://www.jewishinseattle.org/connect/peers/lgbtq>
  populations_served: Jewish LGBTQ individuals of all ages.

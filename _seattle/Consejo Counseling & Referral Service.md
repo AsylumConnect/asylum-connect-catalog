@@ -1,9 +1,10 @@
 ---
-id:
 name: Consejo Counseling & Referral Service
 address: 3808 S Angeline Street, Seattle WA, 98118
 lat: 47.55968
 long: -122.28448
+mailing_address:
+contact_form: <http://consejonew.consejocounseling.org/get-help/>
 description: Consejo provides services addressing mental health, domestic violence, sexual assault, substance abuse treatment, youth crisis, and housing. Consejo specializes in providing culturally competent services to the monolingual Latino community.
 website: http://consejocounseling.org/
 populations_served: Underserved Latino communities with a focus on families. All ages.
@@ -28,5 +29,4 @@ supercategories:
 features:
   - confidential
   - translation
----
-Contact form: <http://consejonew.consejocounseling.org/get-help/>
+--- 

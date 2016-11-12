@@ -1,9 +1,10 @@
 ---
-id:
 name: Entre Hermanos (Latino LGBTQ Resource Center)
 address: 1105 23rd Ave, Seattle, WA 98122
 lat: 47.61176
 long: -122.30298
+mailing_address:
+contact_form:
 description: Entre Hermanos seeks to address health disparities and social injustices affecting the Latino LGBTQ community in a culturally appropriate environment through disease prevention, education, support services, advocacy and community building.
 website: http://entrehermanos.org/?page_id=42
 populations_served:  [HIV Prevention Program](http://entrehermanos.org/hiv-prevention/): Latino gay and bisexual men - [Medical Case Management Program](http://entrehermanos.org/hiv-prevention/): Latinos living with HIV - [Latina LBTQ Women's Program](http://entrehermanos.org/latina-lbtq-program/): Latina women who identify as lesbian, bisexual, transgender, queer or gender-fluid. Ages 18+

@@ -1,9 +1,10 @@
 ---
-id: 
 name: Cascade Rainbow Community Center
 address: 508 N 18th Street, Mount Vernon, WA 98273
 lat: 48.42508
 long: -122.31891
+mailing_address:
+contact_form:
 description: Cascades Rainbow Center is home to the largest collection of LGBT books, newspapers, and zines in Skagit County. Search the library catalog [here](http://cascaderainbow.org/catalog).
  website:  http://cascaderainbow.org/
 populations_served: All welcome.
