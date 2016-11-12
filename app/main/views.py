@@ -17,7 +17,7 @@ def index():
 def city_view(city_name):
     # TODO: use <city_name> to generate the correct resources, etc.
     # for now, we just always render the seattle resources :(
-    city = "Seattle, Washington"
+    city = city_name.title()
     cities = [('Seattle', 'seattle'), ('Philadelphia', 'philadelphia')]
     category_icons = ['housing', 'food', 'hygiene', 'computers', 'employment',
                       'mail', 'recreation']
@@ -26,7 +26,6 @@ def city_view(city_name):
         categories = list of string categories
         features = list of string features
         name = string
-        content = string (should be atomized to just the important fields!!)
         supercategories = list of strings
         address = string
         lat =
