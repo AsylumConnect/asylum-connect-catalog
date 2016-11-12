@@ -3,8 +3,6 @@ name: Chung, Malhas & Mantel, PLLC
 address: 1511 3rd Ave, Seattle, WA 98101
 lat: 47.60992
 long: -122.33827
-mailing_address:
-contact_form:
 description: Chung, Malhas & Mantel, PLLC provides legal services to people seeking asylum in the United States.
 website: http://www.cmmlawfirm.com/asylum-refugee-attorney-seattle/
 populations-served: LGBT asylum seekers, ages 18+
@@ -12,6 +10,8 @@ hours: Mon-Fri 9am-5pm
 phone_numbers: 
   - 206-264-8999
 email: info@cmmlawfirm.com
+mailing_address:
+contact_form:
 non_english_services: 
   - Arabic 
   - Berber 

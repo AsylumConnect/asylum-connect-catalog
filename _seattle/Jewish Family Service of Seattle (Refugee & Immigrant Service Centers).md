@@ -1,5 +1,4 @@
 ---
-id:
 name: Jewish Family Service of Seattle (Refugee & Immigrant Service Centers)
 address: 15821 NE 8th Street, Bellevue, WA 98008
 lat: 47.61654
@@ -11,6 +10,8 @@ hours: Mon-Fri 9am-5pm
 phone_numbers: 
   - 425-643-2221
 email: contactus@jfsseattle.org
+mailing_address:
+contact_form:
 non_english_services: 
   - Cantonese 
   - Mandarin 

@@ -1,5 +1,4 @@
 ---
-id: 
 name: Lambert House
 address: 1818 15th Ave, Seattle, WA 98122
 lat: 47.61822
@@ -11,6 +10,8 @@ hours: Mon-Fri 4:00pm-9:30pm
 phone_numbers:
   - 206-322-2515 ext. 811
 email: ken@lamberthouse.org
+mailing_address:
+contact_form:
 non_english_services: 
 additional_information: Some client information may be shared with the parents of underage clients. Some activities require parental consent.
 categories:

@@ -1,5 +1,4 @@
 ---
-id:
 name: Gay City Health Project
 address: 517 East Pike Street, Seattle, WA 98122
 lat: 47.61391
@@ -11,6 +10,8 @@ hours: Mon-Fri 9am-5pm
 phone_numbers:
   - 206-860-6969
 email: info@gaycity.org
+mailing_address:
+contact_form:
 non_english_services: 
 additional_information: While Gay City Health Project emphasizes services to gay men, all genders and orientations are welcome.
 categories:

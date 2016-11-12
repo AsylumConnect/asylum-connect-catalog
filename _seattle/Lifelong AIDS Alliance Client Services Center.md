@@ -1,5 +1,4 @@
 ---
-id: 
 name: Lifelong AIDS Alliance Client Services Center
 address: 1016 East Pike Street, 3rd Floor, Seattle, WA 98122
 lat: 47.61426
@@ -16,6 +15,8 @@ phone_numbers:
   - Food Program: 206-957-1686
   - Dental Program: 206-957-1715
 email:
+mailing_address:
+contact_form:
 non_english_services:
 additional_information: An application is required in order to receive dental care. Please contact the Dental Program Coordinator at 206-957-1716 to apply.
 categories:
