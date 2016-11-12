@@ -1,6 +1,6 @@
 ---
 id: 
-name: Lifelong AIDS Alliance
+name: Lifelong AIDS Alliance Client Services Center
 address: 1016 East Pike Street, 3rd Floor, Seattle, WA 98122
 lat: 47.61426
 long: -122.31872
@@ -10,7 +10,11 @@ populations_served: Housing and Dental Programs: Low-income, HIV+ residents of K
 hours:
 phone_numbers:
   - 206-957-1600
-  - Client Services Line: 206-957-1717
+  - Client Services and Recovery Support Line: 206-957-1717
+  - Health Insurance: 206-323-2834
+  - Health Insurance 2: 1-800-945-4256
+  - Food Program: 206-957-1686
+  - Dental Program: 206-957-1715
 email:
 non_english_services:
 additional_information: An application is required in order to receive dental care. Please contact the Dental Program Coordinator at 206-957-1716 to apply.
@@ -27,22 +31,6 @@ features:
   - confidential
   - translation
 ---
-- **Description:** 
-- **Populations Served:**
-  - [Housing](http://lifelongaidsalliance.org/services/housing) and [Dental](http://lifelongaidsalliance.org/services/lifelong-dental-program) Programs: Low-income, HIV+ residents of King, Island, or Snohomish counties.
-  - [Insurance](http://lifelongaidsalliance.org/services/health-insurance-continuation) and [Case Management](http://lifelongaidsalliance.org/case-management) Programs: People living with HIV/AIDS.
-  - [Food Program (Chicken Soup Brigade)](http://lifelongaidsalliance.org/chickensoup): People living with a chronic medical condition.
-- **Addresses:**
-   - **Aberdeen:** 110 West Market Street, Suite 105, Aberdeen, WA 98520
-   - **Bellingham:** 115 Unity Street, Suite 302, Bellingham, WA 98225
-   - **Bremerham:** 115 Unity Street, Suite 302, Bellingham, WA 98225
-   - **Everett:** 3305 Oakes Avenue, Everett, WA 98201
-   - **Longview:** 1338 Commerce Avenue, Suite 212, Longview, WA 98632
-   - **Seattle:**
-     - *Meal Pick-Up Center:* 1161 11th Avenue, Seattle, WA 98122
-     - *Client Services Center:* 1016 E. Pike Street, 3rd Floor, Seattle, WA 98122
-     - *Meal Production Center:* 206 S. Lucile Street, Seattle, WA 98108
-     - *Lifelong Thrift Store:* 312 Broadway Ave E, Seattle, WA 98102
 - **Phone Number:** 
    - Send a secure message [here](http://lifelongaidsalliance.org/contact).
 - **Contact:**

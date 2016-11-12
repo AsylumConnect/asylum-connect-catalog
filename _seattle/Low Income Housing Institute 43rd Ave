@@ -1,13 +1,13 @@
 ---
 id: 
-name: Low Income Housing Institute
-address: 2407 1st Avenue, Seattle, WA 98121
-lat: 47.61417
-long: -122.34845
+name: Low Income Housing Institute 43rd Ave
+address: 1415 NE 43rd Ave, Seattle, WA 98101
+lat: 
+long: 
 description: The Low Income Housing Institute provides housing and hygiene services for the low-income and homeless of Washington state.
 website: http://lihi.org/
 populations_served: Adults of all genders and orientations, ages 18+.
-hours: 
+hours: Tues-Thurs 9am-6pm, last laundry 2pm, last shower at 5pm, Friday 9am-5:30pm, closed daily 12-1pm
 phone_numbers:
   - 1-206-443-9935
 email: housinginfo@lihi.org
