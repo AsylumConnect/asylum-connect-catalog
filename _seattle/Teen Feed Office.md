@@ -1,5 +1,4 @@
 ---
-id:
 name: Teen Feed Office
 address: 4740 B University Way NE, Seattle, WA 98105
 lat: 47.66430
@@ -11,6 +10,8 @@ hours: Mon-Fri 9am-5pm, see meal assistance locations for related hours [here](h
 phone_numbers:
   - 206-522-4366
 email: info@teenfeed.org
+mailing_address:
+contact_form:
 non_english_services: 
 additional_information: 
 categories:

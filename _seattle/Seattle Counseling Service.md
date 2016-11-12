@@ -1,5 +1,4 @@
 ---
-id:
 name: Seattle Counseling Service
 address: 1216 Pine Street, Suite 300, Seattle WA 98101
 lat: 47.615431
@@ -11,6 +10,8 @@ hours: Mon-Thurs 8am-8pm, Fri 8am-5pm
 phone_numbers: 
   - 206-323-1768
 email: info@seattlecounseling.org
+mailing_address:
+contact_form:
 non_english_services: 
   - Spanish
 additional_information: Fees are assessed on a sliding scale dependent on income.

@@ -1,5 +1,4 @@
 ---
-id:
 name: ROOTS Friday Feast
 address: 1415 NE 43rd Street, Seattle, WA 98105
 lat: 47.65924
@@ -11,6 +10,8 @@ hours: Friday 5:30-7:00PM
 phone_numbers: 
   - 206-632-1635
 email: 
+mailing_address:
+contact_form:
 non_english_services: 
 additional_information: 
 categories:

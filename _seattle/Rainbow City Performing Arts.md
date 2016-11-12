@@ -8,6 +8,8 @@ hours: Concert Band: Tues 7 - 9:30 pm in Wedgwood (Sep - Mar); Orchestra: Thurs 
 phone_numbers:
   - 866-841-9139 (ext. 2126)
 email: info@rainbowcityband.com
+mailing_address: Rainbow City Performing Arts, PO Box 51074, Seattle, WA 98115
+contact_form: <http://www.rainbowcityband.com/contact>
 non_english_services: 
 additional_information: To join, visit <http://www.rainbowcityband.com/contact/join>. Let RPCA know which ensemble(s) are of interest and which instrument(s) you play (or for spinOUT, if you have experience with flags, rifles, and/or sabres).
 categories:
@@ -16,5 +18,3 @@ supercategories:
 features:
   - free
 ---
-- **Mailing Address:** Rainbow City Performing Arts, PO Box 51074, Seattle, WA 98115
-- Online contact form at: <http://www.rainbowcityband.com/contact>

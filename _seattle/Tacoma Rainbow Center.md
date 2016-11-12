@@ -1,5 +1,4 @@
 ---
-id: 
 name: Tacoma Rainbow Center
 address:  2215 Pacific Avenue, Tacoma, WA 98402
 lat: 47.24139
@@ -11,6 +10,8 @@ hours: Mon, Tues, Thurs & Fri: 1pm - 5pm; Wed: 1pm - 7pm.
 phone_numbers:
   - 253-383-2318
 email: info@rainbowcntr.org
+mailing_address:
+contact_form:
 non_english_services: 
 additional_information: 
 categories:

@@ -1,5 +1,4 @@
 ---
-id:
 name: The QLaw Foundation
 address: K&L Gates, 925 Fourth Avenue, Suite 2900, Seattle, WA 98104
 lat: 47.60548
@@ -11,6 +10,8 @@ hours: Third Thursday of each month, 7pm-9pm.
 phone_numbers:
   - 206-235-7235
 email: info@qlawfoundation.org
+mailing_address:
+contact_form:
 non_english_services: 
 additional_information: Legal consultations by appointment only.
 categories:

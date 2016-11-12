@@ -1,5 +1,4 @@
 ---
-id:
 name: Seattle Area Support Group & Community Center
 address: 115 15th Ave E, Suite 201, Seattle, WA 98112
 lat: 47.618991
@@ -11,6 +10,8 @@ hours: Varies depending on the group you are attending, please check website.
 phone_numbers:
   - 206-322-2437
 email: 
+mailing_address:
+contact_form:
 non_english_services: 
 additional_information: Groups are led by trained peer facilitators. Most groups are ongoing and meet weekly. Some require pre-registration. View the current event calendar here: <http://sasgcc.org/calendar>.
 categories:

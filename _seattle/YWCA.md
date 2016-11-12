@@ -1,5 +1,4 @@
 ---
-id: 
 name: YWCA
 address: 1118 Fifth Ave, First Floor, Seattle, WA 98101
 lat: 47.60792
@@ -12,6 +11,8 @@ phone_numbers:
   - 206-720-5566 
   - Toll Free: 1-888-292-1912
 email: 
+mailing_address:
+contact_form:
 non_english_services: 
 additional_information:
 categories:

@@ -1,5 +1,4 @@
 ---
-id: 
 name: St. James Cathedral
 address: 804 Ninth Avenue, Seattle, WA 98104
 lat: 47.60765
@@ -11,6 +10,8 @@ hours: Hours vary. Contact this resource to determine hours.
 phone_numbers: 
   - 206-382-4511
 email: cwalsh@stjames-cathedral.org
+mailing_address:
+contact_form:
 non_english_services: 
   - Languages offered depend on volunteer availability. Contact this resource to learn which languages are available.
 additional_information: 

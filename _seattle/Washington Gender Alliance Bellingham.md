@@ -9,7 +9,9 @@ populations_served: Transgender adults, 18+
 hours: Tues 7:30pm-9pm
 phone_numbers: 
   - 360-445-2411
-email: 
+email:
+mailing_address:
+contact_form:
 non_english_services: 
 additional_information: For more information and updates request to join the Washington Gender Alliance Facebook group at: <https://www.facebook.com/groups/WashingtonGenderAlliance/>.
 categories:
