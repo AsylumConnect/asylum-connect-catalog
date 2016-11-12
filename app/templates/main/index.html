@@ -103,7 +103,17 @@
           {% for resource in resources %}
           <div class="resource{% for category in resource.categories %} {{ category.lower().replace(' ', '-') }}{% endfor %}{% for feature in resource.features %} {{ feature.lower().replace(' ', '-') }}{% endfor %}">
             <header class="resource-header"><h3 class="resource-name" id="{{ resource.name.lower().replace(' ', '-') }}">{{ resource.name }}</h3></header>
-            <article class="resource-content">{{ resource.content }}</article>
+            <article class="resource-content">
+              {% set content_fields = ['description', 'populations_served', 'address', 'hours', 'phone_number', 'email', 'website', 'additional_information', 'non_english_services'] %}
+              {% for field in content_fields %}
+                {% if field in resource and resource[field]|length > 0%}
+                <p>
+                  <span style="font-weight: BOLD">{{ field.replace('_', ' ').title() }}: </span>
+                  {{ resource[field] }}
+                </p>
+                {% endif %}
+              {% endfor %}
+            </article>
 
             {% for group in resource.supercategories %}
             <span class="icon-{{ group.lower().replace(' ', '-') }} btn-icon"></span>
@@ -121,9 +131,9 @@
             {% endfor %}
 
             <!-- Google Maps -->
-            {% if address in resource %}
+            {% if 'address' in resource %}
             <div class="mapping">
-              <div class="map-point" address="{{ resource.address }}"{% if lat in resource %} lat="{{ resource.lat }}" long="{{ resource.long }}"{% endif %}>
+              <div class="map-point" address="{{ resource.address }}"{% if 'lat' in resource %} lat="{{ resource.lat }}" long="{{ resource.long }}"{% endif %}>
                 <b><a href="{{ resource.website }}">{{ resource.name }}</a></b><br>
                 {{ resource.address }}<br>
                 <a href="#{{ resource.name.lower().replace(' ', '-') }}">See More Info</a><br>

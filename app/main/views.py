@@ -35,7 +35,7 @@ def city_view(city_name):
     '''
 
     resources = Resource.query.all()  # should really just be a specific city
-    resources_as_dicts = Resource.get_resources_as_dicts(resources)
+    resources_as_dicts = Resource.get_resources_as_full_dicts(resources)
 
     return render_template('main/index.html',
                            city=city,
@@ -47,7 +47,8 @@ def city_view(city_name):
 @main.route('/get-resources')
 def get_resources():
     resources = Resource.query.all()
-    resources_as_dicts = Resource.get_resources_as_dicts(resources)
+    resources_as_dicts = Resource.get_resources_as_full_dicts(resources)
+    print(resources_as_dicts)
     return json.dumps(resources_as_dicts)
 
 
