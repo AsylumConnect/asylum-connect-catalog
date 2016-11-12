@@ -9,7 +9,7 @@ description: BiNet Seattle is a bisexual non-profit, mixed gender, social and su
  populations_served: Bisexual youth and adults, ages 13+.
  hours:  Hours vary. Contact to learn hours.
 phone_numbers:
- email:  Contact form: <http://www.binetseattle.org/topics/feedback.html>
+ email:  
 non_english_services: 
 additional_information: Follow BiNet on social media or contact them directly for times and locations of events. This resource has no permanent physical address.
 categories:
@@ -20,3 +20,4 @@ features:
   - confidential
   - free
 ---
+Contact form: <http://www.binetseattle.org/topics/feedback.html>

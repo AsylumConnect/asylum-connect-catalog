@@ -17,4 +17,4 @@ features:
   - free
 ---
 - **Mailing Address:** Rainbow City Performing Arts, PO Box 51074, Seattle, WA 98115
-- **Email:**  or use the online contact form at: <http://www.rainbowcityband.com/contact>
+- Online contact form at: <http://www.rainbowcityband.com/contact>

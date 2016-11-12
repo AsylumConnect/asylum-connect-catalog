@@ -12,7 +12,7 @@ hours:
 phone_number:
   - 206-461-4880
   - After Hours & Weekend Crisis Line: 206-461-3222.
-email: Contact form: <http://consejonew.consejocounseling.org/get-help/>
+email: 
 non_english_services: 
   - Spanish
 additional_information: 
@@ -29,3 +29,4 @@ features:
   - confidential
   - translation
 ---
+Contact form: <http://consejonew.consejocounseling.org/get-help/>

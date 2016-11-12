@@ -11,7 +11,7 @@ hours: Mon-Fri 9am-5pm
 phone_numbers:
   - 206-694-5713
   - En Español llame: 206-694-5755
-email: RICP@lcsnw.org. Alternatively, use the contact form [here](http://www.lcsnw.org/contact.html).
+email: RICP@lcsnw.org. 
 non_english_services: 
   - Spanish
 additional_information: 
@@ -32,3 +32,4 @@ features:
   - free
   - translation
 ---
+Alternatively, use the contact form [here](http://www.lcsnw.org/contact.html).

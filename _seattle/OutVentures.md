@@ -9,7 +9,7 @@ website: http://www.outventures.org/contact_us.php
 populations_served: LGBTQ individuals of all ages. Individuals who are under 18 must be accompanied by an adult.
 hours: Hours vary depending on the activity. Contact OutVentures to find out more about upcoming activities.
 phone_numbers:
-email: Contact form: <http://www.outventures.org/contact_us.php>
+email: 
 non-english_services: 
 additional_information: 
 categories:
@@ -17,3 +17,4 @@ categories:
 supercategories:
 features:
 ---
+Contact form: <http://www.outventures.org/contact_us.php>

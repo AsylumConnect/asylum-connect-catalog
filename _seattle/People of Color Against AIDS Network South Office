@@ -10,7 +10,7 @@ populations_served: African American LGBTQ individuals of all genders and orient
 hours: Mon-Fri 9am-5pm
 phone_numbers:
   - 206-322-7061
-email: Contact form: <http://www.pocaan.org/contact.html>
+email: 
 non_english_services: 
 additional_information:
 categories:
@@ -23,3 +23,4 @@ features:
   - confidential
   - free
 ---
+Contact form: <http://www.pocaan.org/contact.html>
