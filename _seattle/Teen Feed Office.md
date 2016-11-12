@@ -1,0 +1,27 @@
+---
+id:
+name: Teen Feed Office
+address: 4740 B University Way NE, Seattle, WA 98105
+lat: 47.66430
+long: -122.31273
+description: Teen Feed works with the community to offer support to meet basic needs, build strong relationships, and ally with homeless youth as they meet their future off the streets.
+website: http://www.teenfeed.org/
+populations_served: Homeless and housing-instable teens, ages 13-18.
+hours: Mon-Fri 9am-5pm, see meal assistance locations for related hours [here](https://tf008v2.storage.googleapis.com/Program-Times-Locations-8-2015.pdf).
+phone_numbers:
+  - 206-522-4366
+email: info@teenfeed.org
+non_english_services: 
+additional_information: 
+categories:
+  - Documentation
+  - Food
+  - Employment
+  - Private Counseling
+supercategories:
+  - Legal
+  - Mental Health
+features:
+  - confidential
+  - free
+---
