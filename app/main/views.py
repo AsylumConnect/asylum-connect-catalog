@@ -33,13 +33,6 @@ def get_associations(resource_id):
     return json.dumps(associations)
 
 
-@main.route('/contact')
-def contact():
-    editable_html_obj = EditableHTML.get_editable_html('contact')
-    return render_template('main/contact.html',
-                           editable_html_obj=editable_html_obj)
-
-
 @main.route('/update-editor-contents', methods=['POST'])
 @login_required
 def update_editor_contents():
