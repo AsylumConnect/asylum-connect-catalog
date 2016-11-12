@@ -33,13 +33,6 @@ def get_associations(resource_id):
     return json.dumps(associations)
 
 
-@main.route('/about')
-def about():
-    editable_html_obj = EditableHTML.get_editable_html('about')
-    return render_template('main/about.html',
-                           editable_html_obj=editable_html_obj)
-
-
 @main.route('/contact')
 def contact():
     editable_html_obj = EditableHTML.get_editable_html('contact')
