@@ -1,6 +1,8 @@
 ---
 name: The Northwest Network of Survivors
 address: Call for physical address. This is kept private for security reasons.
+lat:
+long:
 description: The Northwest Network of Bisexual, Trans, Lesbian and Gay Survivors of Abuse works to end violence and abuse by building loving and equitable relationships in our community and across the country.
 website: http://www.nwnetwork.org/
 populations_served: Survivors of domestic, dating, and/or sexual assault of all genders, 13-years-old and up
