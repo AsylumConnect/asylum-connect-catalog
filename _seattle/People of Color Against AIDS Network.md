@@ -1,0 +1,26 @@
+---
+name: People of Color Against AIDS Network
+address: 1820 E. Pine Street, Suite A, Seattle, WA 98122
+lat: 47.61552
+long: -122.30782
+description: POCAAN is a multicultural, multi-social service agency serving marginalized communities in Seattle and greater King County. POCAAN is committed to providing comprehensive, multicultural awareness and prevention messages aimed at addressing health disparities experienced in diverse communities.
+website: http://www.pocaan.org/
+populations_served: African American LGBTQ individuals of all genders and orientations, ages 16+
+hours: Mon-Fri 9am-5pm
+phone_numbers:
+  - 206-322-7061
+email: 
+mailing_address:
+contact_form: <http://www.pocaan.org/contact.html>
+non_english_services: 
+additional_information:
+categories:
+  - Sexual Health
+  - Support Groups
+supercategories:
+  - Medical
+  - Mental Health
+features:
+  - confidential
+  - free
+---

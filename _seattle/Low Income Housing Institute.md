@@ -1,0 +1,24 @@
+---
+name: Low Income Housing Institute
+address: 2407 1st Avenue, Seattle, WA 98121
+lat: 47.61417
+long: -122.34845
+description: The Low Income Housing Institute provides housing and hygiene services for the low-income and homeless of Washington state.
+website: http://lihi.org/
+populations_served: Adults of all genders and orientations, ages 18+.
+hours: 
+phone_numbers:
+  - 1-206-443-9935
+email: housinginfo@lihi.org
+mailing_address:
+contact_form:
+non_english_services: 
+additional_information: Consultations and Urban Rest Stop services are free. Housing is not free.
+categories:
+  - Housing
+  - Hygiene
+supercategories:
+features:
+  - confidential
+  - free
+---

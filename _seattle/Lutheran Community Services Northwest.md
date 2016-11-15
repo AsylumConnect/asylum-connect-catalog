@@ -1,0 +1,35 @@
+---
+name: Lutheran Community Services Northwest
+address: 115 NE 100th St, Seattle, WA 98125
+lat: 47.70081
+long: -122.32723
+description: Lutheran Community Services Northwest partners with individuals, families and communities for health, justice and hope. The Refugee and Immigrant Children’s Program is proud to be a part of carrying out the mission of Lutheran Community Services Northwest.
+website: http://www.refugeechildren.net/
+populations_served: Unaccompanied children, primarily teens, from countries throughout Asia, Africa and Central America. Ages 21 and under.
+hours: Mon-Fri 9am-5pm
+phone_numbers:
+  - 206-694-5713
+  - En Español llame: 206-694-5755
+email: RICP@lcsnw.org
+mailing_address:
+contact_form: http://www.lcsnw.org/contact.html
+non_english_services: 
+  - Spanish
+additional_information: 
+categories:
+  - Medical Clinics
+  - Legal Aid
+  - Documentation
+  - Housing
+  - Community Centers
+  - Private Counseling
+supercategories:
+  - Medical
+  - Legal
+  - Community
+  - Mental Health
+features:
+  - confidential
+  - free
+  - translation
+---

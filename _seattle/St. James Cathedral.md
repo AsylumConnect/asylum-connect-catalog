@@ -1,0 +1,26 @@
+---
+name: St. James Cathedral
+address: 804 Ninth Avenue, Seattle, WA 98104
+lat: 47.60765
+long: -122.32589
+description: The St. James Cathedral Immigration Assistance Program provides tutoring in English and preparation for citizenship exams.
+website: http://www.stjames-cathedral.org/immigrant/learn_english.html
+populations_served: Adults of all genders and orientations, ages 18+.
+hours: Hours vary. Contact this resource to determine hours.
+phone_numbers: 
+  - 206-382-4511
+email: cwalsh@stjames-cathedral.org
+mailing_address:
+contact_form:
+non_english_services: 
+  - Languages offered depend on volunteer availability. Contact this resource to learn which languages are available.
+additional_information: 
+categories:
+  - English Classes
+supercategories:
+  - Education
+features:
+  - confidential
+  - free
+  - translation
+---
