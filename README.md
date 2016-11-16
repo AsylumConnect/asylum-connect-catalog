@@ -1,22 +1,15 @@
-﻿# Maps4All [![Circle CI](https://circleci.com/gh/hack4impact/flask-base.svg?style=svg)](https://circleci.com/gh/hack4impact/flask-base) [![Stories in Ready](https://badge.waffle.io/hack4impact/flask-base.png?label=ready&title=Ready)](https://waffle.io/hack4impact/flask-base)
+﻿# AsylumConnect [![Circle CI](https://circleci.com/gh/hack4impact/flask-base.svg?style=svg)](https://circleci.com/gh/hack4impact/flask-base) [![Stories in Ready](https://badge.waffle.io/hack4impact/flask-base.png?label=ready&title=Ready)](https://waffle.io/hack4impact/flask-base)
 
 ## Team Members
 
-- Elizabeth Hamp
-- Natasha Narang
-- Arman Tokanov
+- Hunter Lightman
+- Yoni Nachmany
+- Hana Pearlman
 - Veronica Wharton
-- Daniel Zhang
-- Annie Meng
-- Stephanie Shi
-- Sanjay Subramanian
-- Ben Sandler
-- Brandon Obas
-- Kyle Rosenbluth
 
 ## Synopsis
 
-A Flask application template with the boilerplate code already done for you.
+AsylumConnect’s current resource verification model is a bottleneck, as volunteers must search for and independently verify resources for each city that the organization expands into. In addition, volunteers are not (all) members of their target community, and therefore not the best-equipped to verify resource information. By allowing community members to tag, verify, endorse, and report resources, AsylumConnect will leverage its niche and highly marginalized community while also keeping members as safe as possible.
 
 ## What's included?
 
