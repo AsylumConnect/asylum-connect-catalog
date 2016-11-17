@@ -20,9 +20,9 @@ vendor_css = Bundle(
 )
 
 vendor_js = Bundle(
+    'vendor/jquery.min.js',
     'vendor/async.js',
     'vendor/address-autocomplete.js',
-    'vendor/jquery.min.js',
     'vendor/map.js',
     'vendor/papaparse.min.js',
     'vendor/semantic.min.js',
@@ -44,8 +44,8 @@ asylum_css = Bundle(
 )
 
 asylum_js = Bundle(
-    'asylum/bootstrap.min.js',
     'asylum/jquery-1.12.0.min.js',
+    'asylum/bootstrap.min.js',
     'asylum/main.js',
     filters='jsmin',
     output='scripts/asylum.js'
