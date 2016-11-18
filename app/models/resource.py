@@ -2,6 +2,15 @@ from .. import db
 
 
 def normalize_string(s):
+    """Return a normalized string for use by the template engine
+
+    Different sources of data (i.e. the given resource.md files, the jekyll
+    templates, etc.) expect and use different ways of encoding the names of
+    various components of the resource object. This function just normalizes
+    resource fields of the form "I Have Capital Letters and Spaces" to the form
+    "i_have_capital_letters_and_spaces" so that the jinja template can properly
+    render anything thrown at it.
+    """
     return s.lower().replace(' ', '_')
 
 
