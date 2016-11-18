@@ -33,6 +33,7 @@ def city_view(city_name):
         website = string
     '''
 
+    # TODO: Get resources from a specific city, instead of all resources
     resources = Resource.query.all()  # should really just be a specific city
     resources_as_dicts = Resource.get_resources_as_full_dicts(resources)
 
