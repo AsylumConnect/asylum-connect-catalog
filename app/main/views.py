@@ -34,7 +34,7 @@ def city_view(city_name):
     '''
 
     # TODO: Get resources from a specific city, instead of all resources
-    resources = Resource.query.all()  # should really just be a specific city
+    resources = Resource.query.all()
     resources_as_dicts = Resource.get_resources_as_full_dicts(resources)
 
     return render_template('main/index.html',
@@ -48,7 +48,6 @@ def city_view(city_name):
 def get_resources():
     resources = Resource.query.all()
     resources_as_dicts = Resource.get_resources_as_full_dicts(resources)
-    print(resources_as_dicts)
     return json.dumps(resources_as_dicts)
 
 
