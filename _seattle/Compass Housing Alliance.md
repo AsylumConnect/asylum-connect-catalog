@@ -6,7 +6,7 @@ long: -122.33525
 description: The Compass Housing Alliance offers a Clients Services Office providing linkage to social services, a Hygiene Center, and a shelter and community center called Peter's Place.
 website: http://www.compasshousingalliance.org/what-we-do-top/day-services/
 populations_served: All welcome.
-hours: Client Services Office: Mon-Fri 9am-4pm; Hygiene Center: Mon-Fri 7am-2:30pm; Peter's Place: Sun-Wed 8am-5:30pm, Thurs 8:30am-3:30pm
+hours: "Client Services Office: Mon-Fri 9am-4pm; Hygiene Center: Mon-Fri 7am-2:30pm; Peter's Place: Sun-Wed 8am-5:30pm, Thurs 8:30am-3:30pm"
 phone_numbers:
   - 206-474-1630
 email: 

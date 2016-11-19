@@ -11,9 +11,9 @@ phone_numbers:
 email: 
 mailing_address:
 contact_form: <http://www.outventures.org/contact_us.php>
-non-english_services: 
+non_english_services: 
 additional_information: 
 categories:
-  - Recreation
+  - Sport & Entertainment
 supercategories:
 features:

@@ -3,7 +3,7 @@ name: Seattle Counseling Service
 address: 1216 Pine Street, Suite 300, Seattle WA 98101
 lat: 47.615431
 long: -122.328215
-description: Seattle Counseling Service is a community based organization dedicated to promoting health and wellness within the LGBTQ community. They provide crisis counseling on issues related to: youth, sexual orientation, 'coming out,' HIV/AIDS and gender identification. Practical skills assistance places emphasis on job-finding, 'coming out,' making productive decisions and utilizing community resources for tangible needs (food, shelter, etc.). SCS is committed to providing accessible services and offers a sliding fee scale in addition to accepting Medicaid and many insurance plans.
+description: "Seattle Counseling Service is a community based organization dedicated to promoting health and wellness within the LGBTQ community. They provide crisis counseling on issues related to: youth, sexual orientation, 'coming out,' HIV/AIDS and gender identification. Practical skills assistance places emphasis on job-finding, 'coming out,' making productive decisions and utilizing community resources for tangible needs (food, shelter, etc.). SCS is committed to providing accessible services and offers a sliding fee scale in addition to accepting Medicaid and many insurance plans."
 website: http://www.seattlecounseling.org/
 populations_served: LGBTQ individuals of all genders and orientations, 18+
 hours: Mon-Thurs 8am-8pm, Fri 8am-5pm

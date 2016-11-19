@@ -8,7 +8,7 @@ website: http://consejocounseling.org/
 populations_served: Underserved Latino communities with a focus on families. All ages.
 hours: 
   - Mon-Fri 8AM to 5PM
-phone_number:
+phone_numbers:
   - 206-461-4880
   - After Hours & Weekend Crisis Line: 206-461-3222.
 email: 

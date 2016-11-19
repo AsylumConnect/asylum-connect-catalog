@@ -6,7 +6,7 @@ long: -122.31687
 description: Three Dollar Bill Cinema strengthens, connects, and reflects diverse communities through queer film and media.
 website: http://www.threedollarbillcinema.org/about/info
 populations_served: LGBT people and their families
-hours: See online calendar of events: <http://www.threedollarbillcinema.org/calendar>
+hours: "See online calendar of events: <http://www.threedollarbillcinema.org/calendar>"
 phone_numbers: 
   - 206-323-4274
 email: info@threedollarbillcinema.org
@@ -16,7 +16,7 @@ non_english_services:
   - Three Dollar Bill Cinema does include foreign-language and subtitled films in its programming. Refer to the online calendar of events for more information about when these films are being offered: <http://www.threedollarbillcinema.org/calendar>
 additional_information: 
 categories:
-  - Recreation
+  - Sport & Entertainment
 supercategories:
   - Community
 features:
