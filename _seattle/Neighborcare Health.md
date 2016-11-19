@@ -26,4 +26,3 @@ features:
   - confidential
   - free
   - translation
----

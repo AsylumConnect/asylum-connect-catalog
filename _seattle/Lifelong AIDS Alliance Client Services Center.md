@@ -31,11 +31,3 @@ supercategories:
 features:
   - confidential
   - translation
----
-- **Phone Number:** 
-   - Send a secure message [here](http://lifelongaidsalliance.org/contact).
-- **Contact:**
-  - [Recovery Support](http://lifelongaidsalliance.org/recovery-support-services) and [Case Management](http://lifelongaidsalliance.org/case-management): Call the Client Services line at (206) 957-1717 or send a message [here](http://lifelongaidsalliance.org/contact#block-system-main).
-  - [Health Insurance](http://lifelongaidsalliance.org/services/health-insurance-continuation): Call (206) 323-2834 or 1-800-945-4256 or send a message [here](http://lifelongaidsalliance.org/contact/Insurance).
-  - [Food Program](http://lifelongaidsalliance.org/chickensoup): Call (206) 957-1686 or send a message [here](http://www.llaa.org/contact/chicken-soup-brigade).
-  - [Dental Program](http://lifelongaidsalliance.org/services/lifelong-dental-program): Call (206) 957-1715 or send a message [here](http://lifelongaidsalliance.org/contact/dental).
