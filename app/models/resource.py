@@ -163,27 +163,40 @@ class Resource(db.Model):
             except IntegrityError:
                 db.session.rollback()
 
-    """static method?"""
     @staticmethod
     def add_seattle_data():
         from sqlalchemy.exc import IntegrityError
         import os
         import yaml
-        from geopy.geocoders import Nominatim
 
-        geolocater = Nominatim()
+        resources = os.listdir("_seattle")
+        script_dir = os.path.dirname("__file__")
 
-        resources = os.listdir("/_seattle")
+        category_descriptor = Descriptor(
+            name="category",
+            values=["Medical Clinics", "Women's Health", "Sexual Health", "Trans Health", "Dental Care",
+                    "Legal Aid", "Documentation", "Housing", "Food", "Hygiene", "Computers & Internet",
+                    "Employment", "English Classes", "Libraries", "Community Centers", "Cultural Centers",
+                    "LGBTQ+ Centers", "Support Groups", "Private Counseling", "Psychiatry", "Mail",
+                    "Sport & Entertainment"],
+            is_searchable=True
+        )
+
         for obj in resources:
-            with open(obj, 'r') as f:
+            if obj.startswith("."):
+                continue
+            rel_path = "_seattle/" + obj
+            abs_file_path = os.path.join(script_dir, rel_path)
+            with open(abs_file_path, 'r') as f:
                 doc = yaml.load(f)
+            print obj
             address = doc["address"]
-            location = geolocater.geocode(address),
             resource = Resource(
                 name=doc["name"],
                 address=address,
-                latitude=location.latitude,
-                longitude=location.longitude
+                #TODO: go through data files to add lat and long to resources without them
+                latitude=doc["lat"],
+                longitude=doc["long"]
             )
 
             description = doc["description"]
@@ -199,6 +212,12 @@ class Resource(db.Model):
             categories = doc["categories"]
             supercategories = doc["supercategories"]
             features = doc["features"]
+
+            first_category = categories[0]
+
+            category_association = OptionAssociation(descriptor=category_descriptor,
+                                                     option=category_descriptor.values.index(first_category))
+            resource.option_descriptors.append(category_association)
 
             db.session.add(resource)
             try:
