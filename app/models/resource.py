@@ -163,6 +163,49 @@ class Resource(db.Model):
             except IntegrityError:
                 db.session.rollback()
 
+    """static method?"""
+    @staticmethod
+    def add_seattle_data():
+        from sqlalchemy.exc import IntegrityError
+        import os
+        import yaml
+        from geopy.geocoders import Nominatim
+
+        geolocater = Nominatim()
+
+        resources = os.listdir("/_seattle")
+        for obj in resources:
+            with open(obj, 'r') as f:
+                doc = yaml.load(f)
+            address = doc["address"]
+            location = geolocater.geocode(address),
+            resource = Resource(
+                name=doc["name"],
+                address=address,
+                latitude=location.latitude,
+                longitude=location.longitude
+            )
+
+            description = doc["description"]
+            website = doc["website"]
+            populations_served = doc["populations_served"]
+            hours = doc["hours"]
+            phone_numbers = doc["phone_numbers"]
+            email = doc["email"]
+            mailing_address = doc["mailing_address"]
+            contact_form = doc["contact_form"]
+            non_english_services = doc["non_english_services"]
+            additional_information = doc["additional_information"]
+            categories = doc["categories"]
+            supercategories = doc["supercategories"]
+            features = doc["features"]
+
+            db.session.add(resource)
+            try:
+                db.session.commit()
+            except IntegrityError:
+                db.session.rollback()
+
     @staticmethod
     def get_resources_as_dicts(resources):
         resources_as_dicts = [resource.__dict__ for resource in resources]
