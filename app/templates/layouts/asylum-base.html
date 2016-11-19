@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="charset" content="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block page_title %}{{ config.APP_NAME }}{% endblock %}</title>
+
+        {% assets 'asylum_css' %}<link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}">{% endassets %}
+        {% assets 'asylum_scss' %}<link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}">{% endassets %}
+
+        <!-- Google Translate -->
+        <script src="http://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:600' rel='stylesheet' type='text/css'>
+
+        {% assets 'vendor_js' %}<script type="text/javascript" src="{{ ASSET_URL }}"></script>{% endassets %}
+        {% assets 'app_js' %}<script type="text/javascript" src="{{ ASSET_URL }}"></script>{% endassets %}
+        {% assets 'asylum_js' %}<script type="text/javascript" src="{{ ASSET_URL }}"></script>{% endassets %}
+    </head>
+
+    <body>
+        {% include 'partials/_flashes.html' %}
+
+        <div class="page-content">
+            <div class="wrapper">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+
+        {# Implement CSRF protection for site #}
+        {% if csrf_token() %}
+            <div style="visibility: hidden; display: none">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            </div>
+        {% endif %}
+    </body>
+</html>

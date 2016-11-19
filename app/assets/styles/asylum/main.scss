@@ -1,0 +1,238 @@
+@charset "utf-8";
+
+
+// Our variables
+$base-font-family: Helvetica, Arial, sans-serif;
+$base-font-size:   13px;
+$small-font-size:  $base-font-size * 0.875;
+$base-line-height: 1.5;
+
+$spacing-unit:     30px;
+
+$text-color:       #111;
+$background-color: #fdfdfd;
+$brand-color:      #2a7ae2;
+
+$grey-color:       #828282;
+$grey-color-light: lighten($grey-color, 40%);
+$grey-color-dark:  darken($grey-color, 25%);
+
+// Width of the content area
+$content-width:    1100px;
+
+$on-palm:          600px;
+$on-laptop:        800px;
+
+
+
+// Using media queries with like this:
+// @include media-query($on-palm) {
+//     .wrapper {
+//         padding-right: $spacing-unit / 2;
+//         padding-left: $spacing-unit / 2;
+//     }
+// }
+@mixin media-query($device) {
+  @media screen and (max-width: $device) {
+    @content;
+  }
+}
+
+
+
+// Import partials from `sass_dir` (defaults to `_sass`)
+@import
+"base",
+"layout",
+"syntax-highlighting"
+;
+
+/** FILTERS **/
+
+h3 {
+  font-size: 20px;
+  font-weight: 300;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+.filters {
+  text-align: center;
+  h3, h4 {
+    margin: 1.5em 0 .75em;
+  }
+  [class^="icon-"]:before, [class*=" icon-"]:before {
+    vertical-align: text-top;
+  }
+  .fa-angle-down {
+    font-size: 1.15em;
+    padding-left: .5em;
+    padding-right: .15em;
+  }
+  .btn {
+    margin-bottom: .3em;
+    padding: 3px 10px;
+  }
+}
+
+.icon-medical {
+  color: #ed1b24;
+}
+.icon-legal {
+  color: #f15b29;
+}
+.icon-housing {
+  color: #f8931f;
+}
+.icon-food {
+  color: #f8cb18;
+}
+.icon-hygiene {
+  color: #aed137;
+}
+.icon-computers {
+  color: #62bb47;
+}
+.icon-employment {
+  color: #009343;
+}
+.icon-education {
+  color: #4b72b7;
+}
+.icon-community {
+  color: #3bbfef;
+}
+.icon-mental-health {
+  color: #5b54a4;
+}
+.icon-mail {
+  color: #a87b51;
+}
+.icon-recreation {
+  color: #744c29;
+}
+
+.dropdown-menu {
+  padding-top: 1em;
+  label {
+    font-weight: normal;
+  }
+  input[type=checkbox] {
+    margin-right: 1em;
+  }
+}
+
+.btn-icon {
+  font-size: 2em;
+  padding-right: .25em;
+  padding-left: .15em;
+  vertical-align: middle;
+
+  &.small {
+    font-size: 1.5em;
+    float: right;
+  }
+}
+
+/** RESOURCE DESCRIPTIONS **/
+
+.disclaimer {
+  background-color: #6987bf;
+  padding: 2em;
+  color: white;
+  margin: 2em 0;
+}
+
+.resources.row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.main.col-md-7 {
+    float: right;
+    padding-left: 2em;
+}
+
+.main .header {
+  padding-top: 20px;
+  overflow: hidden;
+
+  #logo {
+    display: inline-block;
+    float: left;
+  }
+  #links {
+    display: inline-block;
+    letter-spacing: 2px;
+    text-align: right;
+    float: right;
+    margin-top: 40px;
+    a {
+      padding: .75em 1em;
+      text-decoration: none;
+    }
+  }
+}
+
+.resource {
+  display: none;
+  margin-bottom: 1em;
+  &.active {
+    display: block;
+  }
+}
+
+.resource-content {
+  display : none;
+}
+
+.resource-header {
+  padding-top: .75em;
+  cursor: pointer;
+  cursor: hand;
+  :hover {
+    color:#2a7ae2;
+  }
+}
+
+.resource-name {
+  display: inline-block;
+}
+
+.mapping {
+  display: none;
+}
+
+/** MAP **/
+.map {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  // height: 100%;
+  width: 41.5%;
+}
+
+#map {
+  height: 100%;
+  width: 100%;
+}
+
+/** FEEDBACK BUTTON **/
+.left-header {
+  float: right;
+}
+
+.translate {
+  text-align: right;
+  margin-top: 10px;
+}
+
+.footer {
+  text-align: center;
+  margin-bottom: 20px;
+  letter-spacing: 1.5px;
+  font-size: 10px;
+}

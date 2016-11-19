@@ -1,4 +1,4 @@
-{% extends 'layouts/base.html' %}
+{% extends 'layouts/asylum-base.html' %}
 
 {% block content %}
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhkKJDnPxq0_xvF6pLAFcKfVAL6GbARBs&libraries=places&callback=initMap"
@@ -8,25 +8,167 @@
     <meta charset="utf-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <div class="ui container">
-        <h1>Maps4All</h1>
-        <a href="{{ url_for('suggestion.suggest') }}">Suggest New Resource</a>
-        <input id="pac-input" class="controls" type="text"
-               placeholder="Enter a location">
-        <div id="view-selector" class="controls">
-          <input type="radio" name="toggle" id="map_view" checked="checked">
-          <label for="map_view">Map View</label>
-
-          <input type="radio" name="toggle" id="list_view">
-          <label for="list_view">List View</label>
+    <div class="main col-md-7 col-sm-12">
+      <div class="header">
+        <div id="logo">
+          <a href="http://www.asylumconnect.org/"><img style="width: 100px;" src="/static/asylum-assets/images/logo.jpeg" alt="AsylumConnect"></a>
         </div>
+        <div class="left-header">
+          <div id="google_translate_element" class="translate"></div>
+          <div id="links" class="hidden-xs">
+            <a href="http://www.asylumconnect.org/our-cause/">ABOUT</a>
+            <a href="http://www.asylumconnect.org/follow-us-subscribe/">JOIN</a>
+            <a href="http://www.asylumconnect.org/resources/">RESOURCES</a>
+            <a href="http://www.asylumconnect.org/contact-us/">CONNECT</a>
+          </div>
+        </div>
+      </div>
+      <div class="filters">
+        <!-- data-spy="affix" data-offset-top="280" -->
+        <h3 id="location-query">Find LGBTQ- and asylum-friendly resources in
+          <div class="btn-group">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+              {{ city }}
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              {% for option in cities %}
+                <li><a href="{{ url_for('.city_view', city_name=option[1]) }}">{{ option[0] }}</a></li>
+              {% endfor %}
+            </ul>
+        </div>
+        .</h3>
+        <h4 id="category-query">What types of service are you looking for? Select all that apply:</h4>
+        <div class="btn-group">
+          <button type="button" id="medical" class="btn-category-group btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="icon-medical btn-icon"></span>Medical<span class="fa fa-angle-down"></span></button>
+          <ul class="dropdown-menu">
+            <li><a href="#"><label><input type="checkbox" id="medical-clinics"/>Medical Clinics</label></a></li>
+            <li><a href="#"><label><input type="checkbox" id="womens-health"/>Women's Health</label></a></li>
+            <li><a href="#"><label><input type="checkbox" id="sexual-health"/>Sexual Health</label></a></li>
+            <li><a href="#"><label><input type="checkbox" id="trans-health"/>Trans Health</label></a></li>
+            <li><a href="#"><label><input type="checkbox" id="dental-care"/>Dental Care</label></a></li>
+          </ul>
+        </div>
+        <div class="btn-group">
+          <button type="button" id="legal" class="btn-category-group btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="icon-legal btn-icon"></span>Legal<span class="fa fa-angle-down"></span></button>
+          <ul class="dropdown-menu">
+            <li><a href="#"><label><input type="checkbox" id="legal-aid"/>Legal Aid</label></a></li>
+            <li><a href="#"><label><input type="checkbox" id="documentation"/>Documentation</label></a></li>
+          </ul>
+        </div>
+        <button type="button" id="housing" class="btn-category btn btn-default" data-toggle="button"><span class="icon-housing btn-icon"></span>Housing</button>
+        <button type="button" id="food" class="btn-category btn btn-default" data-toggle="button"><span class="icon-food btn-icon"></span>Food</button>
+        <button type="button" id="hygiene" class="btn-category btn btn-default" data-toggle="button"><span class="icon-hygiene btn-icon"></span>Hygiene</button>
+        <button type="button" id="computers" class="btn-category btn btn-default" data-toggle="button"><span class="icon-computers btn-icon"></span>Computers & Internet</button>
+        <button type="button" id="employment" class="btn-category btn btn-default" data-toggle="button"><span class="icon-employment btn-icon"></span>Employment</button>
+        <div class="btn-group">
+          <button type="button" id="education" class="btn-category-group btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="icon-education btn-icon"></span>Education<span class="fa fa-angle-down"></span></button>
+          <ul class="dropdown-menu">
+            <li><a href="#"><label><input type="checkbox" id="english-classes"/>English Classes</label></a></li>
+            <li><a href="#"><label><input type="checkbox" id="libraries"/>Libraries</label></a></li>
+          </ul>
+        </div>
+        <div class="btn-group">
+          <button type="button" id="community" class="btn-category-group btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="icon-community btn-icon"></span>Community Support<span class="fa fa-angle-down"></span></button>
+          <ul class="dropdown-menu">
+            <li><a href="#"><label><input type="checkbox" id="community-centers"/>Community Centers</label></a></li>
+            <li><a href="#"><label><input type="checkbox" id="lgbt-centers"/>LGBT Centers</label></a></li>
+            <li><a href="#"><label><input type="checkbox" id="cultural-centers"/>Cultural Centers</label></a></li>
+          </ul>
+        </div>
+        <div class="btn-group">
+          <button type="button" id="mental-health" class="btn-category-group btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="icon-mental-health btn-icon"></span>Mental Health<span class="fa fa-angle-down"></span></button>
+          <ul class="dropdown-menu">
+            <li><a href="#"><label><input type="checkbox" id="support-groups"/>Support Groups</label></a></li>
+            <li><a href="#"><label><input type="checkbox" id="private-counseling"/>Private Counseling</label></a></li>
+            <li><a href="#"><label><input type="checkbox" id="psychiatry"/>Psychiatry</label></a></li>
+          </ul>
+        </div>
+        <button type="button" id="mail" class="btn-category btn btn-default" data-toggle="button"><span class="icon-mail btn-icon"></span>Mail</button>
+        <button type="button" id="recreation" class="btn-category btn btn-default" data-toggle="button"><span class="icon-recreation btn-icon"></span>Sport & Entertainment</button>
+
+        <h4 id="feature-query">What additional features are important to you? Select all that apply:</h4>
+        <button type="button" id="confidential" class="btn-filter btn btn-default" data-toggle="button"><span class="icon-confidential btn-icon"></span>Confidential</button>
+        <button type="button" id="free" class="btn-filter btn btn-default" data-toggle="button"><span class="icon-free btn-icon"></span>Free</button>
+        <button type="button" id="translation" class="btn-filter btn btn-default" data-toggle="button"><span class="icon-translation btn-icon"></span>Language Translation Available</button>
+      </div>
+
+      <div class="resources">
+        <div class="catalog">
+          <div class="disclaimer">
+            <p><strong>Disclaimer:</strong> The AsylumConnect team will do its best to confirm basic facts about service providers listed on this website. However, we lack the necessary resources to adequately vet service providers and make no representations regarding the viability or capabilities of any such providers. Consequently, AsylumConnect assumes no responsibility for the actions of providers listed on this website and asylum seekers who contact any such providers do so at their own risk.</p>
+            <strong>User Privacy:</strong> The AsylumConnect Catalog uses Google Analytics with <a href="https://support.google.com/analytics/answer/2763052?hl=en" style="color:blue;">anonymized IP addresses</a> to help analyze how visitors use this site. Google Analytics uses cookies, which are small text files placed on your computer, to collect standard visitor behaviour information in an anonymous form. No personally identifiable information is collected about you, unless you explicitly submit that information on this website. If you would like to opt-out of Google Analytics, you may do so by clicking <a href="https://tools.google.com/dlpage/gaoptout" style="color:blue;">here</a>.
+          </div>
+
+          {% for resource in resources %}
+          <div class="resource{% for category in resource.categories %} {{ category.lower().replace(' ', '-') }}{% endfor %}{% for feature in resource.features %} {{ feature.lower().replace(' ', '-') }}{% endfor %}">
+            <header class="resource-header"><h3 class="resource-name" id="{{ resource.name.lower().replace(' ', '-') }}">{{ resource.name }}</h3></header>
+            <article class="resource-content">
+              {# TODO: fully flesh this out. content_fields are simply the list of fields from the resource object that we display for each resource object, in the order that we want them displayed (so this says description goes first, and non_english_services, if available, goes last #}
+              {% set content_fields = ['description', 'populations_served', 'address', 'hours', 'phone_number', 'email', 'website', 'additional_information', 'non_english_services'] %}
+              {% for field in content_fields %}
+                {% if field in resource and resource[field]|length > 0%}
+                <p>
+                  <span style="font-weight: BOLD">{{ field.replace('_', ' ').title() }}: </span>
+                  {{ resource[field] }}
+                </p>
+                {% endif %}
+              {% endfor %}
+            </article>
+
+            {% for group in resource.supercategories %}
+            <span class="icon-{{ group.lower().replace(' ', '-') }} btn-icon"></span>
+            {% endfor %}
+
+            {% for category in resource.categories %}
+              {% set subcategory = category.lower().replace(' ', '-') %}
+              {% if subcategory in category_icons %}
+                <span class="icon-{{ subcategory }} btn-icon"></span>
+              {% endif %}
+            {% endfor %}
+
+            {% for feature in resource.features %}
+              <span class="icon-{{ feature.lower().replace(' ', '-') }} btn-icon"></span>
+            {% endfor %}
+
+            <!-- Google Maps -->
+            {% if 'address' in resource %}
+            <div class="mapping">
+              <div class="map-point" address="{{ resource.address }}"{% if 'lat' in resource %} lat="{{ resource.lat }}" long="{{ resource.long }}"{% endif %}>
+                <b><a href="{{ resource.website }}">{{ resource.name }}</a></b><br>
+                {{ resource.address }}<br>
+                <a href="#{{ resource.name.lower().replace(' ', '-') }}">See More Info</a><br>
+
+                {% for group in resource.supercategories%}
+                <span class="icon-{{ group.lower().replace(' ', '-') }} btn-icon small"></span>
+                {% endfor %}
+
+                {% for category in resource.categories %}
+                {% set subcategory = category.lower().replace(' ', '-') %}
+                {% if subcategory in category_icons %}
+                <span class="icon-{{ subcategory }} btn-icon small"></span>
+                {% endif %}
+                {% endfor %}
+
+                {% for feature in resource.features %}
+                <span class="icon-{{ feature.lower().replace(' ', '-') }} btn-icon small"></span>
+                {% endfor %}
+              </div>
+            </div>
+            {% endif %}
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="footer">
+        <a href="{{ url_for('suggestion.suggest') }}">SUGGEST A RESOURCE</a> |
+        <a href="http://goo.gl/forms/UjxEbg6H3O">SHARE FEEDBACK</a>
+      </div>
     </div>
 
-    <div id="map"></div>
-    <div id="sidebar">
-        <b>More Information:</b>
-        <div id="more-info"></div>
+    <div class="map hidden-sm hidden-xs">
+      <div id="map" class="map-canvas">
+      </div>
     </div>
-    <div id="list"></div>
 
 {% endblock %}

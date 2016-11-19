@@ -1,6 +1,19 @@
 from .. import db
 
 
+def normalize_string(s):
+    """Return a normalized string for use by the template engine
+
+    Different sources of data (i.e. the given resource.md files, the jekyll
+    templates, etc.) expect and use different ways of encoding the names of
+    various components of the resource object. This function just normalizes
+    resource fields of the form "I Have Capital Letters and Spaces" to the form
+    "i_have_capital_letters_and_spaces" so that the jinja template can properly
+    render anything thrown at it.
+    """
+    return s.lower().replace(' ', '_')
+
+
 class OptionAssociation(db.Model):
     """
     Association between a resource and a descriptor with an index for the
@@ -85,7 +98,8 @@ class Resource(db.Model):
         back_populates='resource',
         cascade='save-update, merge, delete, delete-orphan'
     )
-    suggestions = db.relationship('Suggestion', backref='resource', uselist=True)
+    suggestions = db.relationship('Suggestion', backref='resource',
+                                  uselist=True)
 
     def __repr__(self):
         return '<Resource \'%s\'>' % self.name
@@ -156,6 +170,50 @@ class Resource(db.Model):
         # field '_sa_instance_state' that we don't need, so we delete it.
         for d in resources_as_dicts:
             del d['_sa_instance_state']
+        return resources_as_dicts
+
+    @staticmethod
+    def get_resources_as_full_dicts(resources):
+        # maps array of resources to array of useful dictionaries containing
+        # all of the information/associations for that resources
+        resources_as_dicts = []
+        for resource in resources:
+            resource_as_dict = resource.__dict__
+            resource_as_dict['long'] = resource_as_dict['longitude']
+            resource_as_dict['lat'] = resource_as_dict['latitude']
+
+            for td in resource.text_descriptors:
+                key = normalize_string(td.descriptor.name)
+                value = td.text
+                resource_as_dict[key] = value
+            for od in resource.option_descriptors:
+                key = normalize_string(od.descriptor.name)
+                value = od.descriptor.values[od.option]
+                resource_as_dict[key] = value
+
+            if '_sa_instance_state' in resource_as_dict:
+                del resource_as_dict['_sa_instance_state']
+            if 'text_descriptors' in resource_as_dict:
+                del resource_as_dict['text_descriptors']
+            if 'option_descriptors' in resource_as_dict:
+                del resource_as_dict['option_descriptors']
+
+            """
+            TEMPORARY
+            the following code packages categories/supercategories/etc.
+            into lists, this is TEMPORARY since eventually these will be
+            lists in the underlying model, but for right now they are just
+            strings. after multi-options are added, we can remove this
+            """
+            resource_as_dict['categories'] = [resource_as_dict['categories']]
+            resource_as_dict['supercategories'] = [
+                resource_as_dict['supercategories']]
+            resource_as_dict['features'] = [resource_as_dict['features']]
+            """
+            end of TEMPORARY section
+            """
+            resources_as_dicts.append(resource_as_dict)
+
         return resources_as_dicts
 
     @staticmethod
