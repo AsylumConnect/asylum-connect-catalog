@@ -1,5 +1,4 @@
 ---
-id:
 name: Northwest Immigrant Rights Project
 address: 615 2nd Ave Suite 400, Seattle, WA 98104
 lat: 47.60272

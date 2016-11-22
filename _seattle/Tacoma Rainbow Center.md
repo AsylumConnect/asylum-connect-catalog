@@ -17,7 +17,7 @@ additional_information:
 categories:
   - Community Centers
 supercategories:
-  - Community
+  - Community Support
 features:
   - confidential
   - free

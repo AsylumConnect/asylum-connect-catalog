@@ -18,6 +18,7 @@ non_english_services:
 categories:
   - Libraries
 supercategories:
+  - Education
 features:
   - free
   - translation

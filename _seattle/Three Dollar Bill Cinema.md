@@ -18,6 +18,6 @@ additional_information:
 categories:
   - Sport & Entertainment
 supercategories:
-  - Community
+  - Community Support
 features:
   - translation

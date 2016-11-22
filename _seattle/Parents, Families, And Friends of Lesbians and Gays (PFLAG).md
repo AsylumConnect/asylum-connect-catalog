@@ -1,5 +1,4 @@
 ---
-id:
 name: Parents, Families, And Friends of Lesbians and Gays (PFLAG) 
 address: 1122 E Pike St. PMB 620, Seattle, WA 98122
 lat: 47.60876
@@ -18,7 +17,7 @@ additional_information:
 categories:
   - Support Groups
 supercategories:
-  - Community
+  - Community Support
 features:
   - confidential
   - free

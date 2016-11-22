@@ -1,6 +1,6 @@
 ---
 name: API Chaya
-address: API Chaya, P.O. Box 14047, Seattle, WA 98114
+address: 
 lat: 
 long:
 description: API Chaya is an anti-domestic violence agency serving the greater Seattle area.
@@ -12,7 +12,7 @@ phone_numbers:
   - Toll Free Number: 1-877-922-4292
   - Office Number: 206-467-9976
 email: info@apichaya.org
-mailing_address:
+mailing_address: API Chaya, P.O. Box 14047, Seattle, WA 98114
 contact_form:
 non_english_services: 
   - Arabic 

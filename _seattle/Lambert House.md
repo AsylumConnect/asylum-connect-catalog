@@ -21,7 +21,7 @@ categories:
   - LGBT Centers
   - Support Groups
 supercategories:
-  - Community
+  - Community Support
   - Mental Health
 features:
   - confidential
