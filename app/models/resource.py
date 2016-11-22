@@ -189,6 +189,12 @@ class Resource(db.Model):
 
         )
 
+        feature_descriptor = Descriptor(
+            name="feature",
+            values=["Confidential", "Free", "Translation"],
+            is_searchable=True
+        )
+
         for obj in resources:
             if obj.startswith("."):
                 continue
@@ -229,6 +235,12 @@ class Resource(db.Model):
                 supercategory_association = OptionAssociation(descriptor=supercategory_descriptor,
                                                     option=supercategory_descriptor.values.index(first_supercategory))
                 resource.option_descriptors.append(supercategory_association)
+
+            if features:
+                first_feature = features[0]
+                feature_association = OptionAssociation(descriptor=feature_descriptor,
+                                                        option=feature_descriptor.values.index(first_feature))
+                resource.option_descriptors.append(feature_association)
 
             db.session.add(resource)
             try:
