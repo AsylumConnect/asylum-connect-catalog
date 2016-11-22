@@ -290,10 +290,11 @@ class Resource(db.Model):
             lists in the underlying model, but for right now they are just
             strings. after multi-options are added, we can remove this
             """
-            resource_as_dict['categories'] = [resource_as_dict['categories']]
-            resource_as_dict['supercategories'] = [
-                resource_as_dict['supercategories']]
-            resource_as_dict['features'] = [resource_as_dict['features']]
+            resource_as_dict['categories'] = [resource_as_dict['category']]
+            resource_as_dict['supercategories'] = \
+                [resource_as_dict['supercategory']] if 'supercategory' in resource_as_dict else []
+            resource_as_dict['features'] = \
+                [resource_as_dict['feature']] if 'features' in resource_as_dict else []
             """
             end of TEMPORARY section
             """
