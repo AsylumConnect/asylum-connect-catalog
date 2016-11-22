@@ -32,6 +32,6 @@ supercategories:
   - Education
   - Community
 features:
-  - confidential
-  - free
-  - translation
+  - Confidential
+  - Free
+  - Translation

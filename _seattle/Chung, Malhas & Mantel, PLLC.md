@@ -28,6 +28,6 @@ categories:
 supercategories:
   - Legal
 features:
-  - confidential
-  - free
-  - translation
+  - Confidential
+  - Free
+  - Translation

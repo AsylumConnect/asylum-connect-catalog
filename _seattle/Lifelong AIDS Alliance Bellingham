@@ -29,5 +29,5 @@ supercategories:
   - Medical
   - Mental Health
 features:
-  - confidential
-  - translation
+  - Confidential
+  - Translation

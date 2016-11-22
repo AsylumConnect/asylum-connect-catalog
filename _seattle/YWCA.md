@@ -28,5 +28,5 @@ supercategories:
   - Community
   - Mental Health
 features:
-  - confidential
-  - free
+  - Confidential
+  - Free

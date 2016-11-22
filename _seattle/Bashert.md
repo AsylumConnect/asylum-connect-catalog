@@ -20,6 +20,6 @@ categories:
 supercategories:
   - Community Support
 features:
-  - confidential
-  - free
-  - translation
+  - Confidential
+  - Free
+  - Translation

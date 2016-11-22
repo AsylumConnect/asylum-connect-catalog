@@ -20,6 +20,6 @@ categories:
 supercategories:
   - Education
 features:
-  - confidential
-  - free
-  - translation
+  - Confidential
+  - Free
+  - Translation

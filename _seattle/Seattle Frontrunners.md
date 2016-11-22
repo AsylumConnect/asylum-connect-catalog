@@ -17,4 +17,4 @@ categories:
   - Sport & Entertainment
 supercategories:
 features:
-  - confidential
+  - Confidential

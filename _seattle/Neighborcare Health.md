@@ -23,6 +23,6 @@ categories:
 supercategories:
   - Medical
 features:
-  - confidential
-  - free
-  - translation
+  - Confidential
+  - Free
+  - Translation

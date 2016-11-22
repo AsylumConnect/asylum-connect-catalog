@@ -18,4 +18,4 @@ categories:
   - Sport & Entertainment
 supercategories:
 features:
-  - free
+  - Free

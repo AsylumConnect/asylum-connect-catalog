@@ -23,4 +23,4 @@ supercategories:
   - Legal
   - Mental Health
 features:
-  - confidential
+  - Confidential

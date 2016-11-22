@@ -20,4 +20,4 @@ categories:
 supercategories:
   - Community Support
 features:
-  - translation
+  - Translation

@@ -27,5 +27,5 @@ supercategories:
   - Community
   - Mental Health
 features:
-  - confidential
-  - translation
+  - Confidential
+  - Translation

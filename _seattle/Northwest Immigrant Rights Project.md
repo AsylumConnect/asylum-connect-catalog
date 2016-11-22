@@ -25,5 +25,5 @@ categories:
 supercategories:
   - Legal
 features:
-  - confidential
-  - free
+  - Confidential
+  - Free

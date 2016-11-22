@@ -19,5 +19,5 @@ categories:
 supercategories:
   - Mental Health
 features:
-  - confidential
-  - free
+  - Confidential
+  - Free

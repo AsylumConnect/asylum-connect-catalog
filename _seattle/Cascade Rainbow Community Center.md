@@ -20,5 +20,5 @@ categories:
 supercategories:
   - Education
 features:
-  - free
-  - translation
+  - Free
+  - Translation

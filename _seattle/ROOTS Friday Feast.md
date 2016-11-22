@@ -19,4 +19,4 @@ categories:
 supercategories:
   - Community Support
 features:
-  - free
+  - Free

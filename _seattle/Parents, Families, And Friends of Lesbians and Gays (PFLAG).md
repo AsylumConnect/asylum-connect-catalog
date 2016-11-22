@@ -19,5 +19,5 @@ categories:
 supercategories:
   - Community Support
 features:
-  - confidential
-  - free
+  - Confidential
+  - Free
