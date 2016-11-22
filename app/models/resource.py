@@ -201,7 +201,6 @@ class Resource(db.Model):
             resource = Resource(
                 name=doc["name"],
                 address=address,
-                #TODO: go through data files to add lat and long to resources without them
                 latitude=doc["lat"],
                 longitude=doc["long"]
             )
