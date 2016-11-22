@@ -294,7 +294,7 @@ class Resource(db.Model):
             resource_as_dict['supercategories'] = \
                 [resource_as_dict['supercategory']] if 'supercategory' in resource_as_dict else []
             resource_as_dict['features'] = \
-                [resource_as_dict['feature']] if 'features' in resource_as_dict else []
+                [resource_as_dict['feature']] if 'feature' in resource_as_dict else []
             """
             end of TEMPORARY section
             """
