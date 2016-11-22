@@ -182,6 +182,13 @@ class Resource(db.Model):
             is_searchable=True
         )
 
+        supercategory_descriptor = Descriptor(
+            name="supercategory",
+            values = ["Medical", "Legal", "Education", "Community Support", "Mental Health"],
+            is_searchable=True
+
+        )
+
         for obj in resources:
             if obj.startswith("."):
                 continue
@@ -214,10 +221,15 @@ class Resource(db.Model):
             features = doc["features"]
 
             first_category = categories[0]
-
             category_association = OptionAssociation(descriptor=category_descriptor,
                                                      option=category_descriptor.values.index(first_category))
             resource.option_descriptors.append(category_association)
+
+            if supercategories:
+                first_supercategory = supercategories[0]
+                supercategory_association = OptionAssociation(descriptor=supercategory_descriptor,
+                                                    option=supercategory_descriptor.values.index(first_supercategory))
+                resource.option_descriptors.append(supercategory_association)
 
             db.session.add(resource)
             try:
