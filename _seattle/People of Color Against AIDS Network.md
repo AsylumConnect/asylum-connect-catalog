@@ -1,5 +1,5 @@
 ---
-name: People of Color Against AIDS Network
+name: People of Color Against AIDS Network (POCAAN)
 address: 1820 E. Pine Street, Suite A, Seattle, WA 98122
 lat: 47.61552
 long: -122.30782
