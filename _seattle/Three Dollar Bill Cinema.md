@@ -13,7 +13,7 @@ email: info@threedollarbillcinema.org
 mailing_address: 1122 E. Pike Street #1313, Seattle, WA 98122
 contact_form:
 non_english_services: 
-  - Three Dollar Bill Cinema does include foreign-language and subtitled films in its programming. Refer to the online calendar of events for more information about when these films are being offered: <http://www.threedollarbillcinema.org/calendar>
+  - "Three Dollar Bill Cinema does include foreign-language and subtitled films in its programming. Refer to the online calendar of events for more information about when these films are being offered: <http://www.threedollarbillcinema.org/calendar>"
 additional_information: 
 categories:
   - Sport & Entertainment

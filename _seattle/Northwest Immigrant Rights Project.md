@@ -6,11 +6,11 @@ long: -122.33323
 description: Northwest Immigrant Rights Project promotes justice by defending and advancing the rights of immigrants through direct legal services, systemic advocacy, and community education.
 website: https://www.nwirp.org/get-help/
 populations_served: Low income families and individuals of all ages.
-hours: Mon-Fri 9:30AM - 12PM and 1PM - 4PM.
+hours: "Mon-Fri 9:30AM - 12PM and 1PM - 4PM"
 phone_numbers:
   - 206-587-4009
-  - Toll Free: 800-445-5771
-  - If you are detained in the Northwest Detention Center: 253-383-0519
+  - "Toll Free: 800-445-5771"
+  - "If you are detained in the Northwest Detention Center: 253-383-0519"
 email: 
 mailing_address:
 contact_form:

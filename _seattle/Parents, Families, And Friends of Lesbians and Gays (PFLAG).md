@@ -8,7 +8,7 @@ website: http://pflagseattle.org/
 populations_served: Parents, family members, friends, and straight allies of LGBTQ individuals, all ages. 
 hours: Support meetings held on specific weekday evenings. Call for specific times and locations, or visit the PFLAG website.
 phone_numbers: 
-  - Voicemail only, calls returned within 48 hours: 206-325–7724.
+  - "Voicemail only, calls returned within 48 hours: 206-325–7724"
 email: info@pflagseattle.org
 mailing_address:
 contact_form:

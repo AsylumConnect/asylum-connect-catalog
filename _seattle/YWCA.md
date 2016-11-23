@@ -9,7 +9,7 @@ populations_served: Individuals of all ages, genders, and orientations, with a f
 hours: Mon-Fri 10am-4pm
 phone_numbers: 
   - 206-720-5566 
-  - Toll Free: 1-888-292-1912
+  - "Toll Free: 1-888-292-1912"
 email: 
 mailing_address:
 contact_form:

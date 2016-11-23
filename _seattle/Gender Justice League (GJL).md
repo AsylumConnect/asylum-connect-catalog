@@ -8,7 +8,7 @@ website: http://www.genderjusticeleague.org/contact-us/
 populations_served: Transgender individuals and allies of all ages.
 hours: "Hours vary. See meetings & events calendar available online at: <http://www.genderjusticeleague.org/calendar/>"
 phone_numbers: 
-  - 206-734-4794: This phone number forwards to an on call cell phone and offers voice mail if no one is available. Calls are returned within 24 hours. Email is best for a timely response.
+  - "206-734-4794: This phone number forwards to an on call cell phone and offers voice mail if no one is available. Calls are returned within 24 hours. Email is best for a timely response."
 email: danni@genderjusticeleague.org
 mailing_address:
 contact_form:

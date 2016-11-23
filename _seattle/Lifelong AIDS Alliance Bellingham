@@ -9,11 +9,11 @@ populations_served: "[Housing](http://lifelongaidsalliance.org/services/housing)
 hours:
 phone_numbers:
   - 206-957-1600
-  - Client Services and Recovery Support Line: 206-957-1717
-  - Health Insurance: 206-323-2834
-  - Health Insurance 2: 1-800-945-4256
-  - Food Program: 206-957-1686
-  - Dental Program: 206-957-1715
+  - "Client Services and Recovery Support Line: 206-957-1717"
+  - "Health Insurance: 206-323-2834"
+  - "Health Insurance 2: 1-800-945-4256"
+  - "Food Program: 206-957-1686"
+  - "Dental Program: 206-957-1715"
 email:
 mailing_address:
 contact_form:
