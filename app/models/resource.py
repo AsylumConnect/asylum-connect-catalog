@@ -170,7 +170,6 @@ class Resource(db.Model):
         import yaml
 
         resources = os.listdir("_seattle")
-        script_dir = os.path.dirname("__file__")
 
         description_descriptor = Descriptor(
             name="description",
@@ -245,14 +244,18 @@ class Resource(db.Model):
             is_searchable=True
         )
 
+        script_dir = os.path.dirname("__file__")
+
         for obj in resources:
+
             if obj.startswith("."):
                 continue
-            print obj
+
             rel_path = "_seattle/" + obj
             abs_file_path = os.path.join(script_dir, rel_path)
             with open(abs_file_path, 'r') as f:
                 doc = yaml.load(f)
+
             address = doc["address"]
             resource = Resource(
                 name=doc["name"],
