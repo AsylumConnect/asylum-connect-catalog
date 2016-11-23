@@ -172,75 +172,75 @@ class Resource(db.Model):
         resources = os.listdir("_seattle")
 
         description_descriptor = Descriptor(
-            name="description",
+            name='description',
             values=[],
             is_searchable=True
         )
         website_descriptor = Descriptor(
-            name="website",
+            name='website',
             values=[],
             is_searchable=True
         )
         populations_served_descriptor = Descriptor(
-            name="populations served",
+            name='populations served',
             values=[],
             is_searchable=True
         )
         hours_descriptor = Descriptor(
-            name="hours",
+            name='hours',
             values=[],
             is_searchable=True
         )
-        phone_numbers_descriptor= Descriptor(
-            name="hours",
+        phone_numbers_descriptor = Descriptor(
+            name='phone numbers',
             values=[],
             is_searchable=True
         )
         email_descriptor = Descriptor(
-            name="email",
+            name='email',
             values=[],
             is_searchable=True
         )
         mailing_address_descriptor = Descriptor(
-            name="mailing address",
+            name='mailing address',
             values=[],
             is_searchable=True
         )
         contact_form_descriptor = Descriptor(
-            name="contact form",
+            name='contact form',
             values=[],
             is_searchable=True
         )
         non_english_services_descriptor = Descriptor (
-            name="non english services",
+            name='non english services',
             values=[],
             is_searchable=True
         )
         additional_information_descriptor = Descriptor(
-            name="additional information",
+            name='additional information',
             values=[],
             is_searchable=True
         )
 
         category_descriptor = Descriptor(
-            name="category",
-            values=["Medical Clinics", "Women's Health", "Sexual Health", "Trans Health", "Dental Care",
-                    "Legal Aid", "Documentation", "Housing", "Food", "Hygiene", "Computers & Internet",
-                    "Employment", "English Classes", "Libraries", "Community Centers", "Cultural Centers",
-                    "LGBTQ+ Centers", "Support Groups", "Private Counseling", "Psychiatry", "Mail",
-                    "Sport & Entertainment"],
+            name='category',
+            values=['Medical Clinics', 'Women\'s Health', 'Sexual Health', 'Trans Health', 'Dental Care',
+                    'Legal Aid', 'Documentation', 'Housing', 'Food', 'Hygiene', 'Computers & Internet',
+                    'Employment', 'English Classes', 'Libraries', 'Community Centers', 'Cultural Centers',
+                    'LGBTQ+ Centers', 'Support Groups', 'Private Counseling', 'Psychiatry', 'Mail',
+                    'Sport & Entertainment'],
             is_searchable=True
         )
 
         supercategory_descriptor = Descriptor(
-            name="supercategory",
-            values=["Medical", "Legal", "Education", "Community Support", "Mental Health"],
+            name='supercategory',
+            values=['Medical', 'Legal', 'Education', 'Community Support', 'Mental Health'],
             is_searchable=True
         )
 
         feature_descriptor = Descriptor(
-            name="feature",
-            values=["Confidential", "Free", "Translation"],
+            name='feature',
+            values=['Confidential', 'Free', 'Translation'],
             is_searchable=True
         )
 
@@ -256,57 +256,57 @@ class Resource(db.Model):
             with open(abs_file_path, 'r') as f:
                 doc = yaml.load(f)
 
-            address = doc["address"]
+            address = doc['address']
             resource = Resource(
-                name=doc["name"],
+                name=doc['name'],
                 address=address,
-                latitude=doc["lat"],
-                longitude=doc["long"]
+                latitude=doc['lat'],
+                longitude=doc['long']
             )
 
-            description_association = TextAssociation(text=doc["description"], descriptor=description_descriptor)
+            description_association = TextAssociation(text=doc['description'], descriptor=description_descriptor)
             resource.text_descriptors.append(description_association)
 
-            website_association = TextAssociation(text=doc["website"], descriptor=website_descriptor)
+            website_association = TextAssociation(text=doc['website'], descriptor=website_descriptor)
             resource.text_descriptors.append(website_association)
 
-            populations_served_association = TextAssociation(text=doc["populations_served"],
+            populations_served_association = TextAssociation(text=doc['populations_served'],
                                                              descriptor=populations_served_descriptor)
             resource.text_descriptors.append(populations_served_association)
 
-            hours_association = TextAssociation(text=doc["hours"], descriptor=hours_descriptor)
+            hours_association = TextAssociation(text=doc['hours'], descriptor=hours_descriptor)
             resource.text_descriptors.append(hours_association)
 
-            email_association = TextAssociation(text=doc["email"], descriptor=email_descriptor)
+            email_association = TextAssociation(text=doc['email'], descriptor=email_descriptor)
             resource.text_descriptors.append(email_association)
 
-            mailing_address_association = TextAssociation(text=doc["mailing_address"],
+            mailing_address_association = TextAssociation(text=doc['mailing_address'],
                                                           descriptor=mailing_address_descriptor)
             resource.text_descriptors.append(mailing_address_association)
 
-            contact_form_association = TextAssociation(text=doc["contact_form"],
+            contact_form_association = TextAssociation(text=doc['contact_form'],
                                                        descriptor=contact_form_descriptor)
             resource.text_descriptors.append(contact_form_association)
 
-            additional_information_association = TextAssociation(text=doc["additional_information"],
+            additional_information_association = TextAssociation(text=doc['additional_information'],
                                                                  descriptor=additional_information_descriptor)
             resource.text_descriptors.append(additional_information_association)
 
-            if doc["phone_numbers"]:
-                phone_numbers = doc["phone_numbers"]
+            if doc['phone_numbers']:
+                phone_numbers = doc['phone_numbers']
                 phone_numbers_association = TextAssociation(text=', '.join(phone_numbers),
                                                            descriptor=phone_numbers_descriptor)
                 resource.text_descriptors.append(phone_numbers_association)
 
-            if doc["non_english_services"]:
-                non_english_services = doc["non_english_services"]
+            if doc['non_english_services']:
+                non_english_services = doc['non_english_services']
                 non_english_services_association = TextAssociation(text=', '.join(non_english_services),
                                                                    descriptor=non_english_services_descriptor)
                 resource.text_descriptors.append(non_english_services_association)
 
-            categories = doc["categories"]
-            supercategories = doc["supercategories"]
-            features = doc["features"]
+            categories = doc['categories']
+            supercategories = doc['supercategories']
+            features = doc['features']
 
             first_category = categories[0]
             category_association = OptionAssociation(descriptor=category_descriptor,
