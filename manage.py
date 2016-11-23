@@ -73,7 +73,7 @@ def add_fake_data(number_users):
     Resource.generate_fake()
 
 @manager.command
-def populate_data():
+def add_seattle_data():
     Resource.add_seattle_data()
 
 @manager.command
