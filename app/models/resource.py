@@ -224,17 +224,20 @@ class Resource(db.Model):
 
         category_descriptor = Descriptor(
             name='category',
-            values=['Medical Clinics', 'Women\'s Health', 'Sexual Health', 'Trans Health', 'Dental Care',
-                    'Legal Aid', 'Documentation', 'Housing', 'Food', 'Hygiene', 'Computers & Internet',
-                    'Employment', 'English Classes', 'Libraries', 'Community Centers', 'Cultural Centers',
-                    'LGBTQ+ Centers', 'Support Groups', 'Private Counseling', 'Psychiatry', 'Mail',
-                    'Sport & Entertainment'],
+            values=['Medical Clinics', 'Women\'s Health', 'Sexual Health',
+                    'Trans Health', 'Dental Care', 'Legal Aid',
+                    'Documentation', 'Housing', 'Food', 'Hygiene',
+                    'Computers & Internet', 'Employment', 'English Classes',
+                    'Libraries', 'Community Centers', 'Cultural Centers',
+                    'LGBTQ+ Centers', 'Support Groups', 'Private Counseling',
+                    'Psychiatry', 'Mail', 'Sport & Entertainment'],
             is_searchable=True
         )
 
         supercategory_descriptor = Descriptor(
             name='supercategory',
-            values=['Medical', 'Legal', 'Education', 'Community Support', 'Mental Health'],
+            values=['Medical', 'Legal', 'Education', 'Community Support',
+                    'Mental Health'],
             is_searchable=True
         )
 
@@ -264,65 +267,85 @@ class Resource(db.Model):
                 longitude=doc['long']
             )
 
-            description_association = TextAssociation(text=doc['description'], descriptor=description_descriptor)
+            description_association = TextAssociation(
+                text=doc['description'],
+                descriptor=description_descriptor)
             resource.text_descriptors.append(description_association)
 
-            website_association = TextAssociation(text=doc['website'], descriptor=website_descriptor)
+            website_association = TextAssociation(
+                text=doc['website'],
+                descriptor=website_descriptor)
             resource.text_descriptors.append(website_association)
 
-            populations_served_association = TextAssociation(text=doc['populations_served'],
-                                                             descriptor=populations_served_descriptor)
+            populations_served_association = TextAssociation(
+                text=doc['populations_served'],
+                descriptor=populations_served_descriptor)
             resource.text_descriptors.append(populations_served_association)
 
-            hours_association = TextAssociation(text=doc['hours'], descriptor=hours_descriptor)
+            hours_association = TextAssociation(
+                text=doc['hours'],
+                descriptor=hours_descriptor)
             resource.text_descriptors.append(hours_association)
 
-            email_association = TextAssociation(text=doc['email'], descriptor=email_descriptor)
+            email_association = TextAssociation(
+                text=doc['email'],
+                descriptor=email_descriptor)
             resource.text_descriptors.append(email_association)
 
-            mailing_address_association = TextAssociation(text=doc['mailing_address'],
-                                                          descriptor=mailing_address_descriptor)
+            mailing_address_association = TextAssociation(
+                text=doc['mailing_address'],
+                descriptor=mailing_address_descriptor)
             resource.text_descriptors.append(mailing_address_association)
 
-            contact_form_association = TextAssociation(text=doc['contact_form'],
-                                                       descriptor=contact_form_descriptor)
+            contact_form_association = TextAssociation(
+                text=doc['contact_form'],
+                descriptor=contact_form_descriptor)
             resource.text_descriptors.append(contact_form_association)
 
-            additional_information_association = TextAssociation(text=doc['additional_information'],
-                                                                 descriptor=additional_information_descriptor)
-            resource.text_descriptors.append(additional_information_association)
+            additional_information_association = TextAssociation(
+                text=doc['additional_information'],
+                descriptor=additional_information_descriptor)
+            resource.text_descriptors.append(
+                additional_information_association)
 
             if doc['phone_numbers']:
                 phone_numbers = doc['phone_numbers']
-                phone_numbers_association = TextAssociation(text=', '.join(phone_numbers),
-                                                           descriptor=phone_numbers_descriptor)
+                phone_numbers_association = TextAssociation(
+                    text=', '.join(phone_numbers),
+                    descriptor=phone_numbers_descriptor)
                 resource.text_descriptors.append(phone_numbers_association)
 
             if doc['non_english_services']:
                 non_english_services = doc['non_english_services']
-                non_english_services_association = TextAssociation(text=', '.join(non_english_services),
-                                                                   descriptor=non_english_services_descriptor)
-                resource.text_descriptors.append(non_english_services_association)
+                non_english_services_association = TextAssociation(
+                    text=', '.join(non_english_services),
+                    descriptor=non_english_services_descriptor)
+                resource.text_descriptors.append(
+                    non_english_services_association)
 
             categories = doc['categories']
             supercategories = doc['supercategories']
             features = doc['features']
 
             first_category = categories[0]
-            category_association = OptionAssociation(descriptor=category_descriptor,
-                                                     option=category_descriptor.values.index(first_category))
+            category_association = OptionAssociation(
+                descriptor=category_descriptor,
+                option=category_descriptor.values.index(first_category))
             resource.option_descriptors.append(category_association)
 
             if supercategories:
                 first_supercategory = supercategories[0]
-                supercategory_association = OptionAssociation(descriptor=supercategory_descriptor,
-                                                    option=supercategory_descriptor.values.index(first_supercategory))
+                supercategory_association = OptionAssociation(
+                    descriptor=supercategory_descriptor,
+                    option=supercategory_descriptor.values.index(
+                        first_supercategory))
                 resource.option_descriptors.append(supercategory_association)
 
             if features:
                 first_feature = features[0]
-                feature_association = OptionAssociation(descriptor=feature_descriptor,
-                                                        option=feature_descriptor.values.index(first_feature))
+                feature_association = OptionAssociation(
+                    descriptor=feature_descriptor,
+                    option=feature_descriptor.values.index(first_feature))
                 resource.option_descriptors.append(feature_association)
 
             db.session.add(resource)
@@ -375,9 +398,11 @@ class Resource(db.Model):
             """
             resource_as_dict['categories'] = [resource_as_dict['category']]
             resource_as_dict['supercategories'] = \
-                [resource_as_dict['supercategory']] if 'supercategory' in resource_as_dict else []
+                [resource_as_dict['supercategory']] if 'supercategory' in \
+                                                       resource_as_dict else []
             resource_as_dict['features'] = \
-                [resource_as_dict['feature']] if 'feature' in resource_as_dict else []
+                [resource_as_dict['feature']] if 'feature' in \
+                                                 resource_as_dict else []
             """
             end of TEMPORARY section
             """
