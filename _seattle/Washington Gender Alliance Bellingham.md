@@ -13,12 +13,12 @@ email:
 mailing_address:
 contact_form:
 non_english_services: 
-additional_information: For more information and updates request to join the Washington Gender Alliance Facebook group at: <https://www.facebook.com/groups/WashingtonGenderAlliance/>.
+additional_information: "For more information and updates request to join the Washington Gender Alliance Facebook group at: <https://www.facebook.com/groups/WashingtonGenderAlliance/>."
 categories:
   - Support Groups
 supercategories:
   - Mental Health
 features:
-  - confidential
-  - free
----
+  - Confidential
+  - Free
+  

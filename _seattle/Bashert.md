@@ -18,9 +18,9 @@ contact_form:
 categories:
   - Community Centers
 supercategories:
-  - Community
+  - Community Support
 features:
-  - confidential
-  - free
-  - translation
----
+  - Confidential
+  - Free
+  - Translation
+  

@@ -9,7 +9,7 @@ populations_served: Unaccompanied children, primarily teens, from countries thro
 hours: Mon-Fri 9am-5pm
 phone_numbers:
   - 206-694-5713
-  - En Español llame: 206-694-5755
+  - "En Español llame: 206-694-5755"
 email: RICP@lcsnw.org
 mailing_address:
 contact_form: http://www.lcsnw.org/contact.html
@@ -29,7 +29,7 @@ supercategories:
   - Community
   - Mental Health
 features:
-  - confidential
-  - free
-  - translation
----
+  - Confidential
+  - Free
+  - Translation
+  

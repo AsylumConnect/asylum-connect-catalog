@@ -17,7 +17,7 @@ additional_information:
 categories:
   - Food
 supercategories:
-  - Community
+  - Community Support
 features:
-  - free
----
+  - Free
+  

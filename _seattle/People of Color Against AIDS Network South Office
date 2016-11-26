@@ -1,8 +1,8 @@
 ---
 name: People of Color Against AIDS Network (POCAAN) South Office
 address: 4437 Rainier Avenue S., Seattle, WA 98118
-lat: 
-long: 
+lat: 47.563136
+long: -122.288297
 description: POCAAN is a multicultural, multi-social service agency serving marginalized communities in Seattle and greater King County. POCAAN is committed to providing comprehensive, multicultural awareness and prevention messages aimed at addressing health disparities experienced in diverse communities.
 website: http://www.pocaan.org/
 populations_served: African American LGBTQ individuals of all genders and orientations, ages 16+
@@ -21,6 +21,6 @@ supercategories:
   - Medical
   - Mental Health
 features:
-  - confidential
-  - free
----
+  - Confidential
+  - Free
+  
