@@ -37,25 +37,26 @@ AsylumConnect’s current resource verification model is a bottleneck, as volunt
     $ virtualenv env
     $ source env/bin/activate
     ```
-2.5 (If you're on a mac) Make sure xcode tools are installed
+
+3. (If you're on a mac) Make sure Xcode tools are installed
     ```
     $ xcode-select --install
     ```
-    
-3. Install the dependencies
+
+4. Install the dependencies
 
     ```
     $ pip install -r requirements/common.txt
     $ pip install -r requirements/dev.txt
     ```
 
-4. Create the database
+5. Create the database
 
     ```
     $ python manage.py recreate_db
     ```
 
-5. Other setup (e.g. creating roles in database)
+6. Other setup (e.g. creating roles in database)
 
     ```
     $ python manage.py setup_dev
@@ -65,6 +66,12 @@ AsylumConnect’s current resource verification model is a bottleneck, as volunt
 
     ```
     $ python manage.py add_fake_data
+    ```
+
+7. [Optional but recommended] Add Seattle data to the database
+
+    ```
+    $ python manage.py add_seattle_data
     ```
 
 ## Running the app
