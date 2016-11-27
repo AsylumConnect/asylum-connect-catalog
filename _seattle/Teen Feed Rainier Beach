@@ -1,8 +1,8 @@
 ---
 name: Teen Feed Rainier Beach
 address:  5150 S Cloverdale Pl, Seattle, WA 98118
-lat: 
-long: 
+lat: 47.527688
+long: -122.268291
 description: Teen Feed works with the community to offer support to meet basic needs, build strong relationships, and ally with homeless youth as they meet their future off the streets.
 website: http://www.teenfeed.org/
 populations_served: Homeless and housing-instable teens, ages 13-18.
@@ -23,6 +23,6 @@ supercategories:
   - Legal
   - Mental Health
 features:
-  - confidential
-  - free
----
+  - Confidential
+  - Free
+  

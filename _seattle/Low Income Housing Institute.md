@@ -19,6 +19,6 @@ categories:
   - Hygiene
 supercategories:
 features:
-  - confidential
-  - free
----
+  - Confidential
+  - Free
+  

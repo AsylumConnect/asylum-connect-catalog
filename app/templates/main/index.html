@@ -107,7 +107,7 @@
               {# TODO: fully flesh this out. content_fields are simply the list of fields from the resource object that we display for each resource object, in the order that we want them displayed (so this says description goes first, and non_english_services, if available, goes last #}
               {% set content_fields = ['description', 'populations_served', 'address', 'hours', 'phone_number', 'email', 'website', 'additional_information', 'non_english_services'] %}
               {% for field in content_fields %}
-                {% if field in resource and resource[field]|length > 0%}
+                {% if field in resource and resource[field] is not none and resource[field]|length > 0%}
                 <p>
                   <span style="font-weight: BOLD">{{ field.replace('_', ' ').title() }}: </span>
                   {{ resource[field] }}

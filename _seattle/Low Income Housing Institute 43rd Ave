@@ -1,8 +1,8 @@
 ---
 name: Low Income Housing Institute 43rd Ave
 address: 1415 NE 43rd Ave, Seattle, WA 98101
-lat: 
-long: 
+lat: 47.659244
+long: -122.312356
 description: The Low Income Housing Institute provides housing and hygiene services for the low-income and homeless of Washington state.
 website: http://lihi.org/
 populations_served: Adults of all genders and orientations, ages 18+.
@@ -19,6 +19,6 @@ categories:
   - Hygiene
 supercategories:
 features:
-  - confidential
-  - free
----
+  - Confidential
+  - Free
+  

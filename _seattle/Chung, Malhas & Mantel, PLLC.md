@@ -5,7 +5,7 @@ lat: 47.60992
 long: -122.33827
 description: Chung, Malhas & Mantel, PLLC provides legal services to people seeking asylum in the United States.
 website: http://www.cmmlawfirm.com/asylum-refugee-attorney-seattle/
-populations-served: LGBT asylum seekers, ages 18+
+populations_served: LGBT asylum seekers, ages 18+
 hours: Mon-Fri 9am-5pm
 phone_numbers: 
   - 206-264-8999
@@ -22,13 +22,13 @@ non_english_services:
   - Japanese 
   - Russian 
   - Spanish.
-additional_information: Your initial consultation is free of charge. Schedule an appointment online at: <http://www.cmmlawfirm.com/request-an-appointment/>
+additional_information: "Your initial consultation is free of charge. Schedule an appointment online at: <http://www.cmmlawfirm.com/request-an-appointment/>"
 categories:
   - Legal Aid
 supercategories:
   - Legal
 features:
-  - confidential
-  - free
-  - translation
----
+  - Confidential
+  - Free
+  - Translation
+  
