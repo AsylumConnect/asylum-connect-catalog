@@ -22,15 +22,16 @@ def city_view(city_name):
     category_icons = ['housing', 'food', 'hygiene', 'computers', 'employment',
                       'mail', 'recreation']
 
-    ''' RESOURCE STRUCTURE:
-        categories = list of string categories
-        features = list of string features
-        name = string
-        supercategories = list of strings
-        address = string
-        lat =
-        long =
-        website = string
+    '''
+    RESOURCE STRUCTURE:
+    categories = list of string categories
+    features = list of string features
+    name = string
+    supercategories = list of strings
+    address = string
+    lat =
+    long =
+    website = string
     '''
 
     # TODO: Get resources from a specific city, instead of all resources

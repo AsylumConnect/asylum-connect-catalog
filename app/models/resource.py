@@ -25,7 +25,7 @@ class OptionAssociation(db.Model):
     descriptor_id = db.Column(db.Integer, db.ForeignKey('descriptors.id'),
                               primary_key=True)
     option = db.Column(db.Integer)
-    resource = db.relationship('Resource',
+    resource = db.relationship('ResourceBase',
                                back_populates='option_descriptors')
     descriptor = db.relationship('Descriptor',
                                  back_populates='option_resources')
@@ -46,7 +46,8 @@ class TextAssociation(db.Model):
     descriptor_id = db.Column(db.Integer, db.ForeignKey('descriptors.id'),
                               primary_key=True)
     text = db.Column(db.String(64))
-    resource = db.relationship('Resource', back_populates='text_descriptors')
+    resource = db.relationship('ResourceBase',
+                               back_populates='text_descriptors')
     descriptor = db.relationship('Descriptor', back_populates='text_resources')
 
     def __repr__(self):
@@ -114,7 +115,8 @@ class Resource(ResourceBase):
     Schema for resources with relationships to descriptors.
     """
     suggestions = db.relationship('ResourceSuggestion', backref='resource',
-                                  uselist=True, remote_side='ResourceSuggestion.id')
+                                  uselist=True,
+                                  remote_side='ResourceSuggestion.id')
 
     __mapper_args__ = {
         'polymorphic_identity': 'resource'
