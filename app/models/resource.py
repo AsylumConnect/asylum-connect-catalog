@@ -107,7 +107,7 @@ class ResourceBase(db.Model):
     }
 
     def __repr__(self):
-        return '<Resource \'%s\'>' % self.name
+        return '<ResourceBase \'%s\'>' % self.name
 
 
 class Resource(ResourceBase):
