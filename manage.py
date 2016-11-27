@@ -76,7 +76,6 @@ def add_fake_data(number_users):
     User.generate_fake(count=number_users)
     ResourceSuggestion.generate_fake_edits()
     ResourceSuggestion.generate_fake_inserts()
-    # Resource.generate_fake()
 
 
 @manager.command
