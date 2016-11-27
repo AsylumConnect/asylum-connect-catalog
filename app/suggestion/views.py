@@ -7,7 +7,7 @@ from sqlalchemy.exc import IntegrityError
 
 from . import suggestion
 from .. import db
-from ..models import Resource, Suggestion
+from ..models import Resource, ResourceSuggestion
 from forms import SuggestionForm
 
 
@@ -15,7 +15,7 @@ from forms import SuggestionForm
 @login_required
 def index():
     """View all suggestions in a list."""
-    suggestions = Suggestion.query.all()
+    suggestions = ResourceSuggestion.query.all()
     return render_template('suggestion/index.html', suggestions=suggestions)
 
 
@@ -23,8 +23,8 @@ def index():
 @login_required
 def unread():
     """Returns the number of unread suggestions."""
-    num_unread = Suggestion.query.filter(
-        Suggestion.read == False  # noqa
+    num_unread = ResourceSuggestion.query.filter(
+        ResourceSuggestion.read == False  # noqa
         ).count()
     return "%d" % num_unread
 
@@ -33,7 +33,7 @@ def unread():
 @login_required
 def toggle_read(sugg_id):
     """Toggles the readability of a given suggestion."""
-    suggestion = Suggestion.query.get(sugg_id)
+    suggestion = ResourceSuggestion.query.get(sugg_id)
     if suggestion is None:
         abort(404)
     suggestion.read = not suggestion.read
@@ -50,7 +50,7 @@ def toggle_read(sugg_id):
 @login_required
 def delete(sugg_id):
     """Delete a given suggestion."""
-    suggestion = Suggestion.query.get(sugg_id)
+    suggestion = ResourceSuggestion.query.get(sugg_id)
     if suggestion is None:
         abort(404)
     db.session.delete(suggestion)
@@ -78,7 +78,7 @@ def suggest(resource_id):
             abort(404)
         name = resource.name
     if form.validate_on_submit():
-        suggestion = Suggestion(
+        suggestion = ResourceSuggestion(
             resource_id=resource_id,
             suggestion_text=form.suggestion_text.data,
             contact_name=form.contact_name.data,

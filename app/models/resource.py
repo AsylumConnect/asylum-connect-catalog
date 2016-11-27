@@ -78,7 +78,7 @@ class Descriptor(db.Model):
         return '<Descriptor \'%s\'>' % self.name
 
 
-class Resource(db.Model):
+class ResourceBase(db.Model):
     """
     Schema for resources with relationships to descriptors.
     """
@@ -98,8 +98,27 @@ class Resource(db.Model):
         back_populates='resource',
         cascade='save-update, merge, delete, delete-orphan'
     )
-    suggestions = db.relationship('Suggestion', backref='resource',
-                                  uselist=True)
+    type = db.Column(db.String(20))
+
+    __mapper_args__ = {
+        'polymorphic_on': type,
+        'polymorphic_identity': 'resource_base'
+    }
+
+    def __repr__(self):
+        return '<Resource \'%s\'>' % self.name
+
+
+class Resource(ResourceBase):
+    """
+    Schema for resources with relationships to descriptors.
+    """
+    suggestions = db.relationship('ResourceSuggestion', backref='resource',
+                                  uselist=True, remote_side='ResourceSuggestion.id')
+
+    __mapper_args__ = {
+        'polymorphic_identity': 'resource'
+    }
 
     def __repr__(self):
         return '<Resource \'%s\'>' % self.name
