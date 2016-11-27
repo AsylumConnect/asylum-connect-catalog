@@ -8,7 +8,7 @@ from wtforms.fields import SelectField, TextAreaField
 
 from . import suggestion
 from .. import db
-from ..models import Descriptor, OptionAssociation, Resource, \
+from ..models import Descriptor, OptionAssociation, Resource, ResourceBase, \
     ResourceSuggestion, TextAssociation
 from forms import SuggestionForm
 
@@ -115,6 +115,7 @@ def suggest_edit(resource_id):
         abort(404)
     name = resource.name
 
+    resource_field_names = ['name', 'address', 'latitude', 'longitude']
     descriptors = Descriptor.query.all()
     for descriptor in descriptors:
         if descriptor.values:  # Fields for option descriptors.
@@ -144,17 +145,24 @@ def suggest_edit(resource_id):
 
     if form.validate_on_submit():
         resource_suggestion = ResourceSuggestion(
-            resource_id=resource_id,
+            resource_id=resource.id,
+            name=form.name.data,
+            address=form.address.data,
+            latitude=form.latitude.data,
+            longitude=form.longitude.data,
             notes=form.notes.data,
             contact_name=form.contact_name.data,
             contact_email=form.contact_email.data,
             contact_phone_number=form.contact_phone_number.data,
             submission_time=datetime.now(pytz.timezone('US/Eastern'))
         )
-        db.session.add(resource_suggestion)
+        # Field id is not needed for the form, hence omitted with [1:].
+        for field_name in resource_field_names[1:]:
+            setattr(resource_suggestion, field_name, form[field_name].data)
         save_associations(resource_suggestion=resource_suggestion,
                           form=form,
                           descriptors=descriptors)
+        db.session.add(resource_suggestion)
         try:
             db.session.commit()
             flash('Thanks for the suggestion!', 'success')
@@ -162,6 +170,11 @@ def suggest_edit(resource_id):
         except IntegrityError:
             db.session.rollback()
             flash('Database error occurred. Please try again.', 'error')
+
+    # Field id is not needed for the form, hence omitted with [1:].
+    for field_name in resource_field_names:
+        form[field_name].data = resource.__dict__[field_name]
+
     return render_template('suggestion/suggest.html', form=form, name=name)
 
 
