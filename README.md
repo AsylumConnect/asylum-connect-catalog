@@ -34,8 +34,8 @@ Other branches include even more features
 ##### Clone the repo
 
 ```
-$ git clone https://github.com/hack4impact/flask-base.git
-$ cd flask-base
+$ git clone https://github.com/hack4impact/asylum-connect-catalog.git
+$ cd asylum-connect-catalog
 ```
 
 ##### Initialize a virtualenv
