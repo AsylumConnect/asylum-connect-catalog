@@ -15,15 +15,15 @@ contact_form:
 non_english_services: 
 additional_information: Some client information may be shared with the parents of underage clients. Some activities require parental consent.
 categories:
-  - Computers
+  - Computers & Internet
   - Libraries
   - Community Centers
   - LGBT Centers
   - Support Groups
 supercategories:
-  - Community
+  - Community Support
   - Mental Health
 features:
-  - confidential
-  - free
----
+  - Confidential
+  - Free
+  

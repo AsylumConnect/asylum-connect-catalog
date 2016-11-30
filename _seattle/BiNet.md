@@ -1,8 +1,8 @@
 ---
 name: BiNet
 address: Location varies. Contact to learn locations.
-lat: 
-long: 
+lat: 47.723653
+long: -122.471335
 description: BiNet Seattle is a bisexual non-profit, mixed gender, social and support organization created to foster a visible community for bisexual, bi-curious people, and their partners in the Puget Sound area.
  website: http://www.binetseattle.org/index.html
  populations_served: Bisexual youth and adults, ages 13+.
@@ -18,6 +18,6 @@ categories:
 supercategories:
   - Mental Health
 features:
-  - confidential
-  - free
----
+  - Confidential
+  - Free
+  

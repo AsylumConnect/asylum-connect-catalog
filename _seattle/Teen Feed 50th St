@@ -1,8 +1,8 @@
 ---
 name: Teen Feed 50th St
 address: 1604 NE 50th St, Seattle, WA 98105
-lat: 
-long: 
+lat: 47.665283
+long: -122.310431
 description: Teen Feed works with the community to offer support to meet basic needs, build strong relationships, and ally with homeless youth as they meet their future off the streets.
 website: http://www.teenfeed.org/
 populations_served: Homeless and housing-instable teens, ages 13-18.
@@ -23,6 +23,6 @@ supercategories:
   - Legal
   - Mental Health
 features:
-  - confidential
-  - free
---- 
+  - Confidential
+  - Free
+  

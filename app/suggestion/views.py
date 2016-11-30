@@ -4,11 +4,13 @@ from datetime import datetime
 from flask import abort, flash, redirect, render_template, url_for
 from flask.ext.login import login_required
 from sqlalchemy.exc import IntegrityError
+from wtforms.fields import FormField, SelectField, StringField, TextAreaField
 
 from . import suggestion
 from .. import db
-from ..models import Resource, Suggestion, Descriptor, TextAssociation, OptionAssociation
-from forms import SuggestionBasicForm, SuggestionAdvancedForm
+from ..models import Descriptor, OptionAssociation, Resource, ResourceBase, \
+    ResourceSuggestion, TextAssociation
+from forms import ContactInformationForm, ResourceSuggestionForm
 from wtforms.fields import TextAreaField, SelectField
 from ..single_resource.views import save_associations
 from ..single_resource.forms import SingleResourceForm
@@ -18,7 +20,7 @@ from ..single_resource.forms import SingleResourceForm
 @login_required
 def index():
     """View all suggestions in a list."""
-    suggestions = Suggestion.query.all()
+    suggestions = ResourceSuggestion.query.all()
     return render_template('suggestion/index.html', suggestions=suggestions)
 
 
@@ -26,8 +28,8 @@ def index():
 @login_required
 def unread():
     """Returns the number of unread suggestions."""
-    num_unread = Suggestion.query.filter(
-        Suggestion.read == False  # noqa
+    num_unread = ResourceSuggestion.query.filter(
+        ResourceSuggestion.read == False  # noqa
         ).count()
     return "%d" % num_unread
 
@@ -36,7 +38,7 @@ def unread():
 @login_required
 def toggle_read(sugg_id):
     """Toggles the readability of a given suggestion."""
-    suggestion = Suggestion.query.get(sugg_id)
+    suggestion = ResourceSuggestion.query.get(sugg_id)
     if suggestion is None:
         abort(404)
     suggestion.read = not suggestion.read
@@ -53,7 +55,7 @@ def toggle_read(sugg_id):
 @login_required
 def delete(sugg_id):
     """Delete a given suggestion."""
-    suggestion = Suggestion.query.get(sugg_id)
+    suggestion = ResourceSuggestion.query.get(sugg_id)
     if suggestion is None:
         abort(404)
     db.session.delete(suggestion)
@@ -66,44 +68,45 @@ def delete(sugg_id):
     return redirect(url_for('suggestion.index'))
 
 
-@suggestion.route('/new', defaults={'resource_id': None},
-                  methods=['GET', 'POST'])
-@suggestion.route('/<int:resource_id>',  methods=['GET', 'POST'])
-def suggest(resource_id):
+@suggestion.route('/new', methods=['GET', 'POST'])
+def suggest_create():
     """Create a suggestion for a resource."""
-    basic_form = SuggestionBasicForm()
-    if resource_id is None:
-        name = None
-        resource = None
-    else:
-        resource = Resource.query.get(resource_id)
-        if resource is None:
-            abort(404)
-        name = resource.name
-        basic_form.name.data = resource.name
-        basic_form.address.data = resource.address
-    advanced_form = SuggestionAdvancedForm()
     descriptors = Descriptor.query.all()
     for descriptor in descriptors:
-        if descriptor.values:  # Fields for option descriptors.
+        if descriptor.is_option_descriptor:  # Fields for option descriptors.
             choices = [(str(i), v) for i, v in enumerate(descriptor.values)]
-            setattr(SuggestionAdvancedForm,
+            setattr(ResourceSuggestionForm,
                     descriptor.name,
                     SelectField(choices=choices))
-        else:  # Fields for text descriptors
-            setattr(SuggestionAdvancedForm, descriptor.name, TextAreaField())
-    if basic_form.validate_on_submit():
-        suggestion = Suggestion(
-            resource_id=resource_id,
-            suggestion_text=basic_form.suggestion_text.data,
-            contact_name=basic_form.contact_name.data,
-            contact_email=basic_form.contact_email.data,
-            contact_phone_number=basic_form.contact_phone_number.data,
-            resource_name=basic_form.name.data,
-            resource_address=basic_form.address.data,
+        else:  # Fields for text descriptors.
+            setattr(ResourceSuggestionForm, descriptor.name, TextAreaField())
+
+    # Add form fields asking for the suggester's name, email, and phone number.
+    # Dynamically added here so that form's fields are displayed in the
+    # correct order.
+    setattr(ResourceSuggestionForm, 'contact_information',
+            FormField(ContactInformationForm))
+
+    form = ResourceSuggestionForm()
+
+    if form.validate_on_submit():
+        resource_suggestion = ResourceSuggestion(
+            name=form.name.data,
+            address=form.address.data,
+            latitude=form.latitude.data,
+            longitude=form.longitude.data,
+            contact_name=form.contact_information.contact_name.data,
+            contact_email=form.contact_information.contact_email.data,
+            contact_phone_number=
+            form.contact_information.contact_phone_number.data,
+            additional_information=
+            form.contact_information.additional_information.data,
             submission_time=datetime.now(pytz.timezone('US/Eastern'))
         )
-        db.session.add(suggestion)
+        save_associations(resource_suggestion=resource_suggestion,
+                          form=form,
+                          descriptors=descriptors)
+        db.session.add(resource_suggestion)
         try:
             db.session.commit()
             flash('Thanks for the suggestion!', 'success')
@@ -111,62 +114,20 @@ def suggest(resource_id):
         except IntegrityError:
             db.session.rollback()
             flash('Database error occurred. Please try again.', 'error')
-    return render_template('suggestion/suggest.html', name=name, basic_form=basic_form,
-                            advanced_form=advanced_form)
+    return render_template('suggestion/suggest.html', form=form, name=None)
 
 
-@suggestion.route('/create/<int:sugg_id>', methods=['GET', 'POST'])
-@login_required
-def create(sugg_id):
-    suggestion = Suggestion.query.get(sugg_id)
-    if suggestion is None:
-        abort(404)
-    descriptors = Descriptor.query.all()
-    for descriptor in descriptors:
-        if descriptor.values:  # Fields for option descriptors.
-            choices = [(str(i), v) for i, v in enumerate(descriptor.values)]
-            setattr(SingleResourceForm,
-                    descriptor.name,
-                    SelectField(choices=choices))
-        else:  # Fields for text descriptors
-            setattr(SingleResourceForm, descriptor.name, TextAreaField())
-    form = SingleResourceForm()
-    form.name.data = suggestion.resource_name
-    form.address.data = suggestion.resource_address
-    if form.validate_on_submit():
-        new_resource = Resource(name=form.name.data,
-                                address=form.address.data,
-                                latitude=form.latitude.data,
-                                longitude=form.longitude.data)
-        db.session.add(new_resource)
-        save_associations(resource=new_resource,
-                          form=form,
-                          descriptors=descriptors,
-                          resource_existed=False)
-        try:
-            db.session.commit()
-            flash('Resource added', 'form-success')
-            return redirect(url_for('suggestion.index'))
-        except IntegrityError:
-            db.session.rollback()
-            flash('Error: failed to save resource. Please try again.',
-                  'form-error')
-    return render_template('suggestion/create.html', form=form, suggestion=suggestion)
-
-@suggestion.route('/edit/<int:sugg_id>', methods=['GET', 'POST'])
-@login_required
-def edit(sugg_id):
-    suggestion = Suggestion.query.get(sugg_id)
-    if suggestion is None:
-        abort(404)
-    resource = Resource.query.get(suggestion.resource_id)
+@suggestion.route('/<int:resource_id>', methods=['GET', 'POST'])
+def suggest_edit(resource_id):
+    resource = Resource.query.get(resource_id)
     if resource is None:
         abort(404)
-    resource_id = suggestion.resource_id
-    resource_field_names = Resource.__table__.columns.keys()
+    name = resource.name
+
+    resource_field_names = ['name', 'address', 'latitude', 'longitude']
     descriptors = Descriptor.query.all()
     for descriptor in descriptors:
-        if descriptor.values:  # Fields for option descriptors.
+        if descriptor.is_option_descriptor:
             choices = [(str(i), v) for i, v in enumerate(descriptor.values)]
             default = None
             option_association = OptionAssociation.query.filter_by(
@@ -175,7 +136,7 @@ def edit(sugg_id):
             ).first()
             if option_association is not None:
                 default = option_association.option
-            setattr(SingleResourceForm,
+            setattr(ResourceSuggestionForm,
                     descriptor.name,
                     SelectField(choices=choices, default=default))
         else:  # Fields for text descriptors.
@@ -186,28 +147,70 @@ def edit(sugg_id):
             ).first()
             if text_association is not None:
                 default = text_association.text
-            setattr(SingleResourceForm,
+            setattr(ResourceSuggestionForm,
                     descriptor.name,
                     TextAreaField(default=default))
-    form = SingleResourceForm()
+
+    # Add form fields asking for the suggester's name, email, and phone number.
+    # Dynamically added here so that form's fields are displayed in the
+    # correct order.
+    setattr(ResourceSuggestionForm, 'contact_information',
+            FormField(ContactInformationForm))
+
+    form = ResourceSuggestionForm()
+
     if form.validate_on_submit():
+        resource_suggestion = ResourceSuggestion(
+            resource_id=resource.id,
+            name=form.name.data,
+            address=form.address.data,
+            latitude=form.latitude.data,
+            longitude=form.longitude.data,
+            contact_name=form.contact_information.contact_name.data,
+            contact_email=form.contact_information.contact_email.data,
+            contact_phone_number=
+            form.contact_information.contact_phone_number.data,
+            additional_information=
+            form.contact_information.additional_information.data,
+            submission_time=datetime.now(pytz.timezone('US/Eastern'))
+        )
         # Field id is not needed for the form, hence omitted with [1:].
         for field_name in resource_field_names[1:]:
-            setattr(resource, field_name, form[field_name].data)
-        save_associations(resource=resource,
+            setattr(resource_suggestion, field_name, form[field_name].data)
+        save_associations(resource_suggestion=resource_suggestion,
                           form=form,
-                          descriptors=descriptors,
-                          resource_existed=True)
+                          descriptors=descriptors)
+        db.session.add(resource_suggestion)
         try:
             db.session.commit()
-            flash('Resource updated', 'form-success')
-            return redirect(url_for('single_resource.index'))
+            flash('Thanks for the suggestion!', 'success')
+            return redirect(url_for('main.index'))
         except IntegrityError:
             db.session.rollback()
-            flash('Error: failed to save resource. Please try again.',
-                  'form-error')
-    # Field id is not needed for the form, hence omitted with [1:].
-    for field_name in resource_field_names[1:]:
+            flash('Database error occurred. Please try again.', 'error')
+
+    for field_name in resource_field_names:
         form[field_name].data = resource.__dict__[field_name]
 
-    return render_template('suggestion/edit.html', form=form, suggestion=suggestion, resource_id=resource_id)
+    return render_template('suggestion/suggest.html', form=form, name=name)
+
+
+def save_associations(resource_suggestion, form, descriptors):
+    """Save associations from the forms received by 'create' and 'edit' route
+    handlers to the database."""
+    for descriptor in descriptors:
+        if descriptor.is_option_descriptor:
+            AssociationClass = OptionAssociation
+            value = int(form[descriptor.name].data)
+            keyword = 'option'
+        else:
+            AssociationClass = TextAssociation
+            value = form[descriptor.name].data
+            keyword = 'text'
+        arguments = {'resource_id': resource_suggestion.id,
+                     'descriptor_id': descriptor.id,
+                     keyword: value,
+                     'resource': resource_suggestion,
+                     'descriptor': descriptor}
+        new_association = AssociationClass(**arguments)
+        db.session.add(new_association)

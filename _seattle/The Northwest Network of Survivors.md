@@ -9,7 +9,7 @@ populations_served: Survivors of domestic, dating, and/or sexual assault of all 
 hours: Mon-Fri 9am - 5pm
 phone_numbers:
   - 206-568-7777
-  - 24-Hour Crisis Clinic: 866-427-4747
+  - "24-Hour Crisis Clinic: 866-427-4747"
 email: info@nwnetwork.org
 mailing_address: P.O. Box 18436, Seattle, WA 98118
 contact_form:
@@ -23,5 +23,5 @@ supercategories:
   - Legal
   - Mental Health
 features:
-  - confidential
----
+  - Confidential
+  

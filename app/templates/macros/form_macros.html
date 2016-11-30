@@ -32,6 +32,23 @@
             </div>
 
         {{ end_form(form) }}
+    {% elif form.type == 'FormField' and form.form_class.__name__ == 'ContactInformationForm' %}
+        {% set name_field = form.__getitem__('contact_name') %}
+        {% set phone_number_field = form.__getitem__('contact_phone_number') %}
+        {% set email_field = form.__getitem__('contact_email') %}
+        {% set additional_information_field = form.__getitem__('additional_information') %}
+
+
+        <div class="ui secondary segment">
+            <h3>Your Contact Information</h3>
+
+            <p>Not required, but useful if we need to reach out to you to learn more about the resource.</p>
+
+            {{ render_form_field(name_field) }}
+            {{ render_form_field(phone_number_field) }}
+            {{ render_form_field(email_field) }}
+            {{ render_form_field(additional_information_field) }}
+        </div>
     {% else %}
         {{ begin_form(form, flashes, method=method, extra_classes=extra_classes, enctype=enctype) }}
 
@@ -130,6 +147,11 @@
         {{ field(placeholder=field.label.text, rows='4') }}
     {% else %}
         {{ field.label }}
+            {% if field.description %}
+                <div class="ui pointing below label">
+                    {{ field.description }}
+                </div>
+            {% endif %}
         {{ field(placeholder=field.label.text) }}
     {% endif %}
 {% endmacro %}

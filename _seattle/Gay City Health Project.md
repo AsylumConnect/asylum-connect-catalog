@@ -25,6 +25,6 @@ supercategories:
   - Community
   - Education
 features:
-  - confidential
-  - free
----
+  - Confidential
+  - Free
+  

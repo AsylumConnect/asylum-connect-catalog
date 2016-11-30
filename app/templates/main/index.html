@@ -15,7 +15,7 @@
           <div id="links" class="hidden-xs">
             <a href="http://www.asylumconnect.org/our-catalog/">ABOUT</a>
             <a href="http://goo.gl/forms/UjxEbg6H3O">SHARE FEEDBACK</a>
-            <a href="{{ url_for('suggestion.suggest') }}">SUBMIT A RESOURCE</a>
+            <a href="{{ url_for('suggestion.suggest_create') }}">SUBMIT A RESOURCE</a>
             <a href="http://www.asylumconnect.org/contact-us/">CONTACT US</a>
           </div>
         </div>
@@ -104,7 +104,7 @@
               {# TODO: fully flesh this out. content_fields are simply the list of fields from the resource object that we display for each resource object, in the order that we want them displayed (so this says description goes first, and non_english_services, if available, goes last #}
               {% set content_fields = ['description', 'populations_served', 'address', 'hours', 'phone_number', 'email', 'website', 'additional_information', 'non_english_services'] %}
               {% for field in content_fields %}
-                {% if field in resource and resource[field]|length > 0%}
+                {% if field in resource and resource[field] is not none and resource[field]|length > 0%}
                 <p>
                   <span style="font-weight: BOLD">{{ field.replace('_', ' ').title() }}: </span>
                   {{ resource[field] }}
@@ -158,7 +158,7 @@
         </div>
       </div>
       <div class="footer">
-        <a href="{{ url_for('suggestion.suggest') }}">SUBMIT A RESOURCE</a> |
+        <a href="{{ url_for('suggestion.suggest_create') }}">SUGGEST A RESOURCE</a> |
         <a href="http://goo.gl/forms/UjxEbg6H3O">SHARE FEEDBACK</a>
       </div>
     </div>

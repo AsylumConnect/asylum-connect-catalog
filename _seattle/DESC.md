@@ -22,8 +22,7 @@ categories:
   - Community Centers
   - Mail
 supercategories:
-  - Community
+  - Community Support
 features:
-  - confidential
-  - free
----
+  - Confidential
+  - Free

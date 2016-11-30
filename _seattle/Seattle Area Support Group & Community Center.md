@@ -13,7 +13,7 @@ email:
 mailing_address:
 contact_form:
 non_english_services: 
-additional_information: Groups are led by trained peer facilitators. Most groups are ongoing and meet weekly. Some require pre-registration. View the current event calendar here: <http://sasgcc.org/calendar>.
+additional_information: "Groups are led by trained peer facilitators. Most groups are ongoing and meet weekly. Some require pre-registration. View the current event calendar here: <http://sasgcc.org/calendar>."
 categories:
   - Support Groups
   - Community Centers
@@ -22,6 +22,6 @@ supercategories:
   - Mental Health
   - Community
 features:
-  - confidential
-  - free
----
+  - Confidential
+  - Free
+  

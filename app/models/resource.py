@@ -25,7 +25,7 @@ class OptionAssociation(db.Model):
     descriptor_id = db.Column(db.Integer, db.ForeignKey('descriptors.id'),
                               primary_key=True)
     option = db.Column(db.Integer)
-    resource = db.relationship('Resource',
+    resource = db.relationship('ResourceBase',
                                back_populates='option_descriptors')
     descriptor = db.relationship('Descriptor',
                                  back_populates='option_resources')
@@ -46,7 +46,8 @@ class TextAssociation(db.Model):
     descriptor_id = db.Column(db.Integer, db.ForeignKey('descriptors.id'),
                               primary_key=True)
     text = db.Column(db.String(64))
-    resource = db.relationship('Resource', back_populates='text_descriptors')
+    resource = db.relationship('ResourceBase',
+                               back_populates='text_descriptors')
     descriptor = db.relationship('Descriptor', back_populates='text_resources')
 
     def __repr__(self):
@@ -77,10 +78,19 @@ class Descriptor(db.Model):
     def __repr__(self):
         return '<Descriptor \'%s\'>' % self.name
 
+    @property
+    def is_text_descriptor(self):
+        return len(self.values) == 0
 
-class Resource(db.Model):
+    @property
+    def is_option_descriptor(self):
+        return len(self.values) > 0
+
+
+class ResourceBase(db.Model):
     """
-    Schema for resources with relationships to descriptors.
+    Schema for base class that contains items common to approved resources and
+    resource suggestions.
     """
     __tablename__ = 'resources'
     id = db.Column(db.Integer, primary_key=True)
@@ -98,8 +108,28 @@ class Resource(db.Model):
         back_populates='resource',
         cascade='save-update, merge, delete, delete-orphan'
     )
-    suggestions = db.relationship('Suggestion', backref='resource',
-                                  uselist=True)
+    type = db.Column(db.String(20))
+
+    __mapper_args__ = {
+        'polymorphic_on': type,
+        'polymorphic_identity': 'resource_base'
+    }
+
+    def __repr__(self):
+        return '<ResourceBase \'%s\'>' % self.name
+
+
+class Resource(ResourceBase):
+    """
+    Schema for approved resources.
+    """
+    suggestions = db.relationship('ResourceSuggestion', backref='resource',
+                                  uselist=True,
+                                  remote_side='ResourceSuggestion.id')
+
+    __mapper_args__ = {
+        'polymorphic_identity': 'resource'
+    }
 
     def __repr__(self):
         return '<Resource \'%s\'>' % self.name
@@ -167,6 +197,197 @@ class Resource(db.Model):
                     db.session.rollback()
 
     @staticmethod
+    def add_seattle_data():
+        from sqlalchemy.exc import IntegrityError
+        import os
+        import yaml
+
+        resources = os.listdir("_seattle")
+
+        description_descriptor = Descriptor(
+            name='description',
+            values=[],
+            is_searchable=True
+        )
+        website_descriptor = Descriptor(
+            name='website',
+            values=[],
+            is_searchable=True
+        )
+        populations_served_descriptor = Descriptor(
+            name='populations served',
+            values=[],
+            is_searchable=True
+        )
+        hours_descriptor = Descriptor(
+            name='hours',
+            values=[],
+            is_searchable=True
+        )
+        phone_numbers_descriptor = Descriptor(
+            name='phone numbers',
+            values=[],
+            is_searchable=True
+        )
+        email_descriptor = Descriptor(
+            name='email',
+            values=[],
+            is_searchable=True
+        )
+        mailing_address_descriptor = Descriptor(
+            name='mailing address',
+            values=[],
+            is_searchable=True
+        )
+        contact_form_descriptor = Descriptor(
+            name='contact form',
+            values=[],
+            is_searchable=True
+        )
+        non_english_services_descriptor = Descriptor (
+            name='non english services',
+            values=[],
+            is_searchable=True
+        )
+        additional_information_descriptor = Descriptor(
+            name='additional information',
+            values=[],
+            is_searchable=True
+        )
+
+        category_descriptor = Descriptor(
+            name='category',
+            values=['Medical Clinics', 'Women\'s Health', 'Sexual Health',
+                    'Trans Health', 'Dental Care', 'Legal Aid',
+                    'Documentation', 'Housing', 'Food', 'Hygiene',
+                    'Computers & Internet', 'Employment', 'English Classes',
+                    'Libraries', 'Community Centers', 'Cultural Centers',
+                    'LGBTQ+ Centers', 'Support Groups', 'Private Counseling',
+                    'Psychiatry', 'Mail', 'Sport & Entertainment'],
+            is_searchable=True
+        )
+
+        supercategory_descriptor = Descriptor(
+            name='supercategory',
+            values=['Medical', 'Legal', 'Education', 'Community Support',
+                    'Mental Health'],
+            is_searchable=True
+        )
+
+        feature_descriptor = Descriptor(
+            name='feature',
+            values=['Confidential', 'Free', 'Translation'],
+            is_searchable=True
+        )
+
+        script_dir = os.path.dirname("__file__")
+
+        for obj in resources:
+
+            if obj.startswith("."):
+                continue
+
+            rel_path = "_seattle/" + obj
+            abs_file_path = os.path.join(script_dir, rel_path)
+            with open(abs_file_path, 'r') as f:
+                doc = yaml.load(f)
+
+            address = doc['address']
+            resource = Resource(
+                name=doc['name'],
+                address=address,
+                latitude=doc['lat'],
+                longitude=doc['long']
+            )
+
+            description_association = TextAssociation(
+                text=doc['description'],
+                descriptor=description_descriptor)
+            resource.text_descriptors.append(description_association)
+
+            website_association = TextAssociation(
+                text=doc['website'],
+                descriptor=website_descriptor)
+            resource.text_descriptors.append(website_association)
+
+            populations_served_association = TextAssociation(
+                text=doc['populations_served'],
+                descriptor=populations_served_descriptor)
+            resource.text_descriptors.append(populations_served_association)
+
+            hours_association = TextAssociation(
+                text=doc['hours'],
+                descriptor=hours_descriptor)
+            resource.text_descriptors.append(hours_association)
+
+            email_association = TextAssociation(
+                text=doc['email'],
+                descriptor=email_descriptor)
+            resource.text_descriptors.append(email_association)
+
+            mailing_address_association = TextAssociation(
+                text=doc['mailing_address'],
+                descriptor=mailing_address_descriptor)
+            resource.text_descriptors.append(mailing_address_association)
+
+            contact_form_association = TextAssociation(
+                text=doc['contact_form'],
+                descriptor=contact_form_descriptor)
+            resource.text_descriptors.append(contact_form_association)
+
+            additional_information_association = TextAssociation(
+                text=doc['additional_information'],
+                descriptor=additional_information_descriptor)
+            resource.text_descriptors.append(
+                additional_information_association)
+
+            if doc['phone_numbers']:
+                phone_numbers = doc['phone_numbers']
+                phone_numbers_association = TextAssociation(
+                    text=', '.join(phone_numbers),
+                    descriptor=phone_numbers_descriptor)
+                resource.text_descriptors.append(phone_numbers_association)
+
+            if doc['non_english_services']:
+                non_english_services = doc['non_english_services']
+                non_english_services_association = TextAssociation(
+                    text=', '.join(non_english_services),
+                    descriptor=non_english_services_descriptor)
+                resource.text_descriptors.append(
+                    non_english_services_association)
+
+            categories = doc['categories']
+            supercategories = doc['supercategories']
+            features = doc['features']
+
+            first_category = categories[0]
+            category_association = OptionAssociation(
+                descriptor=category_descriptor,
+                option=category_descriptor.values.index(first_category))
+            resource.option_descriptors.append(category_association)
+
+            if supercategories:
+                first_supercategory = supercategories[0]
+                supercategory_association = OptionAssociation(
+                    descriptor=supercategory_descriptor,
+                    option=supercategory_descriptor.values.index(
+                        first_supercategory))
+                resource.option_descriptors.append(supercategory_association)
+
+            if features:
+                first_feature = features[0]
+                feature_association = OptionAssociation(
+                    descriptor=feature_descriptor,
+                    option=feature_descriptor.values.index(first_feature))
+                resource.option_descriptors.append(feature_association)
+
+            db.session.add(resource)
+            try:
+                db.session.commit()
+            except IntegrityError:
+                db.session.rollback()
+
+    @staticmethod
     def get_resources_as_dicts(resources):
         resources_as_dicts = [resource.__dict__ for resource in resources]
         # .__dict__ returns the SQLAlchemy object as a dict, but it also adds a
@@ -208,10 +429,13 @@ class Resource(db.Model):
             lists in the underlying model, but for right now they are just
             strings. after multi-options are added, we can remove this
             """
-            resource_as_dict['categories'] = [resource_as_dict['categories']]
-            resource_as_dict['supercategories'] = [
-                resource_as_dict['supercategories']]
-            resource_as_dict['features'] = [resource_as_dict['features']]
+            resource_as_dict['categories'] = [resource_as_dict['category']]
+            resource_as_dict['supercategories'] = \
+                [resource_as_dict['supercategory']] if 'supercategory' in \
+                                                       resource_as_dict else []
+            resource_as_dict['features'] = \
+                [resource_as_dict['feature']] if 'feature' in \
+                                                 resource_as_dict else []
             """
             end of TEMPORARY section
             """
