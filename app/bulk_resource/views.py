@@ -1,28 +1,18 @@
-from datetime import datetime
 import json
-import geocoder
+from datetime import datetime
 
+import geocoder
 from flask import abort, jsonify, redirect, render_template, request, url_for
 from flask.ext.login import current_user, login_required
 
+from forms import (DetermineDescriptorTypesForm, DetermineOptionsForm,
+                   SaveCsvDataForm)
+
 from . import bulk_resource
 from .. import db
-from ..models import (
-    CsvBodyCell,
-    CsvBodyRow,
-    CsvContainer,
-    CsvHeaderCell,
-    CsvHeaderRow,
-    Descriptor,
-    OptionAssociation,
-    Resource,
-    TextAssociation
-)
-from forms import (
-    DetermineDescriptorTypesForm,
-    DetermineOptionsForm,
-    SaveCsvDataForm
-)
+from ..models import (CsvBodyCell, CsvBodyRow, CsvContainer, CsvHeaderCell,
+                      CsvHeaderRow, Descriptor, OptionAssociation, Resource,
+                      TextAssociation)
 
 
 @bulk_resource.route('/upload', methods=['GET', 'POST'])
@@ -45,17 +35,14 @@ def upload_data():
         date_uploaded=datetime.now(),
         user=current_user,
         name_column_index=int(post_data['name_column_index']),
-        address_column_index=int(post_data['address_column_index'])
-    )
+        address_column_index=int(post_data['address_column_index']))
 
     # The first row of the CSV file contains the names of the columns.
     header_row = csv_data[0]
-    csv_header_row = CsvHeaderRow(
-        csv_header_row_container=csv_container
-    )
+    csv_header_row = CsvHeaderRow(csv_header_row_container=csv_container)
     for column_name in header_row:
-        csv_cell = CsvHeaderCell(data=column_name,
-                                 csv_header_row=csv_header_row)
+        csv_cell = CsvHeaderCell(
+            data=column_name, csv_header_row=csv_header_row)
         db.session.add(csv_cell)
     db.session.add(csv_header_row)
 
@@ -65,19 +52,14 @@ def upload_data():
     for row in csv_data[1:]:
         csv_body_row = CsvBodyRow(csv_container=csv_container)
         for cell_data in row:
-            csv_cell = CsvBodyCell(
-                data=cell_data,
-                csv_body_row=csv_body_row
-            )
+            csv_cell = CsvBodyCell(data=cell_data, csv_body_row=csv_body_row)
             db.session.add(csv_cell)
         db.session.add(csv_body_row)
     db.session.add(csv_container)
     db.session.commit()
     # TODO: If the only descriptors are the required ones, then no need to
     # TODO: review them.
-    return jsonify(
-        redirect=url_for('bulk_resource.review_descriptor_types')
-    )
+    return jsonify(redirect=url_for('bulk_resource.review_descriptor_types'))
 
 
 @bulk_resource.route('/review-descriptor-types', methods=['GET', 'POST'])
@@ -117,8 +99,8 @@ def review_descriptor_types():
 
     # Add one text/option toggle for each CSV header.
     j = 0
-    for i, header_cell in enumerate(csv_container.csv_header_row
-                                    .csv_header_cells):
+    for i, header_cell in enumerate(
+            csv_container.csv_header_row.csv_header_cells):
         # Required columns are all 'text' descriptors. Their descriptor
         # type cannot be changed.
         if i not in csv_container.required_column_indices():
@@ -129,9 +111,10 @@ def review_descriptor_types():
                 form.descriptor_types[j].data = header_cell.descriptor_type
             j += 1
 
-    return render_template('bulk_resource/review_descriptor_types.html',
-                           csv_container=csv_container,
-                           form=form)
+    return render_template(
+        'bulk_resource/review_descriptor_types.html',
+        csv_container=csv_container,
+        form=form)
 
 
 @bulk_resource.route('/review-options', methods=['GET', 'POST'])
@@ -144,12 +127,11 @@ def review_options():
     if form.validate_on_submit():
         if form.navigation.data['submit_next']:
             options_indx = 0
-            for i, header_cell in enumerate(csv_container.csv_header_row
-                                            .csv_header_cells):
+            for i, header_cell in enumerate(
+                    csv_container.csv_header_row.csv_header_cells):
                 if header_cell.descriptor_type == 'option':
-                    header_cell.add_new_options_from_string(
-                        form.options[options_indx].data
-                    )
+                    header_cell.add_new_options_from_string(form.options[
+                        options_indx].data)
                     options_indx += 1
             return redirect(url_for('bulk_resource.save'))
         elif form.navigation.data['submit_back']:
@@ -169,9 +151,10 @@ def review_options():
                                      ')'
             form.options[j].data = header_cell.new_options_string()
             j += 1
-    return render_template('bulk_resource/review_options.html',
-                           csv_container=csv_container,
-                           form=form)
+    return render_template(
+        'bulk_resource/review_options.html',
+        csv_container=csv_container,
+        form=form)
 
 
 @bulk_resource.route('/save', methods=['GET', 'POST'])
@@ -202,8 +185,7 @@ def save():
                 descriptor = Descriptor(
                     name=header_cell.data,
                     values=list(values),
-                    is_searchable=True
-                )
+                    is_searchable=True)
                 db.session.add(descriptor)
 
         for row in csv_container.csv_rows:
@@ -215,16 +197,14 @@ def save():
                 name=name,
                 address=address,
                 latitude=g.latlng[0],
-                longitude=g.latlng[1]
-            )
+                longitude=g.latlng[1])
             db.session.add(resource)
             for i, cell in enumerate(row.csv_body_cells):
                 if i not in csv_container.required_column_indices():
                     descriptor_name = \
                         csv_container.csv_header_row.csv_header_cells[i].data
                     descriptor = Descriptor.query.filter_by(
-                        name=descriptor_name
-                    ).first()
+                        name=descriptor_name).first()
                     values = list(descriptor.values)
                     if len(descriptor.values) == 0:  # text descriptor
                         association_class = TextAssociation

@@ -6,7 +6,6 @@ from flask.ext.mail import Message
 from app import create_app
 
 from . import mail
-from app import create_app
 
 
 def send_email(recipient, subject, template, **kwargs):

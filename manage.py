@@ -1,26 +1,7 @@
 #!/usr/bin/env python
 import os
-from app import create_app, db
-from app.models import (
-    CsvBodyCell,
-    CsvBodyRow,
-    CsvContainer,
-    CsvHeaderCell,
-    CsvHeaderRow,
-    Descriptor,
-    OptionAssociation,
-    Resource,
-    ResourceBase,
-    ResourceSuggestion,
-    Role,
-    TextAssociation,
-    User
-)
-from redis import Redis
-from rq import Worker, Queue, Connection
-from config import Config
-from flask.ext.script import Manager, Shell
 import subprocess
+from config import Config
 
 from flask.ext.migrate import Migrate, MigrateCommand
 from flask.ext.script import Manager, Shell
@@ -28,7 +9,10 @@ from redis import Redis
 from rq import Connection, Queue, Worker
 
 from app import create_app, db
-from app.models import Role, User
+from app.models import (CsvBodyCell, CsvBodyRow, CsvContainer, CsvHeaderCell,
+                        CsvHeaderRow, Descriptor, OptionAssociation, Resource,
+                        ResourceBase, ResourceSuggestion, Role,
+                        TextAssociation, User)
 
 # Import settings from .env file. Must define FLASK_CONFIG
 if os.path.exists('.env'):
@@ -44,13 +28,22 @@ migrate = Migrate(app, db)
 
 
 def make_shell_context():
-    return dict(app=app, db=db, User=User, Role=Role, CsvBodyCell=CsvBodyCell,
-                CsvBodyRow=CsvBodyRow, CsvContainer=CsvContainer,
-                CsvHeaderCell=CsvHeaderCell, CsvHeaderRow=CsvHeaderRow,
-                Resource=Resource, ResourceBase=ResourceBase,
-                ResourceSuggestion=ResourceSuggestion, Descriptor=Descriptor,
-                TextAssociation=TextAssociation,
-                OptionAssociation=OptionAssociation)
+    return dict(
+        app=app,
+        db=db,
+        User=User,
+        Role=Role,
+        CsvBodyCell=CsvBodyCell,
+        CsvBodyRow=CsvBodyRow,
+        CsvContainer=CsvContainer,
+        CsvHeaderCell=CsvHeaderCell,
+        CsvHeaderRow=CsvHeaderRow,
+        Resource=Resource,
+        ResourceBase=ResourceBase,
+        ResourceSuggestion=ResourceSuggestion,
+        Descriptor=Descriptor,
+        TextAssociation=TextAssociation,
+        OptionAssociation=OptionAssociation)
 
 
 manager.add_command('shell', Shell(make_context=make_shell_context))
@@ -105,9 +98,7 @@ def setup_dev():
 
     admin_email = Config.ADMIN_EMAIL
     if User.query.filter_by(email=admin_email).first() is None:
-        User.create_confirmed_admin('Default',
-                                    'Admin',
-                                    admin_email,
+        User.create_confirmed_admin('Default', 'Admin', admin_email,
                                     'password')
 
 
