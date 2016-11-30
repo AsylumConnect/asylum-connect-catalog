@@ -415,7 +415,9 @@ class Resource(db.Model):
         if city not in city_descriptor.values:
             return []
 
-        city_option = city_descriptor.values.index(city)
+        list_of_cities = city_descriptor.values
+        lowercase_cities = [x.lower() for x in list_of_cities]
+        city_option = lowercase_cities.index(city.lower())
 
         opt_resources = OptionAssociation.query .filter_by(
             descriptor=city_descriptor).filter_by(option=city_option)
