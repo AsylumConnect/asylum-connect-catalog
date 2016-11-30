@@ -12,10 +12,6 @@ from . import suggestion
 from .. import db
 from ..models import (Descriptor, OptionAssociation, Resource,
                       ResourceSuggestion, TextAssociation)
-from forms import ContactInformationForm, ResourceSuggestionForm
-from wtforms.fields import TextAreaField, SelectField
-
-
 
 
 @suggestion.route('/')

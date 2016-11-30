@@ -1,7 +1,7 @@
 from flask.ext.wtf import Form
-from wtforms.fields import (FloatField, StringField, SubmitField,
-                            TextAreaField)
+from wtforms.fields import FloatField, StringField, SubmitField, TextAreaField
 from wtforms.validators import InputRequired, Length
+
 
 class ContactInformationForm(Form):
     contact_name = StringField('Contact Name', validators=[Length(0, 512)])
