@@ -1,13 +1,15 @@
 import json
+from datetime import datetime
 
-from flask import render_template, request, redirect, url_for, jsonify
+from flask import jsonify, redirect, render_template, request, url_for
 from flask.ext.login import login_required
 
 from app import csrf
-from .. import db
-from ..models import EditableHTML, Resource, Rating
+
 from . import main
-from datetime import datetime
+from .. import db
+from ..models import EditableHTML, Rating, Resource
+
 
 @main.route('/')
 def index():
@@ -20,9 +22,10 @@ def city_view(city_name):
     # for now, we just always render the seattle resources :(
     city = city_name.title()
     cities = [('Seattle', 'seattle'), ('Philadelphia', 'philadelphia')]
-    category_icons = ['housing', 'food', 'hygiene', 'computers', 'employment',
-                      'mail', 'recreation']
-
+    category_icons = [
+        'housing', 'food', 'hygiene', 'computers', 'employment', 'mail',
+        'recreation'
+    ]
     '''
     RESOURCE STRUCTURE:
     categories = list of string categories
@@ -39,11 +42,13 @@ def city_view(city_name):
     resources = Resource.query.all()
     resources_as_dicts = Resource.get_resources_as_full_dicts(resources)
 
-    return render_template('main/index.html',
-                           city=city,
-                           cities=cities,
-                           resources=resources_as_dicts,
-                           category_icons=category_icons)
+    return render_template(
+        'main/index.html',
+        city=city,
+        cities=cities,
+        resources=resources_as_dicts,
+        category_icons=category_icons)
+
 
 @main.route('/get-resources')
 def get_resources():
@@ -51,11 +56,13 @@ def get_resources():
     resources_as_dicts = Resource.get_resources_as_full_dicts(resources)
     return json.dumps(resources_as_dicts)
 
+
 @main.route('/search-resources/<query_name>')
 def search_resources(query_name):
     resources = Resource.query.filter(Resource.name.contains(query_name))
     resources_as_dicts = Resource.get_resources_as_dicts(resources)
     return json.dumps(resources_as_dicts)
+
 
 @main.route('/get-associations/<int:resource_id>')
 def get_associations(resource_id):
@@ -68,6 +75,7 @@ def get_associations(resource_id):
     for od in resource.option_descriptors:
         associations[od.descriptor.name] = od.descriptor.values[od.option]
     return json.dumps(associations)
+
 
 @main.route('/update-editor-contents', methods=['POST'])
 @login_required
@@ -84,26 +92,26 @@ def update_editor_contents():
     db.session.commit()
     return 'OK', 200
 
+
 @csrf.exempt
-@main.route('/resource-view', methods =['POST'])
+@main.route('/resource-view', methods=['POST'])
 def post_rating():
     if request is not None:
-            time = datetime.now()
-            star_rating = request.json['rating']
-            comment = request.json['review']
-            if comment and star_rating:
-                rating = Rating(submission_time=time,
-                                rating=star_rating,
-                                review=comment)
-                db.session.add(rating)
-                db.session.commit()
-            elif star_rating:
-                rating = Rating(submission_time=time,
-                                rating=star_rating)
-                db.session.add(rating)
-                db.session.commit()
+        time = datetime.now()
+        star_rating = request.json['rating']
+        comment = request.json['review']
+        if comment and star_rating:
+            rating = Rating(
+                submission_time=time, rating=star_rating, review=comment)
+            db.session.add(rating)
+            db.session.commit()
+        elif star_rating:
+            rating = Rating(submission_time=time, rating=star_rating)
+            db.session.add(rating)
+            db.session.commit()
     return jsonify(status='success')
 
-@main.route('/resource-view', methods =['GET'])
+
+@main.route('/resource-view', methods=['GET'])
 def resource():
     return render_template('main/resource.html')

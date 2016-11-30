@@ -1,4 +1,5 @@
 from datetime import datetime
+
 import pytz
 
 from .. import db
@@ -21,9 +22,7 @@ class ResourceSuggestion(ResourceBase):
     resource_name = db.Column(db.String(64))
     resource_address = db.Column(db.String(64))
 
-    __mapper_args__ = {
-        'polymorphic_identity': 'resource_suggestion'
-    }
+    __mapper_args__ = {'polymorphic_identity': 'resource_suggestion'}
 
     def __repr__(self):
         return '<ResourceSuggestion %s: %s>' % (self.id, self.resource_id)
@@ -44,13 +43,13 @@ class ResourceSuggestion(ResourceBase):
             s_contact_name = fake.word()
             s_contact_email = fake.word() + '@' + fake.word() + '.com'
             s_contact_number = '123-456-7890'
-            s_insert = ResourceSuggestion(additional_information=s_text,
-                                          read=s_read,
-                                          submission_time=s_timestamp,
-                                          contact_name=s_contact_name,
-                                          contact_email=s_contact_email,
-                                          contact_phone_number=
-                                          s_contact_number)
+            s_insert = ResourceSuggestion(
+                additional_information=s_text,
+                read=s_read,
+                submission_time=s_timestamp,
+                contact_name=s_contact_name,
+                contact_email=s_contact_email,
+                contact_phone_number=s_contact_number)
             db.session.add(s_insert)
             try:
                 db.session.commit()
@@ -81,17 +80,16 @@ class ResourceSuggestion(ResourceBase):
             s_contact_name = fake.word()
             s_contact_email = fake.word() + '@' + fake.word() + '.com'
             s_contact_number = '123-456-7890'
-            s_edit = ResourceSuggestion(resource_id=r.id,
-                                        additional_information=
-                                        s_additional_information,
-                                        read=s_read,
-                                        submission_time=s_timestamp,
-                                        contact_name=s_contact_name,
-                                        contact_email=s_contact_email,
-                                        contact_phone_number=s_contact_number)
+            s_edit = ResourceSuggestion(
+                resource_id=r.id,
+                additional_information=s_additional_information,
+                read=s_read,
+                submission_time=s_timestamp,
+                contact_name=s_contact_name,
+                contact_email=s_contact_email,
+                contact_phone_number=s_contact_number)
             db.session.add(s_edit)
             try:
                 db.session.commit()
             except IntegrityError:
                 db.session.rollback()
-
