@@ -4,13 +4,13 @@ from datetime import datetime
 from flask import abort, flash, redirect, render_template, url_for
 from flask.ext.login import login_required
 from sqlalchemy.exc import IntegrityError
-from wtforms.fields import SelectField, TextAreaField
+from wtforms.fields import FormField, SelectField, StringField, TextAreaField
 
 from . import suggestion
 from .. import db
 from ..models import Descriptor, OptionAssociation, Resource, ResourceBase, \
     ResourceSuggestion, TextAssociation
-from forms import ResourceSuggestionForm
+from forms import ContactInformationForm, ResourceSuggestionForm
 
 
 @suggestion.route('/')
@@ -68,9 +68,6 @@ def delete(sugg_id):
 @suggestion.route('/new', methods=['GET', 'POST'])
 def suggest_create():
     """Create a suggestion for a resource."""
-    name = None
-    resource = None
-
     descriptors = Descriptor.query.all()
     for descriptor in descriptors:
         if descriptor.is_option_descriptor:  # Fields for option descriptors.
@@ -80,6 +77,13 @@ def suggest_create():
                     SelectField(choices=choices))
         else:  # Fields for text descriptors.
             setattr(ResourceSuggestionForm, descriptor.name, TextAreaField())
+
+    # Add form fields asking for the suggester's name, email, and phone number.
+    # Dynamically added here so that form's fields are displayed in the
+    # correct order.
+    setattr(ResourceSuggestionForm, 'contact_information',
+            FormField(ContactInformationForm))
+
     form = ResourceSuggestionForm()
 
     if form.validate_on_submit():
@@ -88,10 +92,12 @@ def suggest_create():
             address=form.address.data,
             latitude=form.latitude.data,
             longitude=form.longitude.data,
-            additional_information=form.additional_information.data,
-            contact_name=form.contact_name.data,
-            contact_email=form.contact_email.data,
-            contact_phone_number=form.contact_phone_number.data,
+            contact_name=form.contact_information.contact_name.data,
+            contact_email=form.contact_information.contact_email.data,
+            contact_phone_number=
+            form.contact_information.contact_phone_number.data,
+            additional_information=
+            form.contact_information.additional_information.data,
             submission_time=datetime.now(pytz.timezone('US/Eastern'))
         )
         save_associations(resource_suggestion=resource_suggestion,
@@ -105,7 +111,7 @@ def suggest_create():
         except IntegrityError:
             db.session.rollback()
             flash('Database error occurred. Please try again.', 'error')
-    return render_template('suggestion/suggest.html', form=form, name=name)
+    return render_template('suggestion/suggest.html', form=form, name=None)
 
 
 @suggestion.route('/<int:resource_id>', methods=['GET', 'POST'])
@@ -141,6 +147,13 @@ def suggest_edit(resource_id):
             setattr(ResourceSuggestionForm,
                     descriptor.name,
                     TextAreaField(default=default))
+
+    # Add form fields asking for the suggester's name, email, and phone number.
+    # Dynamically added here so that form's fields are displayed in the
+    # correct order.
+    setattr(ResourceSuggestionForm, 'contact_information',
+            FormField(ContactInformationForm))
+
     form = ResourceSuggestionForm()
 
     if form.validate_on_submit():
@@ -150,10 +163,12 @@ def suggest_edit(resource_id):
             address=form.address.data,
             latitude=form.latitude.data,
             longitude=form.longitude.data,
-            additional_information=form.additional_information.data,
-            contact_name=form.contact_name.data,
-            contact_email=form.contact_email.data,
-            contact_phone_number=form.contact_phone_number.data,
+            contact_name=form.contact_information.contact_name.data,
+            contact_email=form.contact_information.contact_email.data,
+            contact_phone_number=
+            form.contact_information.contact_phone_number.data,
+            additional_information=
+            form.contact_information.additional_information.data,
             submission_time=datetime.now(pytz.timezone('US/Eastern'))
         )
         # Field id is not needed for the form, hence omitted with [1:].
@@ -171,7 +186,6 @@ def suggest_edit(resource_id):
             db.session.rollback()
             flash('Database error occurred. Please try again.', 'error')
 
-    # Field id is not needed for the form, hence omitted with [1:].
     for field_name in resource_field_names:
         form[field_name].data = resource.__dict__[field_name]
 

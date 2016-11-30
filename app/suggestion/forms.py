@@ -1,6 +1,26 @@
 from flask.ext.wtf import Form
-from wtforms.fields import FloatField, StringField, SubmitField
+from wtforms.fields import FloatField, FormField, StringField, SubmitField, TextAreaField
 from wtforms.validators import Email, InputRequired, Length
+
+
+class ContactInformationForm(Form):
+    contact_name = StringField(
+        'Contact Name',
+        validators=[Length(0, 512)]
+    )
+    contact_email = StringField(
+        'Contact Email',
+        validators=[Length(0, 512)]
+    )
+    contact_phone_number = StringField(
+        'Contact Phone Number',
+        validators=[Length(0, 64)]
+    )
+    additional_information = TextAreaField(
+        'Additional Information',
+        description='Is there anything else about this resource you would '
+                    'like to share?'
+    )
 
 
 class ResourceSuggestionForm(Form):
@@ -19,21 +39,5 @@ class ResourceSuggestionForm(Form):
         'Longitude',
         validators=[InputRequired()]
     )
-    additional_information = StringField(
-        'Additional Information',
-        description='Is there anything else about this resource you would '
-                    'like to share?'
-    )
-    contact_name = StringField(
-        'Contact Name',
-        validators=[InputRequired(), Length(1, 512)]
-    )
-    contact_email = StringField(
-        'Contact Email',
-        validators=[InputRequired(), Length(1, 512), Email()]
-    )
-    contact_phone_number = StringField(
-        'Contact Phone Number',
-        validators=[InputRequired(), Length(1, 64)]
-    )
     submit = SubmitField('Submit')
+
