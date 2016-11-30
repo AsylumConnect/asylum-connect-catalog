@@ -29,11 +29,11 @@ class ResourceSuggestionForm(Form):
         validators=[InputRequired(), Length(1, 512)]
     )
     contact_email = StringField(
-        'Email',
+        'Contact Email',
         validators=[InputRequired(), Length(1, 512), Email()]
     )
     contact_phone_number = StringField(
-        'Phone Number',
+        'Contact Phone Number',
         validators=[InputRequired(), Length(1, 64)]
     )
     submit = SubmitField('Submit')
