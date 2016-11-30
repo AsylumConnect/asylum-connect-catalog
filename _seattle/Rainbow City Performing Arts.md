@@ -1,8 +1,8 @@
 ---
 name: Rainbow City Performing Arts
-address:
-lat:
-long:
+address: Location varies. Contact to learn locations.
+lat: 47.606209
+long: -122.332071
 description: Rainbow City Performing Arts provides opportunities for people who are lesbian, gay, bisexual, transgender, and allied to share their musical talents through public performances. RCPA fosters music education, friendships and community giving.
 website: http://www.rainbowcityband.com/
 populations_served: LGBTQ adults, 17+
