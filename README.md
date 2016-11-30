@@ -41,7 +41,7 @@ AsylumConnect’s current resource verification model is a bottleneck, as volunt
     ```
     $ xcode-select --install
     ```
-    
+
 3. Install the dependencies
 
     ```
@@ -61,9 +61,10 @@ AsylumConnect’s current resource verification model is a bottleneck, as volunt
     $ python manage.py setup_dev
     ```
 
-6. [Optional] Add fake data to the database
+6. [Optional] Add Seattle data and fake data to the database
 
     ```
+    $ python manage.py add_seattle_data
     $ python manage.py add_fake_data
     ```
 

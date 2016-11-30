@@ -1,8 +1,8 @@
 ---
 name: API Chaya
-address: 
-lat: 
-long:
+address: Location varies. Contact to learn locations.
+lat: 47.606209
+long: -122.332071
 description: API Chaya is an anti-domestic violence agency serving the greater Seattle area.
 website: <http://www.apichaya.org>
 populations_served: Asian, South Asian, and Pacific Islander communities, ages 13+.

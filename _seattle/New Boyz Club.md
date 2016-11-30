@@ -1,8 +1,8 @@
 ---
 name: New Boyz Club
-address: 
-lat:
-long:
+address: Location kept confidential. Contact to learn locations.
+lat: 47.037874
+long: -122.900695
 description: The New Boyz Club is a Transgender & Gender Queer peer support and discussion group for people in and around Olympia, WA, who were born female and now identify as another gender.
 website: http://olympiaftmgroup.webs.com/
 populations_served: Adults around Olympia, WA who were born into the female body and who now identify as another gender, ages 18+. 
