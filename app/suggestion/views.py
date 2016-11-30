@@ -4,18 +4,20 @@ from datetime import datetime
 from flask import abort, flash, redirect, render_template, url_for
 from flask.ext.login import login_required
 from sqlalchemy.exc import IntegrityError
+from wtforms.fields import SelectField, TextAreaField
 
 from . import suggestion
 from .. import db
-from ..models import Resource, Suggestion
-from forms import SuggestionForm
+from ..models import Descriptor, OptionAssociation, Resource, ResourceBase, \
+    ResourceSuggestion, TextAssociation
+from forms import ResourceSuggestionForm
 
 
 @suggestion.route('/')
 @login_required
 def index():
     """View all suggestions in a list."""
-    suggestions = Suggestion.query.all()
+    suggestions = ResourceSuggestion.query.all()
     return render_template('suggestion/index.html', suggestions=suggestions)
 
 
@@ -23,8 +25,8 @@ def index():
 @login_required
 def unread():
     """Returns the number of unread suggestions."""
-    num_unread = Suggestion.query.filter(
-        Suggestion.read == False  # noqa
+    num_unread = ResourceSuggestion.query.filter(
+        ResourceSuggestion.read == False  # noqa
         ).count()
     return "%d" % num_unread
 
@@ -33,7 +35,7 @@ def unread():
 @login_required
 def toggle_read(sugg_id):
     """Toggles the readability of a given suggestion."""
-    suggestion = Suggestion.query.get(sugg_id)
+    suggestion = ResourceSuggestion.query.get(sugg_id)
     if suggestion is None:
         abort(404)
     suggestion.read = not suggestion.read
@@ -50,7 +52,7 @@ def toggle_read(sugg_id):
 @login_required
 def delete(sugg_id):
     """Delete a given suggestion."""
-    suggestion = Suggestion.query.get(sugg_id)
+    suggestion = ResourceSuggestion.query.get(sugg_id)
     if suggestion is None:
         abort(404)
     db.session.delete(suggestion)
@@ -63,30 +65,39 @@ def delete(sugg_id):
     return redirect(url_for('suggestion.index'))
 
 
-@suggestion.route('/new', defaults={'resource_id': None},
-                  methods=['GET', 'POST'])
-@suggestion.route('/<int:resource_id>',  methods=['GET', 'POST'])
-def suggest(resource_id):
+@suggestion.route('/new', methods=['GET', 'POST'])
+def suggest_create():
     """Create a suggestion for a resource."""
-    form = SuggestionForm()
-    if resource_id is None:
-        name = None
-        resource = None
-    else:
-        resource = Resource.query.get(resource_id)
-        if resource is None:
-            abort(404)
-        name = resource.name
+    name = None
+    resource = None
+
+    descriptors = Descriptor.query.all()
+    for descriptor in descriptors:
+        if descriptor.is_option_descriptor:  # Fields for option descriptors.
+            choices = [(str(i), v) for i, v in enumerate(descriptor.values)]
+            setattr(ResourceSuggestionForm,
+                    descriptor.name,
+                    SelectField(choices=choices))
+        else:  # Fields for text descriptors.
+            setattr(ResourceSuggestionForm, descriptor.name, TextAreaField())
+    form = ResourceSuggestionForm()
+
     if form.validate_on_submit():
-        suggestion = Suggestion(
-            resource_id=resource_id,
-            suggestion_text=form.suggestion_text.data,
+        resource_suggestion = ResourceSuggestion(
+            name=form.name.data,
+            address=form.address.data,
+            latitude=form.latitude.data,
+            longitude=form.longitude.data,
+            additional_information=form.additional_information.data,
             contact_name=form.contact_name.data,
             contact_email=form.contact_email.data,
             contact_phone_number=form.contact_phone_number.data,
             submission_time=datetime.now(pytz.timezone('US/Eastern'))
         )
-        db.session.add(suggestion)
+        save_associations(resource_suggestion=resource_suggestion,
+                          form=form,
+                          descriptors=descriptors)
+        db.session.add(resource_suggestion)
         try:
             db.session.commit()
             flash('Thanks for the suggestion!', 'success')
@@ -95,3 +106,94 @@ def suggest(resource_id):
             db.session.rollback()
             flash('Database error occurred. Please try again.', 'error')
     return render_template('suggestion/suggest.html', form=form, name=name)
+
+
+@suggestion.route('/<int:resource_id>', methods=['GET', 'POST'])
+def suggest_edit(resource_id):
+    resource = Resource.query.get(resource_id)
+    if resource is None:
+        abort(404)
+    name = resource.name
+
+    resource_field_names = ['name', 'address', 'latitude', 'longitude']
+    descriptors = Descriptor.query.all()
+    for descriptor in descriptors:
+        if descriptor.is_option_descriptor:
+            choices = [(str(i), v) for i, v in enumerate(descriptor.values)]
+            default = None
+            option_association = OptionAssociation.query.filter_by(
+                resource_id=resource_id,
+                descriptor_id=descriptor.id
+            ).first()
+            if option_association is not None:
+                default = option_association.option
+            setattr(ResourceSuggestionForm,
+                    descriptor.name,
+                    SelectField(choices=choices, default=default))
+        else:  # Fields for text descriptors.
+            default = None
+            text_association = TextAssociation.query.filter_by(
+                resource_id=resource_id,
+                descriptor_id=descriptor.id
+            ).first()
+            if text_association is not None:
+                default = text_association.text
+            setattr(ResourceSuggestionForm,
+                    descriptor.name,
+                    TextAreaField(default=default))
+    form = ResourceSuggestionForm()
+
+    if form.validate_on_submit():
+        resource_suggestion = ResourceSuggestion(
+            resource_id=resource.id,
+            name=form.name.data,
+            address=form.address.data,
+            latitude=form.latitude.data,
+            longitude=form.longitude.data,
+            additional_information=form.additional_information.data,
+            contact_name=form.contact_name.data,
+            contact_email=form.contact_email.data,
+            contact_phone_number=form.contact_phone_number.data,
+            submission_time=datetime.now(pytz.timezone('US/Eastern'))
+        )
+        # Field id is not needed for the form, hence omitted with [1:].
+        for field_name in resource_field_names[1:]:
+            setattr(resource_suggestion, field_name, form[field_name].data)
+        save_associations(resource_suggestion=resource_suggestion,
+                          form=form,
+                          descriptors=descriptors)
+        db.session.add(resource_suggestion)
+        try:
+            db.session.commit()
+            flash('Thanks for the suggestion!', 'success')
+            return redirect(url_for('main.index'))
+        except IntegrityError:
+            db.session.rollback()
+            flash('Database error occurred. Please try again.', 'error')
+
+    # Field id is not needed for the form, hence omitted with [1:].
+    for field_name in resource_field_names:
+        form[field_name].data = resource.__dict__[field_name]
+
+    return render_template('suggestion/suggest.html', form=form, name=name)
+
+
+def save_associations(resource_suggestion, form, descriptors):
+    """Save associations from the forms received by 'create' and 'edit' route
+    handlers to the database."""
+    for descriptor in descriptors:
+        if descriptor.is_option_descriptor:
+            AssociationClass = OptionAssociation
+            value = int(form[descriptor.name].data)
+            keyword = 'option'
+        else:
+            AssociationClass = TextAssociation
+            value = form[descriptor.name].data
+            keyword = 'text'
+        arguments = {'resource_id': resource_suggestion.id,
+                     'descriptor_id': descriptor.id,
+                     keyword: value,
+                     'resource': resource_suggestion,
+                     'descriptor': descriptor}
+        new_association = AssociationClass(**arguments)
+        db.session.add(new_association)

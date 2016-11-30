@@ -7,9 +7,14 @@ from app.models import (
     CsvContainer,
     CsvHeaderCell,
     CsvHeaderRow,
+    Descriptor,
+    OptionAssociation,
     Resource,
+    ResourceBase,
+    ResourceSuggestion,
     Role,
-    User,
+    TextAssociation,
+    User
 )
 from config import Config
 from flask.ext.script import Manager, Shell
@@ -32,7 +37,11 @@ migrate = Migrate(app, db)
 def make_shell_context():
     return dict(app=app, db=db, User=User, Role=Role, CsvBodyCell=CsvBodyCell,
                 CsvBodyRow=CsvBodyRow, CsvContainer=CsvContainer,
-                CsvHeaderCell=CsvHeaderCell, CsvHeaderRow=CsvHeaderRow)
+                CsvHeaderCell=CsvHeaderCell, CsvHeaderRow=CsvHeaderRow,
+                Resource=Resource, ResourceBase=ResourceBase,
+                ResourceSuggestion=ResourceSuggestion, Descriptor=Descriptor,
+                TextAssociation=TextAssociation,
+                OptionAssociation=OptionAssociation)
 
 
 manager.add_command('shell', Shell(make_context=make_shell_context))
@@ -70,11 +79,14 @@ def add_fake_data(number_users):
     Adds fake data to the database.
     """
     User.generate_fake(count=number_users)
-    Resource.generate_fake()
+    ResourceSuggestion.generate_fake_edits()
+    ResourceSuggestion.generate_fake_inserts()
+
 
 @manager.command
 def add_seattle_data():
     Resource.add_seattle_data()
+
 
 @manager.command
 def setup_dev():
