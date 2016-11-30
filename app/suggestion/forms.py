@@ -20,7 +20,9 @@ class ResourceSuggestionForm(Form):
         validators=[InputRequired()]
     )
     additional_information = StringField(
-        'Additional Information'
+        'Additional Information',
+        description='Is there anything else about this resource you would '
+                    'like to share?'
     )
     contact_name = StringField(
         'Contact Name',
