@@ -23,14 +23,14 @@ AsylumConnect’s current resource verification model is a bottleneck, as volunt
 
 ## Setting up
 
-1. Clone the repo
+#### Clone the repo
 
 ```
 $ git clone https://github.com/hack4impact/asylum-connect-catalog.git
 $ cd asylum-connect-catalog
 ```
 
-2. Initialize a virtualenv
+#### Initialize a virtualenv
 
 ```
 $ pip install virtualenv
@@ -38,20 +38,20 @@ $ virtualenv env
 $ source env/bin/activate
 ```
 
-3. (If you're on a mac) Make sure xcode tools are installed
+#### (If you're on a mac) Make sure xcode tools are installed
 
 ```
 $ xcode-select --install
 ```
 
-4. Install the dependencies
+#### Install the dependencies
 
 ```
 $ pip install -r requirements/common.txt
 $ pip install -r requirements/dev.txt
 ```
 
-5. Other dependencies for running locally
+#### Other dependencies for running locally
 
 You need to install [Foreman](https://ddollar.github.io/foreman/) and [Redis](http://redis.io/). Chances are, these commands will work:
 
@@ -71,19 +71,19 @@ Linux:
 $ sudo apt-get install redis-server
 ```
 
-6. Create the database
+#### Create the database
 
 ```
 $ python manage.py recreate_db
 ```
 
-7. Other setup (e.g. creating roles in database)
+#### Other setup (e.g. creating roles in database)
 
 ```
 $ python manage.py setup_dev
 ```
 
-8. [Optional] Add Seattle data and fake data to the database
+#### [Optional] Add Seattle data and fake data to the database
 
 ```
 $ python manage.py add_seattle_data
