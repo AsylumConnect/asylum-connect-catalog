@@ -27,7 +27,6 @@ MarkupSafe==0.23
 mccabe==0.4.0
 pep8==1.7.0
 psycopg2==2.6.1
-pyaml==16.11.4
 pyflakes==1.0.0
 pytz==2016.3
 PyYAML==3.12
