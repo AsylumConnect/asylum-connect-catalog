@@ -17,8 +17,7 @@ def index():
 def city_view(city_name):
     city = city_name.title()
 
-    # TODO: get this list of cities from the database. so it stays updated
-    cities = [('Seattle', 'seattle'), ('Philadelphia', 'philadelphia')]
+    cities = Resource.get_list_of_cities()
     category_icons = ['housing', 'food', 'hygiene', 'computers', 'employment',
                       'mail', 'recreation']
 

@@ -425,3 +425,7 @@ class Resource(db.Model):
 
         return resources
 
+    @staticmethod
+    def get_list_of_cities():
+        city_descriptor = Descriptor.query.filter_by(name='city').first()
+        return city_descriptor.values
