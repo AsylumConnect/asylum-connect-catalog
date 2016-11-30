@@ -7,10 +7,13 @@ from app.models import (
     CsvContainer,
     CsvHeaderCell,
     CsvHeaderRow,
+    Descriptor,
+    OptionAssociation,
     Resource,
     ResourceBase,
     ResourceSuggestion,
     Role,
+    TextAssociation,
     User
 )
 from config import Config
@@ -36,7 +39,9 @@ def make_shell_context():
                 CsvBodyRow=CsvBodyRow, CsvContainer=CsvContainer,
                 CsvHeaderCell=CsvHeaderCell, CsvHeaderRow=CsvHeaderRow,
                 Resource=Resource, ResourceBase=ResourceBase,
-                ResourceSuggestion=ResourceSuggestion)
+                ResourceSuggestion=ResourceSuggestion, Descriptor=Descriptor,
+                TextAssociation=TextAssociation,
+                OptionAssociation=OptionAssociation)
 
 
 manager.add_command('shell', Shell(make_context=make_shell_context))
