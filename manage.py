@@ -20,8 +20,15 @@ from redis import Redis
 from rq import Worker, Queue, Connection
 from config import Config
 from flask.ext.script import Manager, Shell
-from flask.ext.migrate import Migrate, MigrateCommand
+import subprocess
 
+from flask.ext.migrate import Migrate, MigrateCommand
+from flask.ext.script import Manager, Shell
+from redis import Redis
+from rq import Connection, Queue, Worker
+
+from app import create_app, db
+from app.models import Role, User
 
 # Import settings from .env file. Must define FLASK_CONFIG
 if os.path.exists('.env'):
@@ -70,12 +77,13 @@ def recreate_db():
     db.session.commit()
 
 
-@manager.option('-n',
-                '--number-users',
-                default=10,
-                type=int,
-                help='Number of each model type to create',
-                dest='number_users')
+@manager.option(
+    '-n',
+    '--number-users',
+    default=10,
+    type=int,
+    help='Number of each model type to create',
+    dest='number_users')
 def add_fake_data(number_users):
     """
     Adds fake data to the database.
@@ -122,12 +130,25 @@ def run_worker():
         host=app.config['RQ_DEFAULT_HOST'],
         port=app.config['RQ_DEFAULT_PORT'],
         db=0,
-        password=app.config['RQ_DEFAULT_PASSWORD']
-    )
+        password=app.config['RQ_DEFAULT_PASSWORD'])
 
     with Connection(conn):
         worker = Worker(map(Queue, listen))
         worker.work()
+
+
+@manager.command
+def format():
+    """Runs the yapf and isort formatters over the project."""
+    isort = 'isort -rc *.py app/'
+    yapf = 'yapf -r -i *.py app/'
+
+    print 'Running {}'.format(isort)
+    subprocess.call(isort, shell=True)
+
+    print 'Running {}'.format(yapf)
+    subprocess.call(yapf, shell=True)
+
 
 if __name__ == '__main__':
     manager.run()
