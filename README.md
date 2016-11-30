@@ -70,7 +70,6 @@ $ pip install -r requirements/common.txt
 $ pip install -r requirements/dev.txt
 ```
 
-<<<<<<< HEAD
 ##### Other dependencies for running locally
 
 You need to install [Foreman](https://ddollar.github.io/foreman/) and [Redis](http://redis.io/). Chances are, these commands will work:
