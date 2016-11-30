@@ -54,7 +54,8 @@ class SuggestionsModelTestCase(unittest.TestCase):
             db.session.rollback()
 
         r_added = Resource.query.filter_by(name='test_edit').first()
-        s_text = "The phone number of this establishment is incorrect: it should be 212-346-5927"
+        s_text = "The phone number of this establishment is incorrect: " \
+                 "it should be 212-346-5927"
         s_contact_name = "Anonymous Helper"
         s_contact_email = "anony@mous.com"
         s_contact_number = "000-001-0101"
