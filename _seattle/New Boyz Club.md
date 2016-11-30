@@ -20,4 +20,5 @@ supercategories:
 features:
   - Confidential
   - Free
+city: Seattle
   

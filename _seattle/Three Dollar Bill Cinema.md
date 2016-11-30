@@ -21,4 +21,5 @@ supercategories:
   - Community Support
 features:
   - Translation
+city: Seattle
   

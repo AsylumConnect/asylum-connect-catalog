@@ -17,3 +17,5 @@ categories:
   - Sport & Entertainment
 supercategories:
 features:
+city: Seattle
+

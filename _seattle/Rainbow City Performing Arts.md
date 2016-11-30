@@ -19,4 +19,5 @@ categories:
 supercategories:
 features:
   - Free
+city: Seattle
   
