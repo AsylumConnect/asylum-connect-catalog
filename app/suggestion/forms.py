@@ -19,8 +19,8 @@ class ResourceSuggestionForm(Form):
         'Longitude',
         validators=[InputRequired()]
     )
-    notes = StringField(
-        'Notes'
+    additional_information = StringField(
+        'Additional Information'
     )
     contact_name = StringField(
         'Contact Name',

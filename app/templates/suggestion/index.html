@@ -16,7 +16,7 @@
         {% for suggestion in suggestions %}
           <tr>
             <td>{{ suggestion.submission_time }}</td>
-            <td>{{ suggestion.notes }}</td>
+            <td>{{ suggestion.additional_information }}</td>
             <td>{{ suggestion.contact_name }}
               <br>
               {% if not suggestion.contact_email or suggestion.contact_email == '' %}

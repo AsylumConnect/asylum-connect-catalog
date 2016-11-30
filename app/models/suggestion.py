@@ -11,7 +11,7 @@ class ResourceSuggestion(ResourceBase):
     or changes to be made to existing resources.
     """
     resource_id = db.Column(db.Integer, db.ForeignKey(Resource.id))
-    notes = db.Column(db.String(250))
+    additional_information = db.Column(db.String(250))
     # 0 stands for read, 1 stands for unread.
     read = db.Column(db.Boolean, default=False)
     submission_time = db.Column(db.DateTime)
@@ -42,7 +42,7 @@ class ResourceSuggestion(ResourceBase):
             s_contact_name = fake.word()
             s_contact_email = fake.word() + '@' + fake.word() + '.com'
             s_contact_number = '123-456-7890'
-            s_insert = ResourceSuggestion(notes=s_text,
+            s_insert = ResourceSuggestion(additional_information=s_text,
                                           read=s_read,
                                           submission_time=s_timestamp,
                                           contact_name=s_contact_name,
@@ -82,7 +82,7 @@ class ResourceSuggestion(ResourceBase):
             s_contact_email = fake.word() + '@' + fake.word() + '.com'
             s_contact_number = '123-456-7890'
             s_edit = ResourceSuggestion(resource_id=r_added.id,
-                                        notes=s_text,
+                                        additional_information=s_text,
                                         read=s_read,
                                         submission_time=s_timestamp,
                                         contact_name=s_contact_name,
