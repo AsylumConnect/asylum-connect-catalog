@@ -12,7 +12,6 @@ from ..models import Descriptor, OptionAssociation, Resource, \
     ResourceSuggestion, TextAssociation
 from forms import ContactInformationForm, ResourceSuggestionForm
 from wtforms.fields import TextAreaField, SelectField
-from ..single_resource.views import save_associations
 
 
 @suggestion.route('/')
