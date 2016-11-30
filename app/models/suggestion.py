@@ -7,7 +7,8 @@ from ..models.resource import Resource, ResourceBase
 
 class ResourceSuggestion(ResourceBase):
     """
-    Association between a resource and potential suggestions for it
+    Schema for resource suggestions, which are either new resources to be added
+    or changes to be made to existing resources.
     """
     resource_id = db.Column(db.Integer, db.ForeignKey(Resource.id))
     notes = db.Column(db.String(250))

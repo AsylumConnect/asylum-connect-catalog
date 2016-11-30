@@ -81,7 +81,8 @@ class Descriptor(db.Model):
 
 class ResourceBase(db.Model):
     """
-    Schema for resources with relationships to descriptors.
+    Schema for base class that contains items common to approved resources and
+    resource suggestions.
     """
     __tablename__ = 'resources'
     id = db.Column(db.Integer, primary_key=True)
@@ -112,7 +113,7 @@ class ResourceBase(db.Model):
 
 class Resource(ResourceBase):
     """
-    Schema for resources with relationships to descriptors.
+    Schema for approved resources.
     """
     suggestions = db.relationship('ResourceSuggestion', backref='resource',
                                   uselist=True,
