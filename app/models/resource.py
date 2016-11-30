@@ -80,11 +80,11 @@ class Descriptor(db.Model):
 
     @property
     def is_text_descriptor(self):
-        return self.values is None
+        return len(self.values) == 0
 
     @property
     def is_option_descriptor(self):
-        return self.values is not None
+        return len(self.values) > 0
 
 
 class ResourceBase(db.Model):
