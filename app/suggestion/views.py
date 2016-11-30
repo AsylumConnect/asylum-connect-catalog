@@ -4,7 +4,7 @@ from datetime import datetime
 from flask import abort, flash, redirect, render_template, url_for
 from flask.ext.login import login_required
 from sqlalchemy.exc import IntegrityError
-from wtforms.fields import FormField, SelectField, StringField, TextAreaField
+from wtforms.fields import FormField, SelectField, TextAreaField
 
 from . import suggestion
 from .. import db
