@@ -20,8 +20,7 @@ class ResourceSuggestionForm(Form):
         validators=[InputRequired()]
     )
     notes = StringField(
-        'Notes',
-        validators=[]
+        'Notes'
     )
     contact_name = StringField(
         'Contact Name',
