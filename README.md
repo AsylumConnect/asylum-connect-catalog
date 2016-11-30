@@ -25,77 +25,77 @@ AsylumConnect’s current resource verification model is a bottleneck, as volunt
 
 1. Clone the repo
 
-    ```
-    $ git clone https://github.com/hack4impact/asylum-connect-catalog.git
-    $ cd asylum-connect-catalog
-    ```
+```
+$ git clone https://github.com/hack4impact/asylum-connect-catalog.git
+$ cd asylum-connect-catalog
+```
 
 2. Initialize a virtualenv
 
-    ```
-    $ pip install virtualenv
-    $ virtualenv env
-    $ source env/bin/activate
-    ```
+```
+$ pip install virtualenv
+$ virtualenv env
+$ source env/bin/activate
+```
 
 3. (If you're on a mac) Make sure xcode tools are installed
 
-    ```
-    $ xcode-select --install
-    ```
+```
+$ xcode-select --install
+```
 
 4. Install the dependencies
 
-    ```
-    $ pip install -r requirements/common.txt
-    $ pip install -r requirements/dev.txt
-    ```
+```
+$ pip install -r requirements/common.txt
+$ pip install -r requirements/dev.txt
+```
 
 5. Other dependencies for running locally
 
 You need to install [Foreman](https://ddollar.github.io/foreman/) and [Redis](http://redis.io/). Chances are, these commands will work:
 
-    ```
-    $ gem install foreman
-    ```
+```
+$ gem install foreman
+```
 
 Mac (using [homebrew](http://brew.sh/)):
 
-    ```
-    $ brew install redis
-    ```
+```
+$ brew install redis
+```
 
 Linux:
 
-    ```
-    $ sudo apt-get install redis-server
-    ```
+```
+$ sudo apt-get install redis-server
+```
 
 6. Create the database
 
-    ```
-    $ python manage.py recreate_db
-    ```
+```
+$ python manage.py recreate_db
+```
 
 7. Other setup (e.g. creating roles in database)
 
-    ```
-    $ python manage.py setup_dev
-    ```
+```
+$ python manage.py setup_dev
+```
 
 8. [Optional] Add Seattle data and fake data to the database
 
-    ```
-    $ python manage.py add_seattle_data
-    $ python manage.py add_fake_data
-    ```
+```
+$ python manage.py add_seattle_data
+$ python manage.py add_fake_data
+```
 
 ## Running the app
 
-    ```
-    $ source env/bin/activate
-    $ foreman start -f Local
-    ```
+```
+$ source env/bin/activate
+$ foreman start -f Local
+```
 
 ## Project Structure
 
