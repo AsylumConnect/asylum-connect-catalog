@@ -23,58 +23,78 @@ AsylumConnect’s current resource verification model is a bottleneck, as volunt
 
 ## Setting up
 
-1. Clone the repo
+#### Clone the repo
 
-    ```
-    $ git clone https://github.com/hack4impact/asylum-connect-catalog.git
-    $ cd asylum-connect-catalog
-    ```
+```
+$ git clone https://github.com/hack4impact/asylum-connect-catalog.git
+$ cd asylum-connect-catalog
+```
 
-2. Initialize a virtualenv
+#### Initialize a virtualenv
 
-    ```
-    $ pip install virtualenv
-    $ virtualenv env
-    $ source env/bin/activate
-    ```
-2.5 (If you're on a mac) Make sure xcode tools are installed
-    ```
-    $ xcode-select --install
-    ```
+```
+$ pip install virtualenv
+$ virtualenv env
+$ source env/bin/activate
+```
 
-3. Install the dependencies
+#### (If you're on a mac) Make sure xcode tools are installed
 
-    ```
-    $ pip install -r requirements/common.txt
-    $ pip install -r requirements/dev.txt
-    ```
+```
+$ xcode-select --install
+```
 
-4. Create the database
+#### Install the dependencies
 
-    ```
-    $ python manage.py recreate_db
-    ```
+```
+$ pip install -r requirements/common.txt
+$ pip install -r requirements/dev.txt
+```
 
-5. Other setup (e.g. creating roles in database)
+#### Other dependencies for running locally
 
-    ```
-    $ python manage.py setup_dev
-    ```
+You need to install [Foreman](https://ddollar.github.io/foreman/) and [Redis](http://redis.io/). Chances are, these commands will work:
 
-6. [Optional] Add Seattle data and fake data to the database
+```
+$ gem install foreman
+```
 
-    ```
-    $ python manage.py add_seattle_data
-    $ python manage.py add_fake_data
-    ```
+Mac (using [homebrew](http://brew.sh/)):
+
+```
+$ brew install redis
+```
+
+Linux:
+
+```
+$ sudo apt-get install redis-server
+```
+
+#### Create the database
+
+```
+$ python manage.py recreate_db
+```
+
+#### Other setup (e.g. creating roles in database)
+
+```
+$ python manage.py setup_dev
+```
+
+#### [Optional] Add Seattle data and fake data to the database
+
+```
+$ python manage.py add_seattle_data
+$ python manage.py add_fake_data
+```
 
 ## Running the app
 
 ```
 $ source env/bin/activate
-$ python manage.py runserver
- * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
- * Restarting with stat
+$ foreman start -f Local
 ```
 
 ## Project Structure

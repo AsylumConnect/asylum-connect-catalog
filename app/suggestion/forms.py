@@ -40,4 +40,3 @@ class ResourceSuggestionForm(Form):
         validators=[InputRequired()]
     )
     submit = SubmitField('Submit')
-
