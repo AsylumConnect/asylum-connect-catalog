@@ -8,7 +8,7 @@ from wtforms.fields import FormField, SelectField, TextAreaField
 
 from . import suggestion
 from .. import db
-from ..models import Descriptor, OptionAssociation, Resource, ResourceBase, \
+from ..models import Descriptor, OptionAssociation, Resource, \
     ResourceSuggestion, TextAssociation
 from forms import ContactInformationForm, ResourceSuggestionForm
 from wtforms.fields import TextAreaField, SelectField
