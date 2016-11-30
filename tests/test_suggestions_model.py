@@ -77,4 +77,3 @@ class SuggestionsModelTestCase(unittest.TestCase):
         self.assertTrue(r_in_table.submission_time is not None)
         self.assertTrue(r_in_table.contact_name == s_contact_name)
         self.assertTrue(r_in_table.contact_email == s_contact_email)
-
