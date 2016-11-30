@@ -73,7 +73,7 @@ def suggest_create():
 
     descriptors = Descriptor.query.all()
     for descriptor in descriptors:
-        if descriptor.values:  # Fields for option descriptors.
+        if descriptor.is_option_descriptor:  # Fields for option descriptors.
             choices = [(str(i), v) for i, v in enumerate(descriptor.values)]
             setattr(ResourceSuggestionForm,
                     descriptor.name,
