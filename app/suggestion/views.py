@@ -4,16 +4,14 @@ import pytz
 from flask import abort, flash, redirect, render_template, url_for
 from flask.ext.login import login_required
 from sqlalchemy.exc import IntegrityError
-from wtforms.fields import FormField, SelectField, StringField, TextAreaField
+from wtforms.fields import FormField, SelectField, TextAreaField
 
 from forms import ContactInformationForm, ResourceSuggestionForm
 
 from . import suggestion
 from .. import db
-from ..models import (Descriptor, OptionAssociation, Resource, ResourceBase,
+from ..models import (Descriptor, OptionAssociation, Resource,
                       ResourceSuggestion, TextAssociation)
-from ..single_resource.forms import SingleResourceForm
-from ..single_resource.views import save_associations
 
 
 @suggestion.route('/')

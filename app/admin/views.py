@@ -7,7 +7,6 @@ from forms import (ChangeAccountTypeForm, ChangeUserEmailForm, InviteUserForm,
 
 from . import admin
 from .. import db
-from ..decorators import admin_required
 from ..email import send_email
 from ..models import Rating, Resource, Role, User
 

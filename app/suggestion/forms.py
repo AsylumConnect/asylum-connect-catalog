@@ -1,7 +1,6 @@
 from flask.ext.wtf import Form
-from wtforms.fields import (FloatField, FormField, StringField, SubmitField,
-                            TextAreaField)
-from wtforms.validators import Email, InputRequired, Length
+from wtforms.fields import FloatField, StringField, SubmitField, TextAreaField
+from wtforms.validators import InputRequired, Length
 
 
 class ContactInformationForm(Form):
