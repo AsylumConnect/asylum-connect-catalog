@@ -1,5 +1,6 @@
 from .. import db
-from .. models import Rating
+from ..models import Rating
+
 
 def normalize_string(s):
     """Return a normalized string for use by the template engine
@@ -20,15 +21,15 @@ class OptionAssociation(db.Model):
     value of the option.
     """
     __tablename__ = 'option_associations'
-    resource_id = db.Column(db.Integer, db.ForeignKey('resources.id'),
-                            primary_key=True)
-    descriptor_id = db.Column(db.Integer, db.ForeignKey('descriptors.id'),
-                              primary_key=True)
+    resource_id = db.Column(
+        db.Integer, db.ForeignKey('resources.id'), primary_key=True)
+    descriptor_id = db.Column(
+        db.Integer, db.ForeignKey('descriptors.id'), primary_key=True)
     option = db.Column(db.Integer)
-    resource = db.relationship('ResourceBase',
-                               back_populates='option_descriptors')
-    descriptor = db.relationship('Descriptor',
-                                 back_populates='option_resources')
+    resource = db.relationship(
+        'ResourceBase', back_populates='option_descriptors')
+    descriptor = db.relationship(
+        'Descriptor', back_populates='option_resources')
 
     def __repr__(self):
         return '%s: %s' % (self.descriptor.name,
@@ -41,13 +42,13 @@ class TextAssociation(db.Model):
     value of the descriptor.
     """
     __tablename__ = 'text_associations'
-    resource_id = db.Column(db.Integer, db.ForeignKey('resources.id'),
-                            primary_key=True)
-    descriptor_id = db.Column(db.Integer, db.ForeignKey('descriptors.id'),
-                              primary_key=True)
+    resource_id = db.Column(
+        db.Integer, db.ForeignKey('resources.id'), primary_key=True)
+    descriptor_id = db.Column(
+        db.Integer, db.ForeignKey('descriptors.id'), primary_key=True)
     text = db.Column(db.String(64))
-    resource = db.relationship('ResourceBase',
-                               back_populates='text_descriptors')
+    resource = db.relationship(
+        'ResourceBase', back_populates='text_descriptors')
     descriptor = db.relationship('Descriptor', back_populates='text_resources')
 
     def __repr__(self):
@@ -67,13 +68,11 @@ class Descriptor(db.Model):
     text_resources = db.relationship(
         'TextAssociation',
         back_populates='descriptor',
-        cascade='save-update, merge, delete, delete-orphan'
-    )
+        cascade='save-update, merge, delete, delete-orphan')
     option_resources = db.relationship(
         'OptionAssociation',
         back_populates='descriptor',
-        cascade='save-update, merge, delete, delete-orphan'
-    )
+        cascade='save-update, merge, delete, delete-orphan')
 
     def __repr__(self):
         return '<Descriptor \'%s\'>' % self.name
@@ -101,13 +100,11 @@ class ResourceBase(db.Model):
     text_descriptors = db.relationship(
         'TextAssociation',
         back_populates='resource',
-        cascade='save-update, merge, delete, delete-orphan'
-    )
+        cascade='save-update, merge, delete, delete-orphan')
     option_descriptors = db.relationship(
         'OptionAssociation',
         back_populates='resource',
-        cascade='save-update, merge, delete, delete-orphan'
-    )
+        cascade='save-update, merge, delete, delete-orphan')
     type = db.Column(db.String(20))
 
     __mapper_args__ = {
@@ -123,13 +120,13 @@ class Resource(ResourceBase):
     """
     Schema for approved resources.
     """
-    suggestions = db.relationship('ResourceSuggestion', backref='resource',
-                                  uselist=True,
-                                  remote_side='ResourceSuggestion.id')
+    suggestions = db.relationship(
+        'ResourceSuggestion',
+        backref='resource',
+        uselist=True,
+        remote_side='ResourceSuggestion.id')
 
-    __mapper_args__ = {
-        'polymorphic_identity': 'resource'
-    }
+    __mapper_args__ = {'polymorphic_identity': 'resource'}
 
     def __repr__(self):
         return '<Resource \'%s\'>' % self.name
@@ -149,23 +146,19 @@ class Resource(ResourceBase):
         options = []
 
         for i in range(num_options):
-            options.append(Descriptor(
-                name=fake.word(),
-                values=['True', 'False'],
-                is_searchable=fake.boolean()
-            ))
+            options.append(
+                Descriptor(
+                    name=fake.word(),
+                    values=['True', 'False'],
+                    is_searchable=fake.boolean()))
 
         for i in range(count):
 
             # Generates random coordinates around Philadelphia.
-            latitude = str(fake.geo_coordinate(
-                center=center_lat,
-                radius=0.01
-            ))
-            longitude = str(fake.geo_coordinate(
-                center=center_long,
-                radius=0.01
-            ))
+            latitude = str(fake.geo_coordinate(center=center_lat, radius=0.01))
+            longitude = str(
+                fake.geo_coordinate(
+                    center=center_long, radius=0.01))
 
             location = geolocater.reverse(latitude + ', ' + longitude)
 
@@ -175,8 +168,7 @@ class Resource(ResourceBase):
                     name=fake.name(),
                     address=location.address,
                     latitude=latitude,
-                    longitude=longitude
-                )
+                    longitude=longitude)
 
                 oa = OptionAssociation(option=randint(0, 1))
                 oa.descriptor = options[randint(0, num_options - 1)]
@@ -184,10 +176,7 @@ class Resource(ResourceBase):
 
                 ta = TextAssociation(text=fake.sentence(nb_words=10))
                 ta.descriptor = Descriptor(
-                    name=fake.word(),
-                    values=[],
-                    is_searchable=fake.boolean()
-                )
+                    name=fake.word(), values=[], is_searchable=fake.boolean())
                 resource.text_descriptors.append(ta)
 
                 db.session.add(resource)
@@ -205,80 +194,51 @@ class Resource(ResourceBase):
         resources = os.listdir("_seattle")
 
         description_descriptor = Descriptor(
-            name='description',
-            values=[],
-            is_searchable=True
-        )
+            name='description', values=[], is_searchable=True)
         website_descriptor = Descriptor(
-            name='website',
-            values=[],
-            is_searchable=True
-        )
+            name='website', values=[], is_searchable=True)
         populations_served_descriptor = Descriptor(
-            name='populations served',
-            values=[],
-            is_searchable=True
-        )
+            name='populations served', values=[], is_searchable=True)
         hours_descriptor = Descriptor(
-            name='hours',
-            values=[],
-            is_searchable=True
-        )
+            name='hours', values=[], is_searchable=True)
         phone_numbers_descriptor = Descriptor(
-            name='phone numbers',
-            values=[],
-            is_searchable=True
-        )
+            name='phone numbers', values=[], is_searchable=True)
         email_descriptor = Descriptor(
-            name='email',
-            values=[],
-            is_searchable=True
-        )
+            name='email', values=[], is_searchable=True)
         mailing_address_descriptor = Descriptor(
-            name='mailing address',
-            values=[],
-            is_searchable=True
-        )
+            name='mailing address', values=[], is_searchable=True)
         contact_form_descriptor = Descriptor(
-            name='contact form',
-            values=[],
-            is_searchable=True
-        )
-        non_english_services_descriptor = Descriptor (
-            name='non english services',
-            values=[],
-            is_searchable=True
-        )
+            name='contact form', values=[], is_searchable=True)
+        non_english_services_descriptor = Descriptor(
+            name='non english services', values=[], is_searchable=True)
         additional_information_descriptor = Descriptor(
-            name='additional information',
-            values=[],
-            is_searchable=True
-        )
+            name='additional information', values=[], is_searchable=True)
 
         category_descriptor = Descriptor(
             name='category',
-            values=['Medical Clinics', 'Women\'s Health', 'Sexual Health',
-                    'Trans Health', 'Dental Care', 'Legal Aid',
-                    'Documentation', 'Housing', 'Food', 'Hygiene',
-                    'Computers & Internet', 'Employment', 'English Classes',
-                    'Libraries', 'Community Centers', 'Cultural Centers',
-                    'LGBTQ+ Centers', 'Support Groups', 'Private Counseling',
-                    'Psychiatry', 'Mail', 'Sport & Entertainment'],
-            is_searchable=True
-        )
+            values=[
+                'Medical Clinics', 'Women\'s Health', 'Sexual Health',
+                'Trans Health', 'Dental Care', 'Legal Aid', 'Documentation',
+                'Housing', 'Food', 'Hygiene', 'Computers & Internet',
+                'Employment', 'English Classes', 'Libraries',
+                'Community Centers', 'Cultural Centers', 'LGBTQ+ Centers',
+                'Support Groups', 'Private Counseling', 'Psychiatry', 'Mail',
+                'Sport & Entertainment'
+            ],
+            is_searchable=True)
 
         supercategory_descriptor = Descriptor(
             name='supercategory',
-            values=['Medical', 'Legal', 'Education', 'Community Support',
-                    'Mental Health'],
-            is_searchable=True
-        )
+            values=[
+                'Medical', 'Legal', 'Education', 'Community Support',
+                'Mental Health'
+            ],
+            is_searchable=True)
 
         feature_descriptor = Descriptor(
             name='feature',
             values=['Confidential', 'Free', 'Translation'],
-            is_searchable=True
-        )
+            is_searchable=True)
 
         script_dir = os.path.dirname("__file__")
 
@@ -297,17 +257,14 @@ class Resource(ResourceBase):
                 name=doc['name'],
                 address=address,
                 latitude=doc['lat'],
-                longitude=doc['long']
-            )
+                longitude=doc['long'])
 
             description_association = TextAssociation(
-                text=doc['description'],
-                descriptor=description_descriptor)
+                text=doc['description'], descriptor=description_descriptor)
             resource.text_descriptors.append(description_association)
 
             website_association = TextAssociation(
-                text=doc['website'],
-                descriptor=website_descriptor)
+                text=doc['website'], descriptor=website_descriptor)
             resource.text_descriptors.append(website_association)
 
             populations_served_association = TextAssociation(
@@ -316,13 +273,11 @@ class Resource(ResourceBase):
             resource.text_descriptors.append(populations_served_association)
 
             hours_association = TextAssociation(
-                text=doc['hours'],
-                descriptor=hours_descriptor)
+                text=doc['hours'], descriptor=hours_descriptor)
             resource.text_descriptors.append(hours_association)
 
             email_association = TextAssociation(
-                text=doc['email'],
-                descriptor=email_descriptor)
+                text=doc['email'], descriptor=email_descriptor)
             resource.text_descriptors.append(email_association)
 
             mailing_address_association = TextAssociation(
@@ -331,8 +286,7 @@ class Resource(ResourceBase):
             resource.text_descriptors.append(mailing_address_association)
 
             contact_form_association = TextAssociation(
-                text=doc['contact_form'],
-                descriptor=contact_form_descriptor)
+                text=doc['contact_form'], descriptor=contact_form_descriptor)
             resource.text_descriptors.append(contact_form_association)
 
             additional_information_association = TextAssociation(
@@ -421,7 +375,6 @@ class Resource(ResourceBase):
                 del resource_as_dict['text_descriptors']
             if 'option_descriptors' in resource_as_dict:
                 del resource_as_dict['option_descriptors']
-
             """
             TEMPORARY
             the following code packages categories/supercategories/etc.

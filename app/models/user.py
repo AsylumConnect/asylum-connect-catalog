@@ -1,8 +1,9 @@
 from flask import current_app
 from flask.ext.login import AnonymousUserMixin, UserMixin
-from werkzeug.security import check_password_hash, generate_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from itsdangerous import BadSignature, SignatureExpired
+from werkzeug.security import check_password_hash, generate_password_hash
+
 from .. import db, login_manager
 
 
@@ -52,9 +53,11 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(64), unique=True, index=True)
     password_hash = db.Column(db.String(128))
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
-    csv_containers = db.relationship('CsvContainer', backref='user',
-                                     uselist=True,
-                                     order_by='CsvContainer.date_uploaded')
+    csv_containers = db.relationship(
+        'CsvContainer',
+        backref='user',
+        uselist=True,
+        order_by='CsvContainer.date_uploaded')
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
@@ -189,8 +192,7 @@ class User(UserMixin, db.Model):
             password=password,
             confirmed=True,
             role=Role.query.filter_by(
-                permissions=Permission.ADMINISTER).first()
-        )
+                permissions=Permission.ADMINISTER).first())
         db.session.add(u)
         try:
             db.session.commit()

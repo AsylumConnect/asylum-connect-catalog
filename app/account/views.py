@@ -7,9 +7,8 @@ from . import account
 from .. import db
 from ..email import send_email
 from ..models import User
-from .forms import (ChangeAccountInfoForm, ChangeEmailForm,
-                    ChangePasswordForm, CreatePasswordForm,
-                    LoginForm, RegistrationForm,
+from .forms import (ChangeAccountInfoForm, ChangeEmailForm, ChangePasswordForm,
+                    CreatePasswordForm, LoginForm, RegistrationForm,
                     RequestResetPasswordForm, ResetPasswordForm)
 
 

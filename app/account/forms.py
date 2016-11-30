@@ -1,13 +1,5 @@
 from flask import url_for
 from flask.ext.wtf import Form
-from wtforms.fields import (
-    BooleanField,
-    PasswordField,
-    StringField,
-    SubmitField
-)
-from wtforms.fields.html5 import EmailField
-from wtforms.validators import Email, EqualTo, InputRequired, Length
 from wtforms import ValidationError
 from wtforms.fields import (BooleanField, PasswordField, StringField,
                             SubmitField)
@@ -23,6 +15,7 @@ class LoginForm(Form):
     password = PasswordField('Password', validators=[InputRequired()])
     remember_me = BooleanField('Keep me logged in')
     submit = SubmitField('Log in')
+
 
 class RegistrationForm(Form):
     first_name = StringField(
@@ -107,12 +100,8 @@ class ChangeEmailForm(Form):
 
 
 class ChangeAccountInfoForm(Form):
-    first_name = StringField('First name', validators=[
-        InputRequired(),
-        Length(1, 64)
-    ])
-    last_name = StringField('Last name', validators=[
-        InputRequired(),
-        Length(1, 64)
-    ])
+    first_name = StringField(
+        'First name', validators=[InputRequired(), Length(1, 64)])
+    last_name = StringField(
+        'Last name', validators=[InputRequired(), Length(1, 64)])
     submit = SubmitField('Update account information')

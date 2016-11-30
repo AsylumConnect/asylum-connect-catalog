@@ -1,13 +1,14 @@
 from flask import abort, flash, redirect, render_template, url_for
 from flask.ext.login import current_user, login_required
 from flask.ext.rq import get_queue
+
 from forms import (ChangeAccountTypeForm, ChangeUserEmailForm, InviteUserForm,
                    NewUserForm)
 
 from . import admin
 from .. import db
 from ..email import send_email
-from ..models import Role, User, Rating, Resource
+from ..models import Rating, Resource, Role, User
 
 
 @admin.route('/')
