@@ -24,7 +24,7 @@ class ResourceSuggestion(ResourceBase):
     }
 
     def __repr__(self):
-        return '%s: %s' % (self.id, self.resource_id)
+        return '<ResourceSuggestion %s: %s>' % (self.id, self.resource_id)
 
     @staticmethod
     def generate_fake_inserts(count=20):
@@ -60,29 +60,28 @@ class ResourceSuggestion(ResourceBase):
         """Generate a number of fake edit suggestions"""
         from sqlalchemy.exc import IntegrityError
         from faker import Faker
+        from random import choice
         from ..models import Resource
 
         fake = Faker()
 
         num_words = 10
+        resources = Resource.query.all()
+        if len(resources) == 0:
+            raise Exception('Resources must exist in order to generate fake '
+                            'edits.')
         for i in range(count):
-            r_name = fake.word()
-            r = Resource(name=r_name)
-            db.session.add(r)
-            try:
-                db.session.commit()
-            except IntegrityError:
-                db.session.rollback()
+            r = choice(resources)
 
-            r_added = Resource.query.filter_by(name=r_name).first()
-            s_text = fake.sentence(nb_words=num_words)
+            s_additional_information = fake.sentence(nb_words=num_words)
             s_read = 0
             s_timestamp = datetime.now(pytz.timezone('US/Eastern'))
             s_contact_name = fake.word()
             s_contact_email = fake.word() + '@' + fake.word() + '.com'
             s_contact_number = '123-456-7890'
-            s_edit = ResourceSuggestion(resource_id=r_added.id,
-                                        additional_information=s_text,
+            s_edit = ResourceSuggestion(resource_id=r.id,
+                                        additional_information=
+                                        s_additional_information,
                                         read=s_read,
                                         submission_time=s_timestamp,
                                         contact_name=s_contact_name,
