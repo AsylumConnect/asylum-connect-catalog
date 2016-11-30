@@ -1,4 +1,4 @@
-﻿# AsylumConnect [![Circle CI](https://circleci.com/gh/hack4impact/flask-base.svg?style=svg)](https://circleci.com/gh/hack4impact/flask-base) [![Stories in Ready](https://badge.waffle.io/hack4impact/flask-base.png?label=ready&title=Ready)](https://waffle.io/hack4impact/flask-base)
+﻿# AsylumConnect [![Circle CI](https://circleci.com/gh/hack4impact/asylum-connect-catalog.svg?style=svg)](https://circleci.com/gh/hack4impact/asylum-connect-catalog) [![Stories in Ready](https://badge.waffle.io/hack4impact/asylum-connect-catalog.png?label=ready&title=Ready)](https://waffle.io/hack4impact/asylum-connect-catalog)
 
 ## Team Members
 
