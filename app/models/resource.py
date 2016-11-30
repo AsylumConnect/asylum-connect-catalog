@@ -78,6 +78,14 @@ class Descriptor(db.Model):
     def __repr__(self):
         return '<Descriptor \'%s\'>' % self.name
 
+    @property
+    def is_text_descriptor(self):
+        return self.values is None
+
+    @property
+    def is_option_descriptor(self):
+        return self.values is not None
+
 
 class ResourceBase(db.Model):
     """

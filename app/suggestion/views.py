@@ -79,7 +79,7 @@ def suggest_create():
                     descriptor.name,
                     SelectField(choices=choices))
         else:  # Fields for text descriptors.
-            setattr(SuggestionForm, descriptor.name, TextAreaField())
+            setattr(ResourceSuggestionForm, descriptor.name, TextAreaField())
     form = ResourceSuggestionForm()
 
     if form.validate_on_submit():
@@ -118,7 +118,7 @@ def suggest_edit(resource_id):
     resource_field_names = ['name', 'address', 'latitude', 'longitude']
     descriptors = Descriptor.query.all()
     for descriptor in descriptors:
-        if descriptor.values:  # Fields for option descriptors.
+        if descriptor.is_option_descriptor:
             choices = [(str(i), v) for i, v in enumerate(descriptor.values)]
             default = None
             option_association = OptionAssociation.query.filter_by(
@@ -182,7 +182,7 @@ def save_associations(resource_suggestion, form, descriptors):
     """Save associations from the forms received by 'create' and 'edit' route
     handlers to the database."""
     for descriptor in descriptors:
-        if descriptor.values:
+        if descriptor.is_option_descriptor():
             AssociationClass = OptionAssociation
             value = int(form[descriptor.name].data)
             keyword = 'option'
