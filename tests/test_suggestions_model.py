@@ -61,8 +61,10 @@ class SuggestionsModelTestCase(unittest.TestCase):
         s_contact_number = "000-001-0101"
         s_timestamp = datetime.now(pytz.timezone('US/Eastern'))
         suggestion = Suggestion(resource_id=r_added.id, suggestion_text=s_text,
-                                read=1, contact_name=s_contact_name, contact_email=s_contact_email,
-                                contact_phone_number=s_contact_number, submission_time=s_timestamp)
+                                read=1, contact_name=s_contact_name,
+                                contact_email=s_contact_email,
+                                contact_phone_number=s_contact_number,
+                                submission_time=s_timestamp)
         db.session.add(suggestion)
         db.session.commit()
 
