@@ -10,7 +10,7 @@ from . import suggestion
 from .. import db
 from ..models import Descriptor, OptionAssociation, Resource, ResourceBase, \
     ResourceSuggestion, TextAssociation
-from forms import SuggestionForm
+from forms import ResourceSuggestionForm
 
 
 @suggestion.route('/')
@@ -75,12 +75,12 @@ def suggest_create():
     for descriptor in descriptors:
         if descriptor.values:  # Fields for option descriptors.
             choices = [(str(i), v) for i, v in enumerate(descriptor.values)]
-            setattr(SuggestionForm,
+            setattr(ResourceSuggestionForm,
                     descriptor.name,
                     SelectField(choices=choices))
         else:  # Fields for text descriptors.
             setattr(SuggestionForm, descriptor.name, TextAreaField())
-    form = SuggestionForm()
+    form = ResourceSuggestionForm()
 
     if form.validate_on_submit():
         resource_suggestion = ResourceSuggestion(
@@ -127,7 +127,7 @@ def suggest_edit(resource_id):
             ).first()
             if option_association is not None:
                 default = option_association.option
-            setattr(SuggestionForm,
+            setattr(ResourceSuggestionForm,
                     descriptor.name,
                     SelectField(choices=choices, default=default))
         else:  # Fields for text descriptors.
@@ -138,10 +138,10 @@ def suggest_edit(resource_id):
             ).first()
             if text_association is not None:
                 default = text_association.text
-            setattr(SuggestionForm,
+            setattr(ResourceSuggestionForm,
                     descriptor.name,
                     TextAreaField(default=default))
-    form = SuggestionForm()
+    form = ResourceSuggestionForm()
 
     if form.validate_on_submit():
         resource_suggestion = ResourceSuggestion(

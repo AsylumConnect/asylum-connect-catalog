@@ -3,7 +3,7 @@ from wtforms.fields import FloatField, StringField, SubmitField
 from wtforms.validators import Email, InputRequired, Length
 
 
-class SuggestionForm(Form):
+class ResourceSuggestionForm(Form):
     name = StringField(
         'Name',
         validators=[InputRequired(), Length(1, 512)]
