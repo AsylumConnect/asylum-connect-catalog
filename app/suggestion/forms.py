@@ -39,15 +39,4 @@ class ResourceSuggestionForm(Form):
         'Longitude',
         validators=[InputRequired()]
     )
-    name = StringField('Resource Name', validators=[
-        InputRequired(),
-        Length(1, 512)
-    ])
-    address = StringField('Resource Address', validators=[
-        InputRequired(),
-        Length(1, 512)
-    ])
-    suggestion_text = TextField('Suggestion', validators=[
-        InputRequired()
-    ])
     submit = SubmitField('Submit')
