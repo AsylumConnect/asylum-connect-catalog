@@ -1,7 +1,7 @@
 import unittest
 
 from app import create_app, db
-from app.models import Resource, Descriptor, OptionAssociation, TextAssociation
+from app.models import Resource, Descriptor, OptionAssociation
 
 
 class ResourceModelTestCase(unittest.TestCase):
