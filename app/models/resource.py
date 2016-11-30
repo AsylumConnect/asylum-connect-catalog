@@ -244,6 +244,12 @@ class Resource(db.Model):
             is_searchable=True
         )
 
+        city_descriptor = Descriptor(
+            name='city',
+            values=['Seattle', 'Philadelphia'],
+            is_searchable=True
+        )
+
         script_dir = os.path.dirname("__file__")
 
         for obj in resources:
@@ -308,6 +314,8 @@ class Resource(db.Model):
             supercategories = doc['supercategories']
             features = doc['features']
 
+            city = doc['city']
+
             first_category = categories[0]
             category_association = OptionAssociation(descriptor=category_descriptor,
                                                      option=category_descriptor.values.index(first_category))
@@ -324,6 +332,11 @@ class Resource(db.Model):
                 feature_association = OptionAssociation(descriptor=feature_descriptor,
                                                         option=feature_descriptor.values.index(first_feature))
                 resource.option_descriptors.append(feature_association)
+
+            if city:
+                city_association = OptionAssociation(descriptor=city_descriptor,
+                                                        option=city_descriptor.values.index(city))
+                resource.option_descriptors.append(city_association)
 
             db.session.add(resource)
             try:
@@ -394,3 +407,21 @@ class Resource(db.Model):
             print '(%s , %s)' % (resource.latitude, resource.longitude)
             print resource.text_descriptors
             print resource.option_descriptors
+
+    @staticmethod
+    def get_resources_in_city(city):
+        city_descriptor = Descriptor.query.filter_by(name='city').first()
+
+        if city not in city_descriptor.values:
+            return []
+
+        city_option = city_descriptor.values.index(city)
+
+        opt_resources = OptionAssociation.query .filter_by(
+            descriptor=city_descriptor).filter_by(option=city_option)
+        resources = []
+        for opt_resource in opt_resources:
+            resources.append(opt_resource.resource)
+
+        return resources
+
