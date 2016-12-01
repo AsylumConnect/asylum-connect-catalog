@@ -1,8 +1,9 @@
 from flask import current_app
 from flask.ext.login import AnonymousUserMixin, UserMixin
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from itsdangerous import BadSignature, SignatureExpired
 from werkzeug.security import check_password_hash, generate_password_hash
-from itsdangerous import TimedJSONWebSignatureSerializer as BadSignature, \
-    Serializer, SignatureExpired
+
 from .. import db, login_manager
 
 
@@ -22,8 +23,11 @@ class Role(db.Model):
     @staticmethod
     def insert_roles():
         roles = {
+            'User': (Permission.GENERAL, 'main', True),
             'Administrator': (
-                Permission.ADMINISTER, 'admin', False  # grants all permissions
+                Permission.ADMINISTER,
+                'admin',
+                False  # grants all permissions
             )
         }
         for r in roles:
@@ -49,9 +53,11 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(64), unique=True, index=True)
     password_hash = db.Column(db.String(128))
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
-    csv_containers = db.relationship('CsvContainer', backref='user',
-                                     uselist=True,
-                                     order_by='CsvContainer.date_uploaded')
+    csv_containers = db.relationship(
+        'CsvContainer',
+        backref='user',
+        uselist=True,
+        order_by='CsvContainer.date_uploaded')
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
@@ -112,6 +118,7 @@ class User(UserMixin, db.Model):
             return False
         self.confirmed = True
         db.session.add(self)
+        db.session.commit()
         return True
 
     def change_email(self, token):
@@ -130,6 +137,7 @@ class User(UserMixin, db.Model):
             return False
         self.email = new_email
         db.session.add(self)
+        db.session.commit()
         return True
 
     def reset_password(self, token, new_password):
@@ -143,6 +151,7 @@ class User(UserMixin, db.Model):
             return False
         self.password = new_password
         db.session.add(self)
+        db.session.commit()
         return True
 
     @staticmethod
@@ -164,8 +173,7 @@ class User(UserMixin, db.Model):
                 password=fake.password(),
                 confirmed=True,
                 role=choice(roles),
-                **kwargs
-            )
+                **kwargs)
             db.session.add(u)
             try:
                 db.session.commit()
@@ -184,8 +192,7 @@ class User(UserMixin, db.Model):
             password=password,
             confirmed=True,
             role=Role.query.filter_by(
-                permissions=Permission.ADMINISTER).first()
-        )
+                permissions=Permission.ADMINISTER).first())
         db.session.add(u)
         try:
             db.session.commit()

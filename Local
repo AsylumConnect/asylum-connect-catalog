@@ -1,0 +1,5 @@
+redis: redis-server
+web: python manage.py runserver
+worker: python -u manage.py run_worker
+web: python -u manage.py runserver
+worker: python -u manage.py run_worker

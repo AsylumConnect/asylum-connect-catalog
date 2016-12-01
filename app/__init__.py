@@ -6,6 +6,8 @@ from flask.ext.login import LoginManager
 from flask.ext.assets import Environment
 from flask.ext.wtf import CsrfProtect
 from flask.ext.compress import Compress
+from flask.ext.rq import RQ
+
 from config import config
 from assets import (app_css, app_js, vendor_css, vendor_js, asylum_css,
                     asylum_js, asylum_scss)
@@ -16,10 +18,11 @@ mail = Mail()
 db = SQLAlchemy()
 csrf = CsrfProtect()
 compress = Compress()
-
 # Set up Flask-Login
 login_manager = LoginManager()
-login_manager.session_protection = 'strong'
+# TODO: Ideally this should be strong, but that led to bugs. Once this is
+# fixed, switch protection mode back to 'strong'
+login_manager.session_protection = 'basic'
 login_manager.login_view = 'account.login'
 
 
@@ -34,6 +37,7 @@ def create_app(config_name):
     login_manager.init_app(app)
     csrf.init_app(app)
     compress.init_app(app)
+    RQ(app)
 
     # Register Jinja template functions
     from utils import register_template_utils
@@ -70,15 +74,15 @@ def create_app(config_name):
     app.register_blueprint(admin_blueprint, url_prefix='/admin')
 
     from bulk_resource import bulk_resource as bulk_resource_blueprint
-    app.register_blueprint(bulk_resource_blueprint,
-                           url_prefix='/bulk-resource')
+    app.register_blueprint(
+        bulk_resource_blueprint, url_prefix='/bulk-resource')
 
     from descriptor import descriptor as descriptor_blueprint
     app.register_blueprint(descriptor_blueprint, url_prefix='/descriptor')
 
     from single_resource import single_resource as single_resource_blueprint
-    app.register_blueprint(single_resource_blueprint,
-                           url_prefix='/single-resource')
+    app.register_blueprint(
+        single_resource_blueprint, url_prefix='/single-resource')
 
     from suggestion import suggestion as suggestion_blueprint
     app.register_blueprint(suggestion_blueprint, url_prefix='/suggestion')

@@ -1,8 +1,7 @@
-import time
 import unittest
 
 from app import create_app, db
-from app.models import Resource, Descriptor, OptionAssociation, TextAssociation
+from app.models import Resource, Descriptor, OptionAssociation
 
 
 class ResourceModelTestCase(unittest.TestCase):
@@ -29,4 +28,3 @@ class ResourceModelTestCase(unittest.TestCase):
         self.assertEquals(option_assoc.option, 0)
         self.assertEquals(option_assoc.descriptor.name, 'Open')
         self.assertEquals(option_assoc.descriptor.values, options)
-

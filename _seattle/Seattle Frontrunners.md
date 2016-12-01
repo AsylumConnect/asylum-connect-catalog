@@ -1,8 +1,8 @@
 ---
 name: Seattle Frontrunners
-address:
-lat:
-long:
+address: "Location varies. See online calendar: <http://www.seattlefrontrunners.org/calendar>"
+lat: 47.606209
+long: -122.332071
 description: Seattle Frontrunners is Seattle's running and walking club for gay men, lesbians & friends. Seattle Frontrunners provides a safe space for LGBTQ individuals interested in running and sport from all over the world.
 website: http://www.seattlefrontrunners.org/
 populations_served: LGBTQ adults and allies of all genders, 18+

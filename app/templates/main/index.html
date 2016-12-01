@@ -1,9 +1,6 @@
 {% extends 'layouts/asylum-base.html' %}
 
 {% block content %}
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhkKJDnPxq0_xvF6pLAFcKfVAL6GbARBs&libraries=places&callback=initMap"
-            async defer>
-    </script>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -18,7 +15,7 @@
           <div id="links" class="hidden-xs">
             <a href="http://www.asylumconnect.org/our-catalog/">ABOUT</a>
             <a href="http://goo.gl/forms/UjxEbg6H3O">SHARE FEEDBACK</a>
-            <a href="{{ url_for('suggestion.suggest') }}">SUBMIT A RESOURCE</a>
+            <a href="{{ url_for('suggestion.suggest_create') }}">SUBMIT A RESOURCE</a>
             <a href="http://www.asylumconnect.org/contact-us/">CONTACT US</a>
           </div>
         </div>
@@ -161,14 +158,12 @@
         </div>
       </div>
       <div class="footer">
-        <a href="{{ url_for('suggestion.suggest') }}">SUBMIT A RESOURCE</a> |
+        <a href="{{ url_for('suggestion.suggest_create') }}">SUGGEST A RESOURCE</a> |
         <a href="http://goo.gl/forms/UjxEbg6H3O">SHARE FEEDBACK</a>
       </div>
     </div>
-
     <div class="map hidden-sm hidden-xs">
       <div id="map" class="map-canvas">
       </div>
     </div>
-
 {% endblock %}

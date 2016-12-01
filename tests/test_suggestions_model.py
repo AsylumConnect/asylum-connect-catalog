@@ -7,7 +7,6 @@ from app.models import Resource, Suggestion
 from sqlalchemy.exc import IntegrityError
 
 
-
 class SuggestionsModelTestCase(unittest.TestCase):
     def setUp(self):
         self.app = create_app('testing')
@@ -28,8 +27,10 @@ class SuggestionsModelTestCase(unittest.TestCase):
         s_contact_email = "taco@time.com"
         s_timestamp = datetime.now(pytz.timezone('US/Eastern'))
         suggestion = Suggestion(suggestion_text=s_text,
-                                read=0, contact_name=s_contact_name, contact_email=s_contact_email,
-                                contact_phone_number=s_contact_number, submission_time=s_timestamp)
+                                read=0, contact_name=s_contact_name,
+                                contact_email=s_contact_email,
+                                contact_phone_number=s_contact_number,
+                                submission_time=s_timestamp)
         db.session.add(suggestion)
         db.session.commit()
 
@@ -53,14 +54,17 @@ class SuggestionsModelTestCase(unittest.TestCase):
             db.session.rollback()
 
         r_added = Resource.query.filter_by(name='test_edit').first()
-        s_text = "The phone number of this establishment is incorrect: it should be 212-346-5927"
+        s_text = "The phone number of this establishment is incorrect: " \
+                 "it should be 212-346-5927"
         s_contact_name = "Anonymous Helper"
         s_contact_email = "anony@mous.com"
         s_contact_number = "000-001-0101"
         s_timestamp = datetime.now(pytz.timezone('US/Eastern'))
         suggestion = Suggestion(resource_id=r_added.id, suggestion_text=s_text,
-                                read=1, contact_name=s_contact_name, contact_email=s_contact_email,
-                                contact_phone_number=s_contact_number, submission_time=s_timestamp)
+                                read=1, contact_name=s_contact_name,
+                                contact_email=s_contact_email,
+                                contact_phone_number=s_contact_number,
+                                submission_time=s_timestamp)
         db.session.add(suggestion)
         db.session.commit()
 
@@ -73,4 +77,3 @@ class SuggestionsModelTestCase(unittest.TestCase):
         self.assertTrue(r_in_table.submission_time is not None)
         self.assertTrue(r_in_table.contact_name == s_contact_name)
         self.assertTrue(r_in_table.contact_email == s_contact_email)
-

@@ -1,14 +1,7 @@
 from flask.ext.wtf import Form
-from flask_wtf.file import (
-    InputRequired
-)
-from wtforms.fields import (
-    FieldList,
-    FormField,
-    RadioField,
-    SubmitField,
-    TextAreaField
-)
+from flask_wtf.file import InputRequired
+from wtforms.fields import (FieldList, FormField, RadioField, SubmitField,
+                            TextAreaField)
 
 
 class NavigationForm(Form):
@@ -18,10 +11,10 @@ class NavigationForm(Form):
 
 
 class DetermineDescriptorTypesForm(Form):
-    descriptor_types = FieldList(RadioField(choices=[
-        ('text', 'Text'),
-        ('option', 'Option')
-    ], validators=[InputRequired()]))
+    descriptor_types = FieldList(
+        RadioField(
+            choices=[('text', 'Text'), ('option', 'Option')],
+            validators=[InputRequired()]))
     navigation = FormField(NavigationForm)
 
 

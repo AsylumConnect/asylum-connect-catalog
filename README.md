@@ -1,4 +1,4 @@
-﻿# AsylumConnect [![Circle CI](https://circleci.com/gh/hack4impact/flask-base.svg?style=svg)](https://circleci.com/gh/hack4impact/flask-base) [![Stories in Ready](https://badge.waffle.io/hack4impact/flask-base.png?label=ready&title=Ready)](https://waffle.io/hack4impact/flask-base)
+﻿# AsylumConnect [![Circle CI](https://circleci.com/gh/hack4impact/asylum-connect-catalog.svg?style=svg)](https://circleci.com/gh/hack4impact/asylum-connect-catalog) [![Stories in Ready](https://badge.waffle.io/hack4impact/asylum-connect-catalog.png?label=ready&title=Ready)](https://waffle.io/hack4impact/asylum-connect-catalog)
 
 ## Team Members
 
@@ -19,62 +19,112 @@ AsylumConnect’s current resource verification model is a bottleneck, as volunt
 * Flask-WTF for forms
 * Flask-Assets for asset management and SCSS compilation
 * Flask-Mail for sending emails
-* Automatic SSL + gzip compression
+* gzip compression
+* gulp autoreload for quick static page debugging
+
+## Extensions
+
+Other branches include even more features
+
+* `admin-edit-static-pages`: allow administrators to edit static pages using the [ckeditor](http://ckeditor.com/) WYSIWYG editor 
+* `gulp-static-watcher`: quick and easy webpage refresh as static pages and assets are edited. 
 
 ## Setting up
 
-1. Clone the repo
+##### Clone the repo
 
-    ```
-    $ git clone https://github.com/hack4impact/asylum-connect-catalog.git
-    $ cd asylum-connect-catalog
-    ```
+```
+$ git clone https://github.com/hack4impact/asylum-connect-catalog.git
+$ cd asylum-connect-catalog
+```
 
-2. Initialize a virtualenv
+##### Initialize a virtualenv
 
-    ```
-    $ pip install virtualenv
-    $ virtualenv env
-    $ source env/bin/activate
-    ```
-2.5 (If you're on a mac) Make sure xcode tools are installed
-    ```
-    $ xcode-select --install
-    ```
-    
-3. Install the dependencies
+```
+$ pip install virtualenv
+$ virtualenv env
+$ source env/bin/activate
+```
 
-    ```
-    $ pip install -r requirements/common.txt
-    $ pip install -r requirements/dev.txt
-    ```
+##### (If you're on a mac) Make sure xcode tools are installed
 
-4. Create the database
+```
+$ xcode-select --install
+```
 
-    ```
-    $ python manage.py recreate_db
-    ```
+##### Add Environment Variables 
 
-5. Other setup (e.g. creating roles in database)
+Create a file called `.env` that contains environment variables in the following syntax: `ENVIRONMENT_VARIABLE=value`. For example,
+the mailing environment variables can be set as the following
+```
+MAIL_USERNAME=example@domain.com
+MAIL_PASSWORD=SuperSecretPassword
+SECRET_KEY=SuperRandomStringToBeUsedForEncryption
+```
+**Note: do not include the `.env` file in any commits. This should remain private.**
 
-    ```
-    $ python manage.py setup_dev
-    ```
+##### Install the dependencies
 
-6. [Optional] Add fake data to the database
+```
+$ pip install -r requirements/common.txt
+$ pip install -r requirements/dev.txt
+```
 
-    ```
-    $ python manage.py add_fake_data
-    ```
+##### Other dependencies for running locally
+
+You need to install [Foreman](https://ddollar.github.io/foreman/) and [Redis](http://redis.io/). Chances are, these commands will work:
+
+```
+$ gem install foreman
+```
+
+Mac (using [homebrew](http://brew.sh/)):
+
+```
+$ brew install redis
+```
+
+Linux:
+
+```
+$ sudo apt-get install redis-server
+```
+
+##### Create the database
+
+```
+$ python manage.py recreate_db
+```
+
+##### Other setup (e.g. creating roles in database)
+
+```
+$ python manage.py setup_dev
+```
+
+##### [Optional] Add Seattle data and fake data to the database
+
+```
+$ python manage.py add_seattle_data
+$ python manage.py add_fake_data
+```
+
+##### [Optional. Only valid on `gulp-static-watcher` branch] Use gulp to live compile your files
+
+* Install the Live Reload browser plugin from [here](http://livereload.com/)
+* Run `npm install`
+* Run `gulp`
 
 ## Running the app
 
 ```
 $ source env/bin/activate
-$ python manage.py runserver
- * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
- * Restarting with stat
+$ foreman start -f Local
 ```
+
+## Formatting code
+
+Before you submit changes to flask-base, you may want to auto format your code with `python manage.py format`.
 
 ## Project Structure
 
@@ -152,6 +202,10 @@ $ python manage.py runserver
     ├── test_basics.py
     └── test_user_model.py
 ```
+
+## Contributing
+
+Contributions are welcome! Check out our [Waffle board](https://waffle.io/hack4impact/flask-base) which automatically syncs with this project's GitHub issues. Please refer to our [Code of Conduct](./CONDUCT.md) for more information.
 
 ## License
 [MIT License](LICENSE.md)

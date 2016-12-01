@@ -1,0 +1,30 @@
+{
+  "name": "asylumconnectcatalog",
+  "description": "First online, centralized database of service providers for use by LGBTQ asylum seekers in the U.S",
+  "scripts": {
+    "postdeploy": "python manage.py recreate_db && python manage.py setup_dev && python manage.py add_seattle_data && python manage.py add_fake_data"
+  },
+  "env": {
+    "FLASK_CONFIG": {
+      "required": true
+    },
+    "SECRET_KEY": {
+      "generator": "secret"
+    },
+    "MAIL_USERNAME": {
+      "required": true
+    },
+    "MAIL_PASSWORD": {
+      "required": true
+    }
+  },
+  "formation": {
+  },
+  "addons": [
+    "heroku-postgresql",
+    "redistogo"
+  ],
+  "buildpacks": [
+
+  ]
+}
