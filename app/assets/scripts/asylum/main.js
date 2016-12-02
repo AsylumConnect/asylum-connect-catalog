@@ -64,8 +64,30 @@ function googleTranslateElementInit() {
 }
 
 function initMap() {
+  // find center of map
+  var avLat = 0;
+  var avLng = 0;
+  var numThings = 0;
+  $('.map-point').each(function() {
+    var s_lat = $(this).attr('lat');
+    var s_lng = $(this).attr('long');
+
+    var lat = parseFloat(s_lat);
+    var lng = parseFloat(s_lng);
+
+    if(!!lat && !!lng) {
+      avLat += lat;
+      avLng += lng;
+      numThings++;
+    }
+  });
+
+  avLat /= numThings;
+  avLng /= numThings;
+
   map = new google.maps.Map(document.getElementById('map'), {
-    center: {lat: 47.608, lng: -122.335},
+    //center: {lat: 47.608, lng: -122.335},
+    center: {lat: avLat, lng: avLng},
     zoom: 11
   });
   geocoder = new google.maps.Geocoder();
