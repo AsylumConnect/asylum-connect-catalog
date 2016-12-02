@@ -30,7 +30,7 @@
             </button>
             <ul class="dropdown-menu" role="menu">
               {% for option in cities %}
-                <li><a href="{{ url_for('.city_view', city_name=option[1]) }}">{{ option[0] }}</a></li>
+                <li><a href="{{ url_for('.city_view', city_name=option.lower()) }}">{{ option.title() }}</a></li>
               {% endfor %}
             </ul>
         </div>

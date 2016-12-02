@@ -24,4 +24,5 @@ supercategories:
   - Mental Health
 features:
   - Confidential
+city: Seattle
   

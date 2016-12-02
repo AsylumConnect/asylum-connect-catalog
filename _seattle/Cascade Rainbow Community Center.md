@@ -22,3 +22,4 @@ supercategories:
 features:
   - Free
   - Translation
+city: Seattle

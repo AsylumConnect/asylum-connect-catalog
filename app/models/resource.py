@@ -240,6 +240,12 @@ class Resource(ResourceBase):
             values=['Confidential', 'Free', 'Translation'],
             is_searchable=True)
 
+        city_descriptor = Descriptor(
+            name='city',
+            values=['Seattle', 'Philadelphia'],
+            is_searchable=True
+        )
+
         script_dir = os.path.dirname("__file__")
 
         for obj in resources:
@@ -314,6 +320,8 @@ class Resource(ResourceBase):
             supercategories = doc['supercategories']
             features = doc['features']
 
+            city = doc['city']
+
             first_category = categories[0]
             category_association = OptionAssociation(
                 descriptor=category_descriptor,
@@ -334,6 +342,13 @@ class Resource(ResourceBase):
                     descriptor=feature_descriptor,
                     option=feature_descriptor.values.index(first_feature))
                 resource.option_descriptors.append(feature_association)
+
+            if city:
+                city_association = OptionAssociation(
+                    descriptor=city_descriptor,
+                    option=city_descriptor.values.index(city)
+                )
+                resource.option_descriptors.append(city_association)
 
             db.session.add(resource)
             try:
@@ -405,6 +420,30 @@ class Resource(ResourceBase):
             print '(%s , %s)' % (resource.latitude, resource.longitude)
             print resource.text_descriptors
             print resource.option_descriptors
+
+    @staticmethod
+    def get_resources_in_city(city):
+        city_descriptor = Descriptor.query.filter_by(name='city').first()
+
+        if city not in city_descriptor.values:
+            return []
+
+        list_of_cities = city_descriptor.values
+        lowercase_cities = [x.lower() for x in list_of_cities]
+        city_option = lowercase_cities.index(city.lower())
+
+        opt_resources = OptionAssociation.query .filter_by(
+            descriptor=city_descriptor).filter_by(option=city_option)
+        resources = []
+        for opt_resource in opt_resources:
+            resources.append(opt_resource.resource)
+
+        return resources
+
+    @staticmethod
+    def get_list_of_cities():
+        city_descriptor = Descriptor.query.filter_by(name='city').first()
+        return city_descriptor.values
 
     def get_avg_ratings(self):
         ratings = Rating.query.filter_by(resource_id=self.id).all()
