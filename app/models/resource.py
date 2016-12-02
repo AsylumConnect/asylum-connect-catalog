@@ -344,8 +344,10 @@ class Resource(ResourceBase):
                 resource.option_descriptors.append(feature_association)
 
             if city:
-                city_association = OptionAssociation(descriptor=city_descriptor,
-                                                        option=city_descriptor.values.index(city))
+                city_association = OptionAssociation(
+                    descriptor=city_descriptor,
+                    option=city_descriptor.values.index(city)
+                )
                 resource.option_descriptors.append(city_association)
 
             db.session.add(resource)
