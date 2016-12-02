@@ -46,7 +46,7 @@ class TextAssociation(db.Model):
         db.Integer, db.ForeignKey('resources.id'), primary_key=True)
     descriptor_id = db.Column(
         db.Integer, db.ForeignKey('descriptors.id'), primary_key=True)
-    text = db.Column(db.String(64))
+    text = db.Column(db.String(1024))
     resource = db.relationship(
         'ResourceBase', back_populates='text_descriptors')
     descriptor = db.relationship('Descriptor', back_populates='text_resources')
@@ -93,8 +93,8 @@ class ResourceBase(db.Model):
     """
     __tablename__ = 'resources'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), index=True)
-    address = db.Column(db.String(64))
+    name = db.Column(db.String(128), index=True)
+    address = db.Column(db.String(128))
     latitude = db.Column(db.Float)
     longitude = db.Column(db.Float)
     text_descriptors = db.relationship(
@@ -243,8 +243,7 @@ class Resource(ResourceBase):
         city_descriptor = Descriptor(
             name='city',
             values=['Seattle', 'Philadelphia'],
-            is_searchable=True
-        )
+            is_searchable=True)
 
         script_dir = os.path.dirname("__file__")
 
@@ -346,8 +345,7 @@ class Resource(ResourceBase):
             if city:
                 city_association = OptionAssociation(
                     descriptor=city_descriptor,
-                    option=city_descriptor.values.index(city)
-                )
+                    option=city_descriptor.values.index(city))
                 resource.option_descriptors.append(city_association)
 
             db.session.add(resource)
@@ -432,7 +430,7 @@ class Resource(ResourceBase):
         lowercase_cities = [x.lower() for x in list_of_cities]
         city_option = lowercase_cities.index(city.lower())
 
-        opt_resources = OptionAssociation.query .filter_by(
+        opt_resources = OptionAssociation.query.filter_by(
             descriptor=city_descriptor).filter_by(option=city_option)
         resources = []
         for opt_resource in opt_resources:
