@@ -18,4 +18,5 @@ categories:
 supercategories:
 features:
   - Confidential
+city: Seattle
   

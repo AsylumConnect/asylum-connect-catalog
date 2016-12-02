@@ -24,5 +24,6 @@ categories:
 supercategories:
   - Community Support
 features:
-  - Confidential
   - Free
+  - Confidential
+city: Seattle
