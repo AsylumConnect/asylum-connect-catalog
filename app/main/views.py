@@ -21,9 +21,10 @@ def city_view(city_name):
     city = city_name.title()
 
     cities = Resource.get_list_of_cities()
-    category_icons = ['housing', 'food', 'hygiene', 'computers', 'employment',
-                      'mail', 'recreation']
-
+    category_icons = [
+        'housing', 'food', 'hygiene', 'computers', 'employment', 'mail',
+        'recreation'
+    ]
     ''' RESOURCE STRUCTURE:
         categories = list of string categories
         features = list of string features
