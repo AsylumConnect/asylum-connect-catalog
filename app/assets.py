@@ -14,7 +14,7 @@ asylum_css = Bundle(
     'asylum/bootstrap.min.css',
     'asylum/font-awesome.min.css',
     'asylum/icons.css',
-    'main-page.css',
+    'asylum/main-page.css',
     output='styles/asylum2.css')
 
 asylum_js = Bundle('asylum/*.js', filters='jsmin', output='scripts/asylum.js')

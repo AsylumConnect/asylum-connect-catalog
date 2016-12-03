@@ -23,7 +23,7 @@
       </div>
       <div class="filters">
         <!-- data-spy="affix" data-offset-top="280" -->
-        <h3 id="location-query">Find LGBTQ- and asylum-friendly resources in
+        <h3 id="location-query"><span class="hide-in-screen">Showing</span><span class="hide-in-print">Find</span> LGBTQ- and asylum-friendly resources in
           <span class="hide-in-screen">{{ city }}</span>
           <div class="hide-in-print btn-group">
             <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
@@ -37,7 +37,8 @@
             </ul>
           </div>
         .</h3>
-      <h4 id="category-query">What types of service are you looking for? <span class="hide-in-print">Select all that apply:</span></h4>
+      <h4 id="category-query" class="hide-in-print">What types of service are you looking for? Select all that apply:</h4>
+      <h4 id="category-query" class="hide-in-screen">Listing services in the following categories:</h4>
       <span id="hidden-buttons" class="hide-in-screen"> </span>
         <div class="btn-group">
           <button type="button" id="medical" class="btn-category-group btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="icon-medical btn-icon"></span>Medical<span class="fa fa-angle-down"></span></button>
@@ -87,7 +88,8 @@
         <button type="button" id="mail" class="btn-category btn btn-default" data-toggle="button"><span class="icon-mail btn-icon"></span>Mail</button>
         <button type="button" id="recreation" class="btn-category btn btn-default" data-toggle="button"><span class="icon-recreation btn-icon"></span>Sport & Entertainment</button>
 
-        <h4 id="feature-query">What additional features are important to you? <span class="hide-in-print">Select all that apply:</span></h4>
+        <h4 id="feature-query" class="hide-in-print">What additional features are important to you? Select all that apply:</h4>
+        <h4 id="category-query" class="hide-in-screen">With these additional required features:</h4>
         <button type="button" id="confidential" class="btn-filter btn btn-default" data-toggle="button"><span class="icon-confidential btn-icon"></span>Confidential</button>
         <button type="button" id="free" class="btn-filter btn btn-default" data-toggle="button"><span class="icon-free btn-icon"></span>Free</button>
         <button type="button" id="translation" class="btn-filter btn btn-default" data-toggle="button"><span class="icon-translation btn-icon"></span>Language Translation Available</button>
