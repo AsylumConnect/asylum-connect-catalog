@@ -23,7 +23,8 @@
       <div class="filters">
         <!-- data-spy="affix" data-offset-top="280" -->
         <h3 id="location-query">Find LGBTQ- and asylum-friendly resources in
-          <div class="btn-group">
+          <span class="hide-in-screen">{{ city }}</span>
+          <div class="hide-in-print btn-group">
             <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
               {{ city }}
               <span class="caret"></span>
@@ -33,7 +34,7 @@
                 <li><a href="{{ url_for('.city_view', city_name=option.lower()) }}">{{ option.title() }}</a></li>
               {% endfor %}
             </ul>
-        </div>
+          </div>
         .</h3>
       <h4 id="category-query">What types of service are you looking for? <span class="hide-in-print">Select all that apply:</span></h4>
       <span id="hidden-buttons" class="hide-in-screen"> </span>
