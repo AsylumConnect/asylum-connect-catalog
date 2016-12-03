@@ -136,9 +136,7 @@ function initMap() {
       });
     }
   });
-  console.log("Hi")
   if (navigator.geolocation) {
-    console.log("Hi")
     navigator.geolocation.getCurrentPosition(function(position) {
         var pos = {
             lat: position.coords.latitude,
