@@ -6,7 +6,18 @@ app_js = Bundle('app.js', filters='jsmin', output='scripts/app.js')
 
 vendor_css = Bundle('vendor/*.css', output='styles/vendor.css')
 
-vendor_js = Bundle('vendor/*.js', filters='jsmin', output='scripts/vendor.js')
+vendor_js = Bundle(
+    'vendor/jquery.min.js',  # For vendor JS libraries that use jQuery.
+    'vendor/address-autocomplete.js',
+    'vendor/async.js',
+    'vendor/handlebars-v4.0.5.js',
+    'vendor/oms.min.js',
+    'vendor/papaparse.min.js',
+    'vendor/semantic.min.js',
+    'vendor/tablesort.min.js',
+    'vendor/zxcvbn.js',
+    filters='jsmin',
+    output='scripts/vendor.js')
 
 asylum_scss = Bundle('asylum/main.css', output='styles/asylum.css')
 
