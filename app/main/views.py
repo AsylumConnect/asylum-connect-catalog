@@ -18,28 +18,25 @@ def index():
 
 @main.route('/catalog/<string:city_name>')
 def city_view(city_name):
-    # TODO: use <city_name> to generate the correct resources, etc.
-    # for now, we just always render the seattle resources :(
     city = city_name.title()
-    cities = [('Seattle', 'seattle'), ('Philadelphia', 'philadelphia')]
+
+    cities = Resource.get_list_of_cities()
     category_icons = [
         'housing', 'food', 'hygiene', 'computers', 'employment', 'mail',
         'recreation'
     ]
-    '''
-    RESOURCE STRUCTURE:
-    categories = list of string categories
-    features = list of string features
-    name = string
-    supercategories = list of strings
-    address = string
-    lat =
-    long =
-    website = string
+    ''' RESOURCE STRUCTURE:
+        categories = list of string categories
+        features = list of string features
+        name = string
+        supercategories = list of strings
+        address = string
+        lat =
+        long =
+        website = string
     '''
 
-    # TODO: Get resources from a specific city, instead of all resources
-    resources = Resource.query.all()
+    resources = Resource.get_resources_in_city(city)
     resources_as_dicts = Resource.get_resources_as_full_dicts(resources)
 
     return render_template(

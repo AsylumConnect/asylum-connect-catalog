@@ -26,5 +26,6 @@ supercategories:
   - Community
 features:
   - Confidential
-  - Free
   - Translation
+  - Free
+city: Seattle

@@ -20,4 +20,5 @@ supercategories:
   - Community Support
 features:
   - Free
+city: Seattle
   
