@@ -136,6 +136,7 @@ function initMap() {
       });
     }
   });
+  // try geolocation
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
         var pos = {
@@ -150,6 +151,7 @@ function initMap() {
             handleLocationError(true, infoWindow, map.getCenter());
     });
   } else {
+    // browser doesn't support geolocation
     handleLocationError(false, infoWindow, map.getCenter());
     }
 }
