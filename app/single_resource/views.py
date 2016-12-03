@@ -33,9 +33,10 @@ def create():
     for descriptor in descriptors:
         if descriptor.values:  # Fields for option descriptors.
             choices = [(str(i), v) for i, v in enumerate(descriptor.values)]
-            setattr(SingleResourceForm,
-                    descriptor.name,
-                    SelectMultipleField(choices=choices))
+            setattr(
+                SingleResourceForm,
+                descriptor.name,
+                SelectMultipleField(choices=choices))
         else:  # Fields for text descriptors
             setattr(SingleResourceForm, descriptor.name, TextAreaField())
     form = SingleResourceForm()
@@ -76,14 +77,14 @@ def edit(resource_id):
             choices = [(str(i), v) for i, v in enumerate(descriptor.values)]
             default = None
             option_associations = OptionAssociation.query.filter_by(
-                resource_id=resource_id,
-                descriptor_id=descriptor.id
-            ).first()
+                resource_id=resource_id, descriptor_id=descriptor.id).first()
             if option_associations is not None:
                 default = [assoc.option for assoc in option_associations]
-            setattr(SingleResourceForm,
-                    descriptor.name,
-                    SelectMultipleField(choices=choices, default=default))
+            setattr(
+                SingleResourceForm,
+                descriptor.name,
+                SelectMultipleField(
+                    choices=choices, default=default))
         else:  # Fields for text descriptors.
             default = None
             text_association = TextAssociation.query.filter_by(
@@ -136,18 +137,20 @@ def save_associations(resource, form, descriptors, resource_existed=True):
             if resource_existed:
                 association = AssociationClass.query.filter_by(
                     resource_id=resource.id,
-                    descriptor_id=descriptor.id
-                ).first()
+                    descriptor_id=descriptor.id).first()
             if association is not None:
                 setattr(association, keyword, value)
             else:
-                arguments = {'resource_id': resource.id,
-                             'descriptor_id': descriptor.id,
-                             keyword: value,
-                             'resource': resource,
-                             'descriptor': descriptor}
+                arguments = {
+                    'resource_id': resource.id,
+                    'descriptor_id': descriptor.id,
+                    keyword: value,
+                    'resource': resource,
+                    'descriptor': descriptor
+                }
                 new_association = AssociationClass(**arguments)
                 db.session.add(new_association)
+
 
 @single_resource.route('/<int:resource_id>/delete', methods=['POST'])
 @login_required
