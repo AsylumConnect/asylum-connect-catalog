@@ -243,8 +243,7 @@ class Resource(ResourceBase):
         city_descriptor = Descriptor(
             name='city',
             values=['Seattle', 'Philadelphia'],
-            is_searchable=True
-        )
+            is_searchable=True)
 
         script_dir = os.path.dirname("__file__")
 
@@ -346,8 +345,7 @@ class Resource(ResourceBase):
             if city:
                 city_association = OptionAssociation(
                     descriptor=city_descriptor,
-                    option=city_descriptor.values.index(city)
-                )
+                    option=city_descriptor.values.index(city))
                 resource.option_descriptors.append(city_association)
 
             db.session.add(resource)
@@ -432,7 +430,7 @@ class Resource(ResourceBase):
         lowercase_cities = [x.lower() for x in list_of_cities]
         city_option = lowercase_cities.index(city.lower())
 
-        opt_resources = OptionAssociation.query .filter_by(
+        opt_resources = OptionAssociation.query.filter_by(
             descriptor=city_descriptor).filter_by(option=city_option)
         resources = []
         for opt_resource in opt_resources:
