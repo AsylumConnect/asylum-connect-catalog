@@ -96,10 +96,13 @@ def edit(resource_id):
                 descriptor.name,
                 TextAreaField(default=default))
     form = SingleResourceForm()
+    print resource_field_names
     if form.validate_on_submit():
         # Field id is not needed for the form, hence omitted with [1:].
         for field_name in resource_field_names[1:]:
-            setattr(resource, field_name, form[field_name].data)
+            # Avoid KeyError from polymorphic, contact variables.
+            if field_name in form:
+                setattr(resource, field_name, form[field_name].data)
         save_associations(
             resource=resource,
             form=form,
@@ -115,7 +118,9 @@ def edit(resource_id):
                   'form-error')
     # Field id is not needed for the form, hence omitted with [1:].
     for field_name in resource_field_names[1:]:
-        form[field_name].data = resource.__dict__[field_name]
+        # Avoid KeyError from polymorphic, contact variables.
+        if field_name in form:
+            form[field_name].data = resource.__dict__[field_name]
     return render_template(
         'single_resource/edit.html', form=form, resource_id=resource_id)
 
