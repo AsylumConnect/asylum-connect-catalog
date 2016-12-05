@@ -96,7 +96,6 @@ def edit(resource_id):
                 descriptor.name,
                 TextAreaField(default=default))
     form = SingleResourceForm()
-    print resource_field_names
     if form.validate_on_submit():
         # Field id is not needed for the form, hence omitted with [1:].
         for field_name in resource_field_names[1:]:
