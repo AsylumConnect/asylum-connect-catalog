@@ -1,7 +1,7 @@
 from flask import abort, flash, redirect, render_template, url_for
 from flask.ext.login import login_required
 from sqlalchemy.exc import IntegrityError
-from wtforms.fields import SelectField, TextAreaField
+from wtforms.fields import SelectMultipleField, TextAreaField
 
 from . import single_resource
 from .. import db
@@ -36,7 +36,7 @@ def create():
             setattr(
                 SingleResourceForm,
                 descriptor.name,
-                SelectField(choices=choices))
+                SelectMultipleField(choices=choices))
         else:  # Fields for text descriptors
             setattr(SingleResourceForm, descriptor.name, TextAreaField())
     form = SingleResourceForm()
@@ -76,14 +76,14 @@ def edit(resource_id):
         if descriptor.values:  # Fields for option descriptors.
             choices = [(str(i), v) for i, v in enumerate(descriptor.values)]
             default = None
-            option_association = OptionAssociation.query.filter_by(
-                resource_id=resource_id, descriptor_id=descriptor.id).first()
-            if option_association is not None:
-                default = option_association.option
+            option_associations = OptionAssociation.query.filter_by(
+                resource_id=resource_id, descriptor_id=descriptor.id)
+            if option_associations is not None:
+                default = [assoc.option for assoc in option_associations]
             setattr(
                 SingleResourceForm,
                 descriptor.name,
-                SelectField(
+                SelectMultipleField(
                     choices=choices, default=default))
         else:  # Fields for text descriptors.
             default = None
@@ -130,28 +130,30 @@ def save_associations(resource, form, descriptors, resource_existed=True):
     for descriptor in descriptors:
         if descriptor.values:
             AssociationClass = OptionAssociation
-            value = int(form[descriptor.name].data)
+            values = [int(i) for i in form[descriptor.name].data]
             keyword = 'option'
         else:
             AssociationClass = TextAssociation
-            value = form[descriptor.name].data
+            values = [form[descriptor.name].data]
             keyword = 'text'
-        association = None
-        if resource_existed:
-            association = AssociationClass.query.filter_by(
-                resource_id=resource.id, descriptor_id=descriptor.id).first()
-        if association is not None:
-            setattr(association, keyword, value)
-        else:
-            arguments = {
-                'resource_id': resource.id,
-                'descriptor_id': descriptor.id,
-                keyword: value,
-                'resource': resource,
-                'descriptor': descriptor
-            }
-            new_association = AssociationClass(**arguments)
-            db.session.add(new_association)
+        for value in values:
+            association = None
+            if resource_existed:
+                association = AssociationClass.query.filter_by(
+                    resource_id=resource.id,
+                    descriptor_id=descriptor.id).first()
+            if association is not None:
+                setattr(association, keyword, value)
+            else:
+                arguments = {
+                    'resource_id': resource.id,
+                    'descriptor_id': descriptor.id,
+                    keyword: value,
+                    'resource': resource,
+                    'descriptor': descriptor
+                }
+                new_association = AssociationClass(**arguments)
+                db.session.add(new_association)
 
 
 @single_resource.route('/<int:resource_id>/delete', methods=['POST'])
