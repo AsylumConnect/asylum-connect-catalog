@@ -77,7 +77,7 @@ def edit(resource_id):
             choices = [(str(i), v) for i, v in enumerate(descriptor.values)]
             default = None
             option_associations = OptionAssociation.query.filter_by(
-                resource_id=resource_id, descriptor_id=descriptor.id).first()
+                resource_id=resource_id, descriptor_id=descriptor.id)
             if option_associations is not None:
                 default = [assoc.option for assoc in option_associations]
             setattr(
