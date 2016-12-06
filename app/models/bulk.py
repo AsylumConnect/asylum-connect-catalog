@@ -47,7 +47,10 @@ class CsvContainer(db.Model):
         db.session.commit()
 
     def required_column_indices(self):
-        return [self.name_column_index, self.address_column_index]
+        return [
+            self.name_column_index,
+            self.address_column_index,
+        ]
 
     def __repr__(self):
         return '<CsvContainer \'%s\'>' % self.file_name
@@ -143,3 +146,10 @@ class CsvBodyCell(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     csv_row_id = db.Column(db.Integer, db.ForeignKey('csv_body_rows.id'))
     data = db.Column(db.Text)
+
+class RequiredOptionDescriptorConstructor(db.Model):
+    __tablename__ = 'required_option_descriptor_constructor'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), index=True)
+    values = db.Column(db.PickleType)
+    missing_dict = db.Column(db.PickleType)
