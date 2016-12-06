@@ -11,7 +11,8 @@ from forms import (DetermineDescriptorTypesForm, DetermineOptionsForm,
 from . import bulk_resource
 from .. import db
 from ..models import (CsvBodyCell, CsvBodyRow, CsvContainer, CsvHeaderCell,
-                      CsvHeaderRow, Descriptor, OptionAssociation, Resource,
+                      CsvHeaderRow, Descriptor, OptionAssociation,
+                      RequiredOptionDescriptorConstructor, Resource,
                       TextAssociation)
 
 
