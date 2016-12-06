@@ -46,7 +46,7 @@ class TextAssociation(db.Model):
         db.Integer, db.ForeignKey('resources.id'), primary_key=True)
     descriptor_id = db.Column(
         db.Integer, db.ForeignKey('descriptors.id'), primary_key=True)
-    text = db.Column(db.String(1024))
+    text = db.Column(db.Text)
     resource = db.relationship(
         'ResourceBase', back_populates='text_descriptors')
     descriptor = db.relationship('Descriptor', back_populates='text_resources')
@@ -89,7 +89,7 @@ class Descriptor(db.Model):
 class RequiredOptionDescriptor(db.Model):
     __tablename__ = 'required_option_descriptor'
     id = db.Column(db.Integer, primary_key=True)
-    descriptor_id = db.Column(db.Integer, db.ForeignKey('descriptors.id'))
+    descriptor_id = db.Column(db.Integer);
 
     @staticmethod
     def insert_required_option_descriptor():
