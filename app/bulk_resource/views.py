@@ -2,7 +2,8 @@ import json
 from datetime import datetime
 
 import geocoder
-from flask import abort, jsonify, redirect, render_template, request, url_for
+from flask import (abort, flash, jsonify, redirect, render_template, request,
+                   url_for)
 from flask.ext.login import current_user, login_required
 
 from forms import (DetermineDescriptorTypesForm, DetermineOptionsForm,
