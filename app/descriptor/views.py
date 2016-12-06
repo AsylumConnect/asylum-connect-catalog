@@ -1,28 +1,19 @@
-from flask import abort, flash, render_template, redirect, url_for, request
+from flask import abort, flash, redirect, render_template, request, url_for
 from flask.ext.login import login_required
+from flask_wtf.file import InputRequired
 from sqlalchemy.exc import IntegrityError
 from wtforms.fields import SelectField
-from flask_wtf.file import InputRequired
 
-from forms import (
-    AddDescriptorOptionValueForm,
-    EditDescriptorNameForm,
-    EditDescriptorOptionValueForm,
-    EditDescriptorSearchableForm,
-    FixAllResourceOptionValueForm,
-    NewDescriptorForm,
-    ChangeRequiredOptionDescriptorForm,
-    RequiredOptionDescriptorMissingForm
-)
+from forms import (AddDescriptorOptionValueForm,
+                   ChangeRequiredOptionDescriptorForm, EditDescriptorNameForm,
+                   EditDescriptorOptionValueForm, EditDescriptorSearchableForm,
+                   FixAllResourceOptionValueForm, NewDescriptorForm,
+                   RequiredOptionDescriptorMissingForm)
+
 from . import descriptor
 from .. import db
-from ..models import (
-    Descriptor,
-    OptionAssociation,
-    Resource,
-    RequiredOptionDescriptor,
-    RequiredOptionDescriptorConstructor
-)
+from ..models import (Descriptor, OptionAssociation, RequiredOptionDescriptor,
+                      RequiredOptionDescriptorConstructor, Resource)
 
 
 @descriptor.route('/')
@@ -340,9 +331,12 @@ def delete_descriptor_request(desc_id):
     is_option = len(descriptor.values) != 0
     req_opt_desc = RequiredOptionDescriptor.query.all()[0]
     is_required = req_opt_desc.descriptor_id == descriptor.id
-    return render_template('descriptor/manage_descriptor.html',
-                           desc=descriptor, is_option=is_option,
-                           is_required=is_required)
+    return render_template(
+        'descriptor/manage_descriptor.html',
+        desc=descriptor,
+        is_option=is_option,
+        is_required=is_required)
+
 
 @descriptor.route('/<int:desc_id>/delete')
 @login_required
@@ -367,7 +361,9 @@ def delete_descriptor(desc_id):
             is_option=is_option)
     return redirect(url_for('descriptor.index'))
 
-@descriptor.route('/change-required-option-descriptor', methods=['GET', 'POST'])
+
+@descriptor.route(
+    '/change-required-option-descriptor', methods=['GET', 'POST'])
 @login_required
 def change_required_option_descriptor():
     descriptors = Descriptor.query.all()
@@ -379,8 +375,7 @@ def change_required_option_descriptor():
     current_name = ""
     if req_opt_desc.descriptor_id != -1:
         descriptor = Descriptor.query.filter_by(
-            id=req_opt_desc.descriptor_id
-        ).first()
+            id=req_opt_desc.descriptor_id).first()
         if descriptor is not None:
             current_name = descriptor.name
     if current_name != "":
@@ -391,28 +386,28 @@ def change_required_option_descriptor():
                 'Option Descriptor',
                 choices=choices,
                 validators=[InputRequired()],
-                default=current_name)
-        )
+                default=current_name))
         form = ChangeRequiredOptionDescriptorForm()
         if form.validate_on_submit():
             RequiredOptionDescriptorConstructor.query.delete()
             db.session.commit()
             desc = Descriptor.query.filter_by(
-                name=form.descriptor.data
-            ).first()
+                name=form.descriptor.data).first()
             if desc is not None:
-                req_opt_desc_const = RequiredOptionDescriptorConstructor(name=desc.name, values=desc.values)
+                req_opt_desc_const = RequiredOptionDescriptorConstructor(
+                    name=desc.name, values=desc.values)
                 db.session.add(req_opt_desc_const)
                 db.session.commit()
-            return redirect(url_for('descriptor.review_required_option_descriptor'))
+            return redirect(
+                url_for('descriptor.review_required_option_descriptor'))
     else:
         form = None
     return render_template(
-            'descriptor/change_required_option_descriptor.html',
-            form=form
-    )
+        'descriptor/change_required_option_descriptor.html', form=form)
 
-@descriptor.route('/review-required-option-descriptor', methods=['GET', 'POST'])
+
+@descriptor.route(
+    '/review-required-option-descriptor', methods=['GET', 'POST'])
 @login_required
 def review_required_option_descriptor():
     req_opt_desc_const = RequiredOptionDescriptorConstructor.query.all()[0]
@@ -420,37 +415,35 @@ def review_required_option_descriptor():
     missing_resources = []
     resources = Resource.query.all()
     descriptor = Descriptor.query.filter_by(
-                    name=req_opt_desc_const.name
-                 ).first()
+        name=req_opt_desc_const.name).first()
     for r in resources:
         if descriptor is None:
             missing_resources.append(r.name)
         else:
             option_association = OptionAssociation.query.filter_by(
-                                    resource_id = r.id,
-                                    descriptor_id=descriptor.id
-                                 ).first()
+                resource_id=r.id, descriptor_id=descriptor.id).first()
             if option_association is None:
                 missing_resources.append(r.name)
     if request.method == 'POST':
         if len(form.resources.data) < len(missing_resources):
-            flash('Error: You must choose an option for each resource. Please try again.', 'form-error')
+            flash(
+                'Error: You must choose an option for each resource. Please try again.',
+                'form-error')
         else:
             for j, r_name in enumerate(missing_resources):
-                resource = Resource.query.filter_by(
-                    name=r_name
-                ).first()
+                resource = Resource.query.filter_by(name=r_name).first()
                 if resource is not None:
                     for val in form.resources.data[j]:
                         new_association = OptionAssociation(
-                                            resource_id=resource.id,
-                                            descriptor_id=descriptor.id,
-                                            option=descriptor.values.index(val),
-                                            resource=resource,
-                                            descriptor=descriptor)
+                            resource_id=resource.id,
+                            descriptor_id=descriptor.id,
+                            option=descriptor.values.index(val),
+                            resource=resource,
+                            descriptor=descriptor)
                         db.session.add(new_association)
                 RequiredOptionDescriptor.query.delete()
-                req_opt_desc = RequiredOptionDescriptor(descriptor_id=descriptor.id)
+                req_opt_desc = RequiredOptionDescriptor(
+                    descriptor_id=descriptor.id)
                 db.session.add(req_opt_desc)
                 db.session.commit()
             return redirect(url_for('descriptor.index'))
@@ -458,5 +451,5 @@ def review_required_option_descriptor():
         form.resources.append_entry()
         form.resources[j].label = r_name
         form.resources[j].choices = [(v, v) for v in req_opt_desc_const.values]
-    return render_template('descriptor/review_required_option_descriptor.html', form=form)
-
+    return render_template(
+        'descriptor/review_required_option_descriptor.html', form=form)

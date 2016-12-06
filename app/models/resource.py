@@ -85,10 +85,12 @@ class Descriptor(db.Model):
     def is_option_descriptor(self):
         return len(self.values) > 0
 
+
 class RequiredOptionDescriptor(db.Model):
     __tablename__ = 'required_option_descriptor'
     id = db.Column(db.Integer, primary_key=True)
-    descriptor_id = db.Column(db.Integer, db.ForeignKey('descriptors.id'));
+    descriptor_id = db.Column(db.Integer, db.ForeignKey('descriptors.id'))
+
     @staticmethod
     def insert_required_option_descriptor():
         required_option_descriptor = RequiredOptionDescriptor(descriptor_id=-1)

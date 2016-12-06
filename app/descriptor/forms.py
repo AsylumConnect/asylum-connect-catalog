@@ -1,6 +1,6 @@
 from flask.ext.wtf import Form
-from wtforms.fields import (BooleanField, FieldList, SelectField, SelectMultipleField, SubmitField,
-                            StringField)
+from wtforms.fields import (BooleanField, FieldList, SelectField,
+                            SelectMultipleField, StringField, SubmitField)
 from wtforms.validators import InputRequired, Length
 
 

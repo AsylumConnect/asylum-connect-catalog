@@ -147,6 +147,7 @@ class CsvBodyCell(db.Model):
     csv_row_id = db.Column(db.Integer, db.ForeignKey('csv_body_rows.id'))
     data = db.Column(db.Text)
 
+
 class RequiredOptionDescriptorConstructor(db.Model):
     __tablename__ = 'required_option_descriptor_constructor'
     id = db.Column(db.Integer, primary_key=True)
