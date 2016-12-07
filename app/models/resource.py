@@ -263,7 +263,6 @@ class Resource(ResourceBase):
                 address=address,
                 latitude=doc['lat'],
                 longitude=doc['long'])
-            print doc['name'];
             description_association = TextAssociation(
                 text=doc['description'], descriptor=description_descriptor)
             resource.text_descriptors.append(description_association)
@@ -342,7 +341,6 @@ class Resource(ResourceBase):
                         descriptor=feature_descriptor,
                         option=feature_descriptor.values.index(feature))
                     resource.option_descriptors.append(feature_association)
-                print features
 
             if city:
                 city_association = OptionAssociation(
