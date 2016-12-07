@@ -20,7 +20,7 @@ categories:
   - Community Centers
 supercategories:
   - Education
-  - Community
+  - Community Support
 features:
   - Confidential
   - Free

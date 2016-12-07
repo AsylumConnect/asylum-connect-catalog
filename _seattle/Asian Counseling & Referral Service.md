@@ -41,7 +41,7 @@ categories:
   - Cultural Centers
 supercategories:
   - Legal
-  - Community
+  - Community Support
 features:
   - Confidential
   - Free

@@ -21,11 +21,10 @@ categories:
   - Hygiene
   - Employment
   - Community Centers
-  - Laundry
 supercategories:
   - Medical
   - Education
-  - Community
+  - Community Support
   - Mental Health
 features:
   - Confidential

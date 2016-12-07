@@ -22,7 +22,7 @@ categories:
 supercategories:
   - Education
   - Mental Health
-  - Community
+  - Community Support
 features:
   - Confidential
   - Free

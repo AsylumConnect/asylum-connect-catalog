@@ -17,10 +17,10 @@ additional_information: "Groups are led by trained peer facilitators. Most group
 categories:
   - Support Groups
   - Community Centers
-  - Recreation
+  - Sport & Entertainment
 supercategories:
   - Mental Health
-  - Community
+  - Community Support
 features:
   - Confidential
   - Free

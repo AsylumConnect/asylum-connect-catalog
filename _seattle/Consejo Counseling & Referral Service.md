@@ -23,7 +23,7 @@ categories:
   - Psychiatry
 supercategories:
   - Medical
-  - Community
+  - Community Support
   - Mental Health
 features:
   - Confidential

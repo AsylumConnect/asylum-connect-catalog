@@ -16,13 +16,13 @@ non_english_services:
 additional_information: While Gay City Health Project emphasizes services to gay men, all genders and orientations are welcome.
 categories:
   - Sexual Health
-  - Computers
-  - LGBT Centers
+  - Computers & Internet
+  - LGBTQ+ Centers
   - Libraries
-  - Recreation
+  - Sport & Entertainment
 supercategories:
   - Medical
-  - Community
+  - Community Support
   - Education
 features:
   - Confidential

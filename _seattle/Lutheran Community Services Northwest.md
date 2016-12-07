@@ -26,7 +26,7 @@ categories:
 supercategories:
   - Medical
   - Legal
-  - Community
+  - Community Support
   - Mental Health
 features:
   - Confidential

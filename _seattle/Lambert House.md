@@ -18,7 +18,7 @@ categories:
   - Computers & Internet
   - Libraries
   - Community Centers
-  - LGBT Centers
+  - LGBTQ+ Centers
   - Support Groups
 supercategories:
   - Community Support
