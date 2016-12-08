@@ -12,4 +12,6 @@ dist
 *.egg-info
 *.sqlite
 .idea
+.ropeproject/
+*.swp
 migrations/
