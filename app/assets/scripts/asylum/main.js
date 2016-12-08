@@ -19,6 +19,8 @@ var buttonClick = function (button, list) {
 
 var displayResources = function() {
   $('.resource').removeClass("active"); // hide all resources
+  $('#hidden-buttons').html('');
+
   if (map) {
     hideAllMapPoints();
   }
@@ -36,6 +38,20 @@ var displayResources = function() {
       displaySelectedMapPoints(toDisplay);
     }
   }
+
+  // handle showing checked options as buttons in print view
+  categories.forEach(function(category) {
+    // first get attributes of this button
+    var $elem = $('#' + category.substring(1));
+    if($elem.is(":checkbox")) {
+      var label = $elem.data('label');
+      var icon = $elem.data('ic');
+
+      var htmlString = '<button type="button" class="btn-category btn btn-default active" data-toggle="button"><span class="icon-' + icon + ' btn-icon"></span>' + label + '</button>';
+
+      $(htmlString).appendTo('#hidden-buttons');
+    }
+  });
 }
 
 var geocoder;
@@ -136,6 +152,30 @@ function initMap() {
       });
     }
   });
+//  // try geolocation
+//  if (navigator.geolocation) {
+//    navigator.geolocation.getCurrentPosition(function(position) {
+//        var pos = {
+//            lat: position.coords.latitude,
+//            lng: position.coords.longitude
+//        };
+//
+//        infoWindow.setPosition(pos)
+//        infoWindow.setContent('Location found.');
+//        map.setCenter(pos);
+//    }, function() {
+//            handleLocationError(true, infoWindow, map.getCenter());
+//    });
+//  } else {
+//    // browser doesn't support geolocation
+//    handleLocationError(false, infoWindow, map.getCenter());
+//    }
+//}
+//function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+//   infoWindow.setPosition(pos);
+//   infoWindow.setContent(browserHasGeolocation ?
+//                         'Error: The Geolocation service failed.' :
+//                         'Error: Your browser doesn\'t support geolocation.');
 }
 
 $(document).ready(function(){

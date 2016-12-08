@@ -1,0 +1,35 @@
+@media screen {
+  .hide-in-screen {
+    display: none;
+  }
+}
+
+@media print {
+  .btn {
+    display: none;
+  }
+
+  .btn.active {
+    display: inline-block;
+  }
+
+  .resource.active .resource-content {
+    display: block !important;
+    page-break-inside: avoid;
+  }
+
+  .resource.active {
+    /* tries to avoid resources being split between 2 pages */
+    page-break-inside: avoid;
+  }
+
+  html, body {
+    /* trims excess white pages */
+    height: auto;
+  }
+
+  .hide-in-print {
+    display: none;
+  }
+
+}

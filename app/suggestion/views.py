@@ -4,7 +4,7 @@ import pytz
 from flask import abort, flash, redirect, render_template, url_for
 from flask.ext.login import login_required
 from sqlalchemy.exc import IntegrityError
-from wtforms.fields import FormField, SelectField, TextAreaField
+from wtforms.fields import FormField, SelectMultipleField, TextAreaField
 
 from forms import ContactInformationForm, ResourceSuggestionForm
 
@@ -76,7 +76,7 @@ def suggest_create():
             setattr(
                 ResourceSuggestionForm,
                 descriptor.name,
-                SelectField(choices=choices))
+                SelectMultipleField(choices=choices))
         else:  # Fields for text descriptors.
             setattr(ResourceSuggestionForm, descriptor.name, TextAreaField())
 
@@ -118,27 +118,28 @@ def suggest_create():
 
 @suggestion.route('/<int:resource_id>', methods=['GET', 'POST'])
 def suggest_edit(resource_id):
+    """Create a suggestion for a resource edit."""
     resource = Resource.query.get(resource_id)
     if resource is None:
         abort(404)
     name = resource.name
 
-    resource_field_names = ['name', 'address', 'latitude', 'longitude']
+    resource_field_names = Resource.__table__.columns.keys()
     descriptors = Descriptor.query.all()
     for descriptor in descriptors:
         if descriptor.is_option_descriptor:
             choices = [(str(i), v) for i, v in enumerate(descriptor.values)]
             default = None
-            option_association = OptionAssociation.query.filter_by(
+            option_associations = OptionAssociation.query.filter_by(
                 resource_id=resource_id, descriptor_id=descriptor.id).first()
-            if option_association is not None:
-                default = option_association.option
+            if option_associations is not None:
+                default = [assoc.option for assoc in option_associations]
             setattr(
                 ResourceSuggestionForm,
                 descriptor.name,
-                SelectField(
+                SelectMultipleField(
                     choices=choices, default=default))
-        else:  # Fields for text descriptors.
+        else:
             default = None
             text_association = TextAssociation.query.filter_by(
                 resource_id=resource_id, descriptor_id=descriptor.id).first()
@@ -173,7 +174,8 @@ def suggest_edit(resource_id):
             submission_time=datetime.now(pytz.timezone('US/Eastern')))
         # Field id is not needed for the form, hence omitted with [1:].
         for field_name in resource_field_names[1:]:
-            setattr(resource_suggestion, field_name, form[field_name].data)
+            if field_name in form:
+                setattr(resource_suggestion, field_name, form[field_name].data)
         save_associations(
             resource_suggestion=resource_suggestion,
             form=form,
@@ -188,7 +190,8 @@ def suggest_edit(resource_id):
             flash('Database error occurred. Please try again.', 'error')
 
     for field_name in resource_field_names:
-        form[field_name].data = resource.__dict__[field_name]
+        if field_name in form:
+            form[field_name].data = resource.__dict__[field_name]
 
     return render_template('suggestion/suggest.html', form=form, name=name)
 

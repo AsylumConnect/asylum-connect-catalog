@@ -22,8 +22,9 @@
       </div>
       <div class="filters">
         <!-- data-spy="affix" data-offset-top="280" -->
-        <h3 id="location-query">Find LGBTQ- and asylum-friendly resources in
-          <div class="btn-group">
+        <h3 id="location-query"><span class="hide-in-screen">Showing</span><span class="hide-in-print">Find</span> LGBTQ- and asylum-friendly resources in
+          <span class="hide-in-screen">{{ city }}</span>
+          <div class="hide-in-print btn-group">
             <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
               {{ city }}
               <span class="caret"></span>
@@ -33,24 +34,26 @@
                 <li><a href="{{ url_for('.city_view', city_name=option.lower()) }}">{{ option.title() }}</a></li>
               {% endfor %}
             </ul>
-        </div>
+          </div>
         .</h3>
-        <h4 id="category-query">What types of service are you looking for? Select all that apply:</h4>
+      <h4 id="category-query" class="hide-in-print">What types of service are you looking for? Select all that apply:</h4>
+      <h4 id="category-query" class="hide-in-screen">Listing services in the following categories:</h4>
+      <span id="hidden-buttons" class="hide-in-screen"> </span>
         <div class="btn-group">
           <button type="button" id="medical" class="btn-category-group btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="icon-medical btn-icon"></span>Medical<span class="fa fa-angle-down"></span></button>
           <ul class="dropdown-menu">
-            <li><a href="#"><label><input type="checkbox" id="medical-clinics"/>Medical Clinics</label></a></li>
-            <li><a href="#"><label><input type="checkbox" id="womens-health"/>Women's Health</label></a></li>
-            <li><a href="#"><label><input type="checkbox" id="sexual-health"/>Sexual Health</label></a></li>
-            <li><a href="#"><label><input type="checkbox" id="trans-health"/>Trans Health</label></a></li>
-            <li><a href="#"><label><input type="checkbox" id="dental-care"/>Dental Care</label></a></li>
+            <li><a href="#"><label><input type="checkbox" data-label="Medical Clinics" data-ic="medical" id="medical-clinics"/>Medical Clinics</label></a></li>
+            <li><a href="#"><label><input type="checkbox" data-label="Women's Health" data-ic="medical" id="womens-health"/>Women's Health</label></a></li>
+            <li><a href="#"><label><input type="checkbox" data-label="Sexual Health" data-ic="medical" id="sexual-health"/>Sexual Health</label></a></li>
+            <li><a href="#"><label><input type="checkbox" data-label="Trans Health" data-ic="medical" id="trans-health"/>Trans Health</label></a></li>
+            <li><a href="#"><label><input type="checkbox" data-label="Dental Care" data-ic="medical" id="dental-care"/>Dental Care</label></a></li>
           </ul>
         </div>
         <div class="btn-group">
           <button type="button" id="legal" class="btn-category-group btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="icon-legal btn-icon"></span>Legal<span class="fa fa-angle-down"></span></button>
           <ul class="dropdown-menu">
-            <li><a href="#"><label><input type="checkbox" id="legal-aid"/>Legal Aid</label></a></li>
-            <li><a href="#"><label><input type="checkbox" id="documentation"/>Documentation</label></a></li>
+            <li><a href="#"><label><input type="checkbox" data-label="Legal Aid" data-ic="legal" id="legal-aid"/>Legal Aid</label></a></li>
+            <li><a href="#"><label><input type="checkbox" data-label="Documentation" data-ic="legal" id="documentation"/>Documentation</label></a></li>
           </ul>
         </div>
         <button type="button" id="housing" class="btn-category btn btn-default" data-toggle="button"><span class="icon-housing btn-icon"></span>Housing</button>
@@ -61,30 +64,31 @@
         <div class="btn-group">
           <button type="button" id="education" class="btn-category-group btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="icon-education btn-icon"></span>Education<span class="fa fa-angle-down"></span></button>
           <ul class="dropdown-menu">
-            <li><a href="#"><label><input type="checkbox" id="english-classes"/>English Classes</label></a></li>
-            <li><a href="#"><label><input type="checkbox" id="libraries"/>Libraries</label></a></li>
+            <li><a href="#"><label><input type="checkbox" data-label="English Classes" data-ic="education" id="english-classes"/>English Classes</label></a></li>
+            <li><a href="#"><label><input type="checkbox" data-label="Libraries" data-ic="education" id="libraries"/>Libraries</label></a></li>
           </ul>
         </div>
         <div class="btn-group">
           <button type="button" id="community" class="btn-category-group btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="icon-community btn-icon"></span>Community Support<span class="fa fa-angle-down"></span></button>
           <ul class="dropdown-menu">
-            <li><a href="#"><label><input type="checkbox" id="community-centers"/>Community Centers</label></a></li>
-            <li><a href="#"><label><input type="checkbox" id="lgbt-centers"/>LGBT Centers</label></a></li>
-            <li><a href="#"><label><input type="checkbox" id="cultural-centers"/>Cultural Centers</label></a></li>
+            <li><a href="#"><label><input type="checkbox" data-label="Community Centers" data-ic="community" id="community-centers"/>Community Centers</label></a></li>
+            <li><a href="#"><label><input type="checkbox" data-label="LGBT Centers" data-ic="community" id="lgbt-centers"/>LGBT Centers</label></a></li>
+            <li><a href="#"><label><input type="checkbox" data-label="Cultural Centers" data-ic="community" id="cultural-centers"/>Cultural Centers</label></a></li>
           </ul>
         </div>
         <div class="btn-group">
           <button type="button" id="mental-health" class="btn-category-group btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="icon-mental-health btn-icon"></span>Mental Health<span class="fa fa-angle-down"></span></button>
           <ul class="dropdown-menu">
-            <li><a href="#"><label><input type="checkbox" id="support-groups"/>Support Groups</label></a></li>
-            <li><a href="#"><label><input type="checkbox" id="private-counseling"/>Private Counseling</label></a></li>
-            <li><a href="#"><label><input type="checkbox" id="psychiatry"/>Psychiatry</label></a></li>
+            <li><a href="#"><label><input type="checkbox" data-label="Support Groups" data-ic="mental-health" id="support-groups"/>Support Groups</label></a></li>
+            <li><a href="#"><label><input type="checkbox" data-label="Private Counseling" data-ic="mental-health" id="private-counseling"/>Private Counseling</label></a></li>
+            <li><a href="#"><label><input type="checkbox" data-label="Psychiatry" data-ic="mental-health" id="psychiatry"/>Psychiatry</label></a></li>
           </ul>
         </div>
         <button type="button" id="mail" class="btn-category btn btn-default" data-toggle="button"><span class="icon-mail btn-icon"></span>Mail</button>
         <button type="button" id="recreation" class="btn-category btn btn-default" data-toggle="button"><span class="icon-recreation btn-icon"></span>Sport & Entertainment</button>
 
-        <h4 id="feature-query">What additional features are important to you? Select all that apply:</h4>
+        <h4 id="feature-query" class="hide-in-print">What additional features are important to you? Select all that apply:</h4>
+        <h4 id="category-query" class="hide-in-screen">With these additional required features:</h4>
         <button type="button" id="confidential" class="btn-filter btn btn-default" data-toggle="button"><span class="icon-confidential btn-icon"></span>Confidential</button>
         <button type="button" id="free" class="btn-filter btn btn-default" data-toggle="button"><span class="icon-free btn-icon"></span>Free</button>
         <button type="button" id="translation" class="btn-filter btn btn-default" data-toggle="button"><span class="icon-translation btn-icon"></span>Language Translation Available</button>
