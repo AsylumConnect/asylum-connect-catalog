@@ -60,7 +60,7 @@ var displaySelectedMapPoints = function(toDisplay) {
 }
 
 function googleTranslateElementInit() {
-  new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, gaTrack: true, gaId: 'UA-76058112-1'}, 'google_translate_element');
+  new google.translate.TranslateElement({pageLanguage: 'en', gaTrack: true, gaId: 'UA-76058112-1'}, 'google_translate_element');
 }
 
 function initMap() {
