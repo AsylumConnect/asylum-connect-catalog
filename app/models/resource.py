@@ -85,6 +85,16 @@ class Descriptor(db.Model):
     def is_option_descriptor(self):
         return len(self.values) > 0
 
+class RequiredOptionDescriptor(db.Model):
+    __tablename__ = 'required_option_descriptor'
+    id = db.Column(db.Integer, primary_key=True)
+    descriptor_id = db.Column(db.Integer);
+    @staticmethod
+    def insert_required_option_descriptor():
+        required_option_descriptor = RequiredOptionDescriptor(descriptor_id=-1)
+        db.session.add(required_option_descriptor)
+        db.session.commit()
+
 
 class ResourceBase(db.Model):
     """

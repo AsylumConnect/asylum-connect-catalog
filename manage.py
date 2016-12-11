@@ -1,6 +1,21 @@
 #!/usr/bin/env python
 import os
 import subprocess
+
+from app import create_app, db
+from app.models import (
+    CsvBodyCell,
+    CsvBodyRow,
+    CsvContainer,
+    CsvHeaderCell,
+    CsvHeaderRow,
+    Resource,
+    Role,
+    User,
+    RequiredOptionDescriptor,
+)
+from redis import Redis
+from rq import Worker, Queue, Connection
 from config import Config
 
 from flask.ext.migrate import Migrate, MigrateCommand
@@ -111,6 +126,7 @@ def setup_prod():
 def setup_general():
     """Runs the set-up needed for both local development and production."""
     Role.insert_roles()
+    RequiredOptionDescriptor.insert_required_option_descriptor()
 
 
 @manager.command
