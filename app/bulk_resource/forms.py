@@ -1,7 +1,7 @@
 from flask.ext.wtf import Form
 from flask_wtf.file import InputRequired
 from wtforms.fields import (FieldList, FormField, RadioField, SelectField,
-                            SelectMultipleField, StringField, SubmitField,
+                            SelectMultipleField, SubmitField,
                             TextAreaField)
 
 
