@@ -5,10 +5,6 @@ import geocoder
 from flask import (abort, flash, jsonify, redirect, render_template, request,
                    url_for)
 from flask.ext.login import current_user, login_required
-from flask.ext.wtf import Form
-from flask_wtf.file import InputRequired
-from wtforms.fields import (FieldList, FormField, RadioField,
-                            SelectMultipleField)
 
 from forms import (DetermineDescriptorTypesForm, DetermineOptionsForm,
                    DetermineRequiredOptionDescriptorForm, NavigationForm,
