@@ -197,7 +197,8 @@ def get_required_option_descriptor():
             # If chosen descriptor is not an existing descriptor, search
             # the descriptors in the uploaded csv
             for header_cell in csv_container.csv_header_row.csv_header_cells:
-                if header_cell.data == form.required_option_descriptor.data \
+                if header_cell.data == \
+                        form.required_option_descriptor.data \
                         and header_cell.descriptor_type == 'option':
                     values = []
                     for v in header_cell.predicted_options:
