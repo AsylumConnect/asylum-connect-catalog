@@ -1,14 +1,15 @@
 import json
 from datetime import datetime
 
-from flask import render_template, url_for, request, jsonify, redirect
+from flask import jsonify, redirect, render_template, request, url_for
 from flask.ext.login import login_required
 
 from app import csrf
-from .. import db
-from ..models import EditableHTML, Resource, Rating, Descriptor, OptionAssociation, RequiredOptionDescriptor
+
 from . import main
 from .. import db
+from ..models import (Descriptor, EditableHTML, OptionAssociation, Rating,
+                      RequiredOptionDescriptor, Resource)
 
 
 @main.route('/')
@@ -74,8 +75,7 @@ def search_resources():
     resource_pool = Resource.query.filter(Resource.name.contains(name)).all()
     req_opt_desc = RequiredOptionDescriptor.query.all()[0]
     req_opt_desc = Descriptor.query.filter_by(
-        id=req_opt_desc.descriptor_id
-    ).first()
+        id=req_opt_desc.descriptor_id).first()
     resources = list(resource_pool)
     if req_opt_desc is not None and len(req_options) > 0:
         resources = []
@@ -84,9 +84,7 @@ def search_resources():
             int_req_options.append(req_opt_desc.values.index(str(o)))
         for resource in resource_pool:
             associations = OptionAssociation.query.filter_by(
-                resource_id=resource.id,
-                descriptor_id=req_opt_desc.id
-            )
+                resource_id=resource.id, descriptor_id=req_opt_desc.id)
             for a in associations:
                 if a.option in int_req_options:
                     resources.append(resource)
