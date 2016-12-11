@@ -8,7 +8,8 @@ from app import csrf
 
 from . import main
 from .. import db
-from ..models import EditableHTML, Rating, Resource
+from ..models import (Descriptor, EditableHTML, OptionAssociation, Rating,
+                      RequiredOptionDescriptor, Resource)
 
 
 @main.route('/')
@@ -39,6 +40,14 @@ def city_view(city_name):
     resources = Resource.get_resources_in_city(city)
     resources_as_dicts = Resource.get_resources_as_full_dicts(resources)
 
+    req_opt_desc = RequiredOptionDescriptor.query.all()[0]
+    req_opt_desc = Descriptor.query.filter_by(
+        id=req_opt_desc.descriptor_id).first()
+    req_options = {}
+    if req_opt_desc is not None:
+        for val in req_opt_desc.values:
+            req_options[val] = False
+
     return render_template(
         'main/index.html',
         city=city,
@@ -54,9 +63,31 @@ def get_resources():
     return json.dumps(resources_as_dicts)
 
 
-@main.route('/search-resources/<query_name>')
-def search_resources(query_name):
-    resources = Resource.query.filter(Resource.name.contains(query_name))
+@main.route('/search-resources')
+def search_resources():
+    name = request.args.get('name')
+    if name is None:
+        name = ""
+    req_options = request.args.getlist('reqoption')
+    if req_options is None:
+        req_options = []
+    resource_pool = Resource.query.filter(Resource.name.contains(name)).all()
+    req_opt_desc = RequiredOptionDescriptor.query.all()[0]
+    req_opt_desc = Descriptor.query.filter_by(
+        id=req_opt_desc.descriptor_id).first()
+    resources = list(resource_pool)
+    if req_opt_desc is not None and len(req_options) > 0:
+        resources = []
+        int_req_options = []
+        for o in req_options:
+            int_req_options.append(req_opt_desc.values.index(str(o)))
+        for resource in resource_pool:
+            associations = OptionAssociation.query.filter_by(
+                resource_id=resource.id, descriptor_id=req_opt_desc.id)
+            for a in associations:
+                if a.option in int_req_options:
+                    resources.append(resource)
+                    break
     resources_as_dicts = Resource.get_resources_as_dicts(resources)
     return json.dumps(resources_as_dicts)
 
