@@ -30,7 +30,7 @@ categories:
 supercategories:
   - Legal
   - Education
-  - Community
+  - Community Support
 features:
   - Confidential
   - Free

@@ -19,11 +19,11 @@ categories:
   - Sexual Health
   - Community Centers
   - Cultural Centers
-  - LGBT Centers
+  - LGBTQ+ Centers
   - Support Groups
 supercategories:
   - Medical
-  - Community
+  - Community Support
   - Mental Health
 features:
   - Confidential
