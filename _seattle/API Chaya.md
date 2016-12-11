@@ -36,4 +36,3 @@ features:
   - Free
   - Translation
 city: Seattle
----
