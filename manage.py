@@ -10,9 +10,9 @@ from rq import Connection, Queue, Worker
 
 from app import create_app, db
 from app.models import (CsvBodyCell, CsvBodyRow, CsvContainer, CsvHeaderCell,
-                        CsvHeaderRow, Descriptor, OptionAssociation, Resource,
-                        ResourceBase, ResourceSuggestion, Role,
-                        TextAssociation, User)
+                        CsvHeaderRow, Descriptor, OptionAssociation,
+                        RequiredOptionDescriptor, Resource, ResourceBase,
+                        ResourceSuggestion, Role, TextAssociation, User)
 
 # Import settings from .env file. Must define FLASK_CONFIG
 if os.path.exists('.env'):
@@ -111,6 +111,7 @@ def setup_prod():
 def setup_general():
     """Runs the set-up needed for both local development and production."""
     Role.insert_roles()
+    RequiredOptionDescriptor.insert_required_option_descriptor()
 
 
 @manager.command

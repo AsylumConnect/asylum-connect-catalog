@@ -1,6 +1,6 @@
 from flask.ext.wtf import Form
-from wtforms.fields import (BooleanField, FieldList, SelectField, SubmitField,
-                            TextField)
+from wtforms.fields import (BooleanField, FieldList, SelectField,
+                            SelectMultipleField, SubmitField, TextField)
 from wtforms.validators import InputRequired, Length
 
 
@@ -38,3 +38,12 @@ class AddDescriptorOptionValueForm(Form):
 
 class FixAllResourceOptionValueForm(Form):
     submit = SubmitField('Update resource option values')
+
+
+class ChangeRequiredOptionDescriptorForm(Form):
+    submit = SubmitField('Change')
+
+
+class RequiredOptionDescriptorMissingForm(Form):
+    resources = FieldList(SelectMultipleField(validators=[InputRequired()]))
+    submit = SubmitField('Update')

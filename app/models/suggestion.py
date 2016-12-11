@@ -20,7 +20,7 @@ class ResourceSuggestion(ResourceBase):
     contact_email = db.Column(db.String(64))
     contact_phone_number = db.Column(db.String(64))
     resource_name = db.Column(db.String(64))
-    resource_address = db.Column(db.String(64))
+    resource_address = db.Column(db.String(250))
 
     __mapper_args__ = {'polymorphic_identity': 'resource_suggestion'}
 

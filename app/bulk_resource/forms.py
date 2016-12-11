@@ -1,6 +1,7 @@
 from flask.ext.wtf import Form
 from flask_wtf.file import InputRequired
-from wtforms.fields import (FieldList, FormField, RadioField, SubmitField,
+from wtforms.fields import (FieldList, FormField, RadioField, SelectField,
+                            SelectMultipleField, StringField, SubmitField,
                             TextAreaField)
 
 
@@ -10,11 +11,22 @@ class NavigationForm(Form):
     submit_back = SubmitField('Back')
 
 
+class DetermineRequiredOptionDescriptorForm(Form):
+    required_option_descriptor = SelectField(
+        'Required Option Descriptor', validators=[InputRequired()])
+    navigation = FormField(NavigationForm)
+
+
 class DetermineDescriptorTypesForm(Form):
     descriptor_types = FieldList(
         RadioField(
             choices=[('text', 'Text'), ('option', 'Option')],
             validators=[InputRequired()]))
+    navigation = FormField(NavigationForm)
+
+
+class RequiredOptionDescriptorMissingForm(Form):
+    resources = FieldList(SelectMultipleField(validators=[InputRequired()]))
     navigation = FormField(NavigationForm)
 
 
