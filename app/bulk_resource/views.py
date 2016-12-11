@@ -7,7 +7,7 @@ from flask import (abort, flash, jsonify, redirect, render_template, request,
 from flask.ext.login import current_user, login_required
 
 from forms import (DetermineDescriptorTypesForm, DetermineOptionsForm,
-                   DetermineRequiredOptionDescriptorForm, NavigationForm,
+                   DetermineRequiredOptionDescriptorForm,
                    RequiredOptionDescriptorMissingForm, SaveCsvDataForm)
 
 from . import bulk_resource
@@ -177,7 +177,8 @@ def get_required_option_descriptor():
             return redirect(url_for('bulk_resource.upload'))
         elif form.required_option_descriptor.data == "":
             flash(
-                'Error: You must select a required option descriptor. Please try again.',
+                'Error: You must select a required option descriptor.'
+                'Please try again.',
                 'form-error')
         else:
             # Try to find which descriptor has been selected
@@ -198,7 +199,8 @@ def get_required_option_descriptor():
             # If chosen descriptor is not an existing descriptor, search
             # the descriptors in the uploaded csv
             for header_cell in csv_container.csv_header_row.csv_header_cells:
-                if header_cell.data == form.required_option_descriptor.data and header_cell.descriptor_type == 'option':
+                if header_cell.data == form.required_option_descriptor.data and \
+                                header_cell.descriptor_type == 'option':
                     values = []
                     for v in header_cell.predicted_options:
                         values.append(v)
@@ -291,7 +293,8 @@ def review_required_option_descriptor():
         req_opt_desc_const.missing_dict = {}
         if len(form.resources.data) < len(missing_resources):
             flash(
-                'Error: You must choose an option for each resource. Please try again.',
+                'Error: You must choose an option for each resource.'
+                'Please try again.',
                 'form-error')
         else:
             for j, r_name in enumerate(missing_resources):
