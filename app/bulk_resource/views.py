@@ -71,6 +71,7 @@ def upload_data():
         redirect=redirect_url
     )
 
+
 @bulk_resource.route('/update-data', methods=['GET'])
 @login_required
 def update_data():
@@ -108,11 +109,14 @@ def update_data():
                     name=descriptor_name
                 ).first()
                 if descriptor is None:
-                    errors.append('Descriptor {} is invalid'.format(descriptor_name))
+                    errors.append('Descriptor {} is invalid'.
+                                  format(descriptor_name))
                     continue
 
-                text_associations = [td for td in resource.text_descriptors if td.descriptor_id == descriptor.id]
-                option_associations = [od for od in resource.option_descriptors if od.descriptor_id == descriptor.id]
+                text_associations = [td for td in resource.text_descriptors
+                                     if td.descriptor_id == descriptor.id]
+                option_associations = [od for od in resource.option_descriptors
+                                       if od.descriptor_id == descriptor.id]
 
                 for text_association in text_associations:
                     db.session.delete(text_association)
@@ -150,6 +154,7 @@ def update_data():
 
     db.session.commit()
     return redirect(url_for('single_resource.index'))
+
 
 @bulk_resource.route('/review-descriptor-types', methods=['GET', 'POST'])
 @login_required

@@ -391,8 +391,9 @@ class Resource(ResourceBase):
             # set ratings
             res['avg_rating'] = resource.get_avg_ratings()
 
-            # .__dict__ returns the SQLAlchemy object as a dict, but it also adds a
-            # field '_sa_instance_state' that we don't need, so we delete it.
+            # .__dict__ returns the SQLAlchemy object as a dict, but it
+            # also adds a field '_sa_instance_state' that we don't need,
+            # so we delete it.
             del res['_sa_instance_state']
             resources_as_dicts.append(res)
         return resources_as_dicts
