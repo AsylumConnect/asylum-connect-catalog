@@ -1,8 +1,7 @@
 from flask import abort, flash, redirect, render_template, request, url_for
 from flask.ext.login import login_required
-from flask_wtf.file import InputRequired
 from sqlalchemy.exc import IntegrityError
-from wtforms.fields import SelectField, SelectMultipleField, TextAreaField
+from wtforms.fields import SelectMultipleField, TextAreaField
 
 from . import single_resource
 from .. import db
@@ -71,7 +70,7 @@ def search_resources():
 def create():
     """Add a resource."""
     descriptors = Descriptor.query.all()
-    req_opt_desc = RequiredOptionDescriptor.query.all()[0]
+    # req_opt_desc = RequiredOptionDescriptor.query.all()[0]
     for descriptor in descriptors:
         if descriptor.values:  # Fields for option descriptors.
             choices = [(str(i), v) for i, v in enumerate(descriptor.values)]
@@ -114,7 +113,7 @@ def edit(resource_id):
         abort(404)
     resource_field_names = Resource.__table__.columns.keys()
     descriptors = Descriptor.query.all()
-    req_opt_desc = RequiredOptionDescriptor.query.all()[0]
+    # req_opt_desc = RequiredOptionDescriptor.query.all()[0]
     for descriptor in descriptors:
         if descriptor.values:  # Fields for option descriptors.
             choices = [(str(i), v) for i, v in enumerate(descriptor.values)]

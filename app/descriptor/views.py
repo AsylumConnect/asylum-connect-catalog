@@ -425,9 +425,8 @@ def review_required_option_descriptor():
                 missing_resources.append(r.name)
     if request.method == 'POST':
         if len(form.resources.data) < len(missing_resources):
-            flash(
-                'Error: You must choose an option for each resource. Please try again.',
-                'form-error')
+            flash('Error: You must choose an option for each resource.'
+                  'Please try again.', 'form-error')
         else:
             for j, r_name in enumerate(missing_resources):
                 resource = Resource.query.filter_by(name=r_name).first()
