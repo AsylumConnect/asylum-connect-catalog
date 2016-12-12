@@ -123,24 +123,24 @@ def update_editor_contents():
 
 
 @csrf.exempt
-@main.route('/resource-view', methods=['POST'])
+@main.route('/rating-post', methods=['POST'])
 def post_rating():
     if request is not None:
-        time = datetime.now()
-        star_rating = request.json['rating']
-        comment = request.json['review']
-        if comment and star_rating:
-            rating = Rating(
-                submission_time=time, rating=star_rating, review=comment)
-            db.session.add(rating)
-            db.session.commit()
-        elif star_rating:
-            rating = Rating(submission_time=time, rating=star_rating)
-            db.session.add(rating)
-            db.session.commit()
+            time = datetime.now()
+            star_rating = request.json['rating']
+            comment = request.json['review']
+            resourceID = request.json['id']
+            if comment and star_rating:
+                rating = Rating(submission_time=time,
+                                rating=star_rating,
+                                review=comment,
+                                resource_id=resourceID)
+                db.session.add(rating)
+                db.session.commit()
+            elif star_rating:
+                rating = Rating(submission_time=time,
+                                rating=star_rating,
+                                resource_id=resourceID)
+                db.session.add(rating)
+                db.session.commit()
     return jsonify(status='success')
-
-
-@main.route('/resource-view', methods=['GET'])
-def resource():
-    return render_template('main/resource.html')
