@@ -368,11 +368,33 @@ class Resource(ResourceBase):
 
     @staticmethod
     def get_resources_as_dicts(resources):
-        resources_as_dicts = [resource.__dict__ for resource in resources]
-        # .__dict__ returns the SQLAlchemy object as a dict, but it also adds a
-        # field '_sa_instance_state' that we don't need, so we delete it.
-        for d in resources_as_dicts:
-            del d['_sa_instance_state']
+        # get required option descriptor
+        req_opt_desc = RequiredOptionDescriptor.query.all()[0]
+        req_opt_desc = Descriptor.query.filter_by(
+            id=req_opt_desc.descriptor_id
+        ).first()
+
+        resources_as_dicts = []
+        for resource in resources:
+            res = resource.__dict__
+
+            # set required option descriptor
+            req = []
+            if req_opt_desc is not None:
+                associations = OptionAssociation.query.filter_by(
+                    resource_id=resource.id,
+                    descriptor_id=req_opt_desc.id
+                ).all()
+                req = [a.descriptor.values[a.option] for a in associations]
+            res['requiredOpts'] = req
+
+            # set ratings
+            res['avg_rating'] = resource.get_avg_ratings()
+
+            # .__dict__ returns the SQLAlchemy object as a dict, but it also adds a
+            # field '_sa_instance_state' that we don't need, so we delete it.
+            del res['_sa_instance_state']
+            resources_as_dicts.append(res)
         return resources_as_dicts
 
     @staticmethod
@@ -458,10 +480,9 @@ class Resource(ResourceBase):
     def get_avg_ratings(self):
         ratings = Rating.query.filter_by(resource_id=self.id).all()
         if not ratings:
-            return -1.0
-
+            return 0.0
         total_sum = float(sum(r.rating for r in ratings))
-        return '%.1f' % total_sum / len(ratings)
+        return '%.1f' % (total_sum / len(ratings))
 
     def get_all_ratings(self):
         ratings = Rating.query.filter_by(resource_id=self.id).all()
