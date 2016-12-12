@@ -123,7 +123,7 @@ def update_editor_contents():
 
 
 @csrf.exempt
-@main.route('/rating-post', methods =['POST'])
+@main.route('/rating-post', methods=['POST'])
 def post_rating():
     if request is not None:
             time = datetime.now()
