@@ -202,7 +202,7 @@ def save_associations(resource_suggestion, form, descriptors):
     for descriptor in descriptors:
         if descriptor.is_option_descriptor:
             AssociationClass = OptionAssociation
-            value = int(form[descriptor.name].data)
+            value = int(form[descriptor.name].data[0])
             keyword = 'option'
         else:
             AssociationClass = TextAssociation
