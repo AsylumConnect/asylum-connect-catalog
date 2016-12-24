@@ -75,10 +75,10 @@ def search_resources():
     resource_pool = Resource.query.filter(Resource.name.contains(name)).all()
     req_opt_desc = RequiredOptionDescriptor.query.all()[0]
     req_opt_desc = Descriptor.query.filter_by(
-        id=req_opt_desc.descriptor_id).first()
-    resources = list(resource_pool)
+        id=req_opt_desc.descriptor_id
+    ).first()
+    resources = []
     if req_opt_desc is not None and len(req_options) > 0:
-        resources = []
         int_req_options = []
         for o in req_options:
             int_req_options.append(req_opt_desc.values.index(str(o)))
@@ -89,6 +89,39 @@ def search_resources():
                 if a.option in int_req_options:
                     resources.append(resource)
                     break
+    opt_options = request.args.getlist('optoption')
+    option_map = {}
+    # Create a dict, option_map, that maps from option names to a list of user selected values
+    for opt in opt_options:
+        if opt != "null":
+            option_val = opt.split(',')
+            for opt_val in option_val:
+                key_val = opt_val.split(':')
+                if key_val[0] in option_map:
+                    option_map[key_val[0]].append(key_val[1])
+                else:
+                    option_map[key_val[0]] = [key_val[1]]
+
+    descriptors = Descriptor.query.all()
+    new_pool = resource_pool
+    if len(req_options) > 0:
+        new_pool = resources
+        resources = []
+    # Iterate through resources and check that there's a match for all of the options
+    # that the user selected. If there is, add that resource to the list of resources
+    for resource in new_pool:
+        number_of_options_found = 0
+        for opt in option_map.keys():
+            opt_descriptors = OptionAssociation.query.filter_by(
+                resource_id=resource.id
+            )
+            for desc in opt_descriptors:
+                if desc.descriptor.name == opt:
+                    if desc.descriptor.values[desc.option] in option_map[opt]:
+                        number_of_options_found += 1
+                        break
+        if number_of_options_found == len(option_map.keys()):
+            resources.append(resource)
     resources_as_dicts = Resource.get_resources_as_dicts(resources)
     return json.dumps(resources_as_dicts)
 

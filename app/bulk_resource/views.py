@@ -98,6 +98,7 @@ def update_data():
             db.session.add(resource)
 
         else:
+            resource.address = address
             resource.latitude = g.latlng[0]
             resource.longitude = g.latlng[1]
 
@@ -134,6 +135,8 @@ def update_data():
                     for s in cell.data.split(';'):
                         if s in values:
                             assocValues.append(values.index(s))
+                        else:
+                            errors.append('{} is an invalid option for {}'.format(s, descriptor_name))
                     keyword = 'option'
                 for value in assocValues:
                     arguments = {
@@ -152,6 +155,7 @@ def update_data():
             flash(error, 'error')
         abort(400)
 
+    db.session.add(resource)
     db.session.commit()
     return redirect(url_for('single_resource.index'))
 
