@@ -91,7 +91,8 @@ def search_resources():
                     break
     opt_options = request.args.getlist('optoption')
     option_map = {}
-    # Create a dict, option_map, that maps from option names to a list of user selected values
+    # Create a dict, option_map, that maps from option names to a list
+    # of user selected values
     for opt in opt_options:
         if opt != "null":
             option_val = opt.split(',')
@@ -102,13 +103,15 @@ def search_resources():
                 else:
                     option_map[key_val[0]] = [key_val[1]]
 
-    descriptors = Descriptor.query.all()
+    # descriptors = Descriptor.query.all()
     new_pool = resource_pool
     if len(req_options) > 0:
         new_pool = resources
         resources = []
-    # Iterate through resources and check that there's a match for all of the options
-    # that the user selected. If there is, add that resource to the list of resources
+    # Iterate through resources and check that there's a match for
+    # all of the options
+    # that the user selected. If there is, add that resource to the
+    # list of resources
     for resource in new_pool:
         number_of_options_found = 0
         for opt in option_map.keys():

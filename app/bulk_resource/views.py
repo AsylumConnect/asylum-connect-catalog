@@ -136,7 +136,8 @@ def update_data():
                         if s in values:
                             assocValues.append(values.index(s))
                         else:
-                            errors.append('{} is an invalid option for {}'.format(s, descriptor_name))
+                            errors.append('{} is an invalid option for {}'.
+                                          format(s, descriptor_name))
                     keyword = 'option'
                 for value in assocValues:
                     arguments = {

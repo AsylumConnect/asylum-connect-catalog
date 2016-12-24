@@ -186,7 +186,7 @@ def save_associations(resource, form, descriptors, resource_existed=True):
                     descriptor_id=descriptor.id).first()
 
             if association is not None:
-                ## NEED TO LOOK INTO THIS
+                # NEED TO LOOK INTO THIS
                 setattr(association, keyword, value)
             else:
                 arguments = {
