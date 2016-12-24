@@ -180,10 +180,10 @@ def save_associations(resource, form, descriptors, resource_existed=True):
             keyword = 'text'
         for value in values:
             association = None
-            if resource_existed:
-                associations = AssociationClass.query.filter_by(
-                    resource_id=resource.id,
-                    descriptor_id=descriptor.id).first()
+            # if resource_existed:
+            #     associations = AssociationClass.query.filter_by(
+            #         resource_id=resource.id,
+            #         descriptor_id=descriptor.id).first()
 
             if association is not None:
                 # NEED TO LOOK INTO THIS
