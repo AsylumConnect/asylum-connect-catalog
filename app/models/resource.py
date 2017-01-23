@@ -254,7 +254,7 @@ class Resource(ResourceBase):
 
         city_descriptor = Descriptor(
             name='city',
-            values=['Seattle', 'Philadelphia'],
+            values=['Seattle, Washington', 'Philadelphia, Pennsylvania'],
             is_searchable=True)
 
         script_dir = os.path.dirname("__file__")
