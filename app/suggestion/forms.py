@@ -15,7 +15,7 @@ class ContactInformationForm(Form):
 
 
 class ResourceSuggestionForm(Form):
-    name = StringField('Name', validators=[InputRequired(), Length(1, 512)])
+    name = StringField('Resource Name', validators=[InputRequired(), Length(1, 512)])
     address = StringField(
         'Address', validators=[InputRequired(), Length(1, 512)])
     latitude = FloatField('Latitude', validators=[InputRequired()])
