@@ -118,18 +118,18 @@
             </article>
 
             {% for group in resource.supercategories %}
-            <span class="icon-{{ group.lower().replace(' ', '-') }} btn-icon"></span>
+            <span class="icon-{{ group.lower().replace(' ', '-') }} btn-icon" title="{{ group }}"></span>
             {% endfor %}
 
             {% for category in resource.categories %}
               {% set subcategory = category.lower().replace(' ', '-') %}
               {% if subcategory in category_icons %}
-                <span class="icon-{{ subcategory }} btn-icon"></span>
+                <span class="icon-{{ subcategory }} btn-icon" title="{{ subcategory }}"></span>
               {% endif %}
             {% endfor %}
 
             {% for feature in resource.features %}
-              <span class="icon-{{ feature.lower().replace(' ', '-') }} btn-icon"></span>
+              <span class="icon-{{ feature.lower().replace(' ', '-') }} btn-icon" title="{{ feature }}"></span>
             {% endfor %}
 
             <!-- Google Maps -->
