@@ -103,7 +103,10 @@
 
           {% for resource in resources %}
           <div class="resource{% for category in resource.categories %} {{ category.lower().replace(' ', '-') }}{% endfor %}{% for feature in resource.features %} {{ feature.lower().replace(' ', '-') }}{% endfor %}">
-            <header class="resource-header"><h3 class="resource-name" id="{{ resource.name.lower().replace(' ', '-') }}">{{ resource.name }}</h3></header>
+            <header class="resource-header">
+              <h3 class="resource-name" id="{{ resource.name.lower().replace(' ', '-') }}">{{ resource.name }}</h3>
+              <a href="{{ url_for('suggestion.suggest_edit', resource_id=resource.id) }}">EDIT</h3></a>
+            </header>
             <article class="resource-content">
               {# TODO: fully flesh this out. content_fields are simply the list of fields from the resource object that we display for each resource object, in the order that we want them displayed (so this says description goes first, and non_english_services, if available, goes last #}
               {% set content_fields = ['description', 'populations_served', 'address', 'hours', 'phone_number', 'email', 'website', 'additional_information', 'non_english_services'] %}
