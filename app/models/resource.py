@@ -366,8 +366,8 @@ class Resource(ResourceBase):
                     option=city_descriptor.values.index(city))
                 resource.option_descriptors.append(city_association)
 
-            requirements = doc['requirements']
-            if requirements:
+            if 'requirements' in doc:
+                requirements = doc['requirements']
                 requirements_association = OptionAssociation(
                     descriptor=requirement_descriptor,
                     option=requirement_descriptor.values.index(requirements[0]))
