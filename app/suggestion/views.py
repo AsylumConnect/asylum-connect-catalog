@@ -232,9 +232,8 @@ def save_associations(resource_suggestion, form, descriptors):
                 category_option = int(form[category_descriptor.name].data)
                 category_value = category_values[category_option]
                 supercategory_descriptor = filter(lambda d: d.name == 'supercategory', descriptors)[0]
-                supercategory_values = supercategory_descriptor.values
                 supercategory_value = category_to_supercategory[category_value]
-                value = supercategory_values.index(supercategory_value)
+                value = supercategory_descriptor.values.index(supercategory_value)
             keyword = 'option'
         else:
             AssociationClass = TextAssociation
