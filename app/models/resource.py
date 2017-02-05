@@ -464,7 +464,7 @@ class ResourceBase(db.Model):
 
     @staticmethod
     def print_resources():
-        resources = Resource.query.all()
+        resources = ResourceBase.query.all()
         for resource in resources:
             print resource
             print resource.address

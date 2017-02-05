@@ -6,7 +6,7 @@ from wtforms.fields import SelectMultipleField, TextAreaField
 from . import single_resource
 from .. import db
 from ..models import (Descriptor, OptionAssociation, RequiredOptionDescriptor,
-                      Resource, TextAssociation)
+                      ResourceBase, TextAssociation)
 from .forms import SingleResourceForm
 
 
@@ -14,7 +14,7 @@ from .forms import SingleResourceForm
 @login_required
 def index():
     """View resources in a list."""
-    resources = Resource.query.all()
+    resources = ResourceBase.query.all()
     req_opt_desc = RequiredOptionDescriptor.query.all()[0]
     req_opt_desc = Descriptor.query.filter_by(
         id=req_opt_desc.descriptor_id).first()
@@ -37,7 +37,7 @@ def search_resources():
     req_options = request.args.getlist('reqoption')
     if req_options is None:
         req_options = []
-    resource_pool = Resource.query.filter(Resource.name.contains(name)).all()
+    resource_pool = ResourceBase.query.filter(ResourceBase.name.contains(name)).all()
     req_opt_desc = RequiredOptionDescriptor.query.all()[0]
     req_opt_desc = Descriptor.query.filter_by(
         id=req_opt_desc.descriptor_id).first()
@@ -111,10 +111,10 @@ def create():
 @login_required
 def edit(resource_id):
     """Edit a resource."""
-    resource = Resource.query.get(resource_id)
+    resource = ResourceBase.query.get(resource_id)
     if resource is None:
         abort(404)
-    resource_field_names = Resource.__table__.columns.keys()
+    resource_field_names = ResourceBase.__table__.columns.keys()
     descriptors = Descriptor.query.all()
     # req_opt_desc = RequiredOptionDescriptor.query.all()[0]
     for descriptor in descriptors:
@@ -238,7 +238,7 @@ def save_associations(resource, form, descriptors, resource_existed):
 @login_required
 def delete(resource_id):
     """Delete a resource."""
-    resource = Resource.query.get(resource_id)
+    resource = ResourceBase.query.get(resource_id)
     db.session.delete(resource)
     try:
         db.session.commit()

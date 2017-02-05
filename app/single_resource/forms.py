@@ -12,10 +12,10 @@ class SingleResourceForm(Form):
         InputRequired(),
         Length(1, 500)
     ])
-    latitude = FloatField('Latitude', validators=[
+    latitude = HiddenField('Latitude', validators=[
         InputRequired()
     ])
-    longitude = FloatField('Longitude', validators=[
+    longitude = HiddenField('Longitude', validators=[
         InputRequired()
     ])
     submit = SubmitField('Save Resource')

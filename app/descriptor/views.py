@@ -13,7 +13,7 @@ from forms import (AddDescriptorOptionValueForm,
 from . import descriptor
 from .. import db
 from ..models import (Descriptor, OptionAssociation, RequiredOptionDescriptor,
-                      RequiredOptionDescriptorConstructor, Resource)
+                      RequiredOptionDescriptorConstructor, ResourceBase)
 
 
 @descriptor.route('/')
@@ -390,7 +390,7 @@ def review_required_option_descriptor():
     req_opt_desc_const = RequiredOptionDescriptorConstructor.query.all()[0]
     form = RequiredOptionDescriptorMissingForm()
     missing_resources = []
-    resources = Resource.query.all()
+    resources = ResourceBase.query.all()
     descriptor = Descriptor.query.filter_by(
         name=req_opt_desc_const.name).first()
     for r in resources:
@@ -407,7 +407,7 @@ def review_required_option_descriptor():
                   'Please try again.', 'form-error')
         else:
             for j, r_name in enumerate(missing_resources):
-                resource = Resource.query.filter_by(name=r_name).first()
+                resource = ResourceBase.query.filter_by(name=r_name).first()
                 if resource is not None:
                     for val in form.resources.data[j]:
                         new_association = OptionAssociation(

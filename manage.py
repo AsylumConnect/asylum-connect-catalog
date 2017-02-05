@@ -11,7 +11,7 @@ from rq import Connection, Queue, Worker
 from app import create_app, db
 from app.models import (CsvBodyCell, CsvBodyRow, CsvContainer, CsvHeaderCell,
                         CsvHeaderRow, Descriptor, OptionAssociation,
-                        RequiredOptionDescriptor, Resource, ResourceBase,
+                        RequiredOptionDescriptor, ResourceBase,
                         ResourceSuggestion, Role, TextAssociation, User)
 
 # Import settings from .env file. Must define FLASK_CONFIG
@@ -38,7 +38,6 @@ def make_shell_context():
         CsvContainer=CsvContainer,
         CsvHeaderCell=CsvHeaderCell,
         CsvHeaderRow=CsvHeaderRow,
-        Resource=Resource,
         ResourceBase=ResourceBase,
         ResourceSuggestion=ResourceSuggestion,
         Descriptor=Descriptor,

@@ -12,7 +12,7 @@ from app import csrf
 from . import main
 from .. import db
 from ..models import (Descriptor, EditableHTML, OptionAssociation, Rating,
-                      RequiredOptionDescriptor, Resource)
+                      RequiredOptionDescriptor, ResourceBase)
 from wtforms.fields import SelectMultipleField, TextAreaField
 from ..single_resource.forms import SingleResourceForm
 
@@ -43,7 +43,7 @@ def index():
 def city_view(city_name):
     city = city_name.title()
 
-    cities = Resource.get_list_of_cities()
+    cities = ResourceBase.get_list_of_cities()
     category_icons = [
         'housing', 'food', 'hygiene', 'computers', 'employment', 'mail',
         'recreation'
@@ -59,8 +59,8 @@ def city_view(city_name):
         website = string
     '''
 
-    resources = Resource.get_resources_in_city(city)
-    resources_as_dicts = Resource.get_resources_as_full_dicts(resources)
+    resources = ResourceBase.get_resources_in_city(city)
+    resources_as_dicts = ResourceBase.get_resources_as_full_dicts(resources)
 
     # req_opt_desc = RequiredOptionDescriptor.query.all()[0]
     # req_opt_desc = Descriptor.query.filter_by(
@@ -80,8 +80,8 @@ def city_view(city_name):
 
 @main.route('/get-resources')
 def get_resources():
-    resources = Resource.query.all()
-    resources_as_dicts = Resource.get_resources_as_full_dicts(resources)
+    resources = ResourceBase.query.all()
+    resources_as_dicts = ResourceBase.get_resources_as_full_dicts(resources)
     return json.dumps(resources_as_dicts)
 
 
@@ -94,7 +94,7 @@ def search_resources():
     if req_options is None:
         req_options = []
     # case insensitive search
-    resource_pool = Resource.query.filter(Resource.name.ilike('%{}%'.format(name))).all()
+    resource_pool = ResourceBase.query.filter(ResourceBase.name.ilike('%{}%'.format(name))).all()
     req_opt_desc = RequiredOptionDescriptor.query.all()[0]
     req_opt_desc = Descriptor.query.filter_by(
         id=req_opt_desc.descriptor_id
@@ -147,13 +147,13 @@ def search_resources():
                         break
         if number_of_options_found == len(option_map.keys()):
             resources.append(resource)
-    resources_as_dicts = Resource.get_resources_as_dicts(resources)
+    resources_as_dicts = ResourceBase.get_resources_as_dicts(resources)
     return json.dumps(resources_as_dicts)
 
 
 @main.route('/get-associations/<int:resource_id>')
 def get_associations(resource_id):
-    resource = Resource.query.get(resource_id)
+    resource = ResourceBase.query.get(resource_id)
     associations = {}
     if resource is None:
         return json.dumps(associations)
@@ -199,7 +199,7 @@ def send_sms():
     if request is not None:
         phone_num= request.json['number']
         resourceID = request.json['id']
-        curr_res = Resource.query.get(resourceID)
+        curr_res = ResourceBase.query.get(resourceID)
         name = "Name: " + curr_res.name
         address = "Address: " + curr_res.address
         message = name +"\n" + address

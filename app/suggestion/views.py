@@ -10,7 +10,7 @@ from forms import ContactInformationForm, ResourceSuggestionForm
 
 from . import suggestion
 from .. import db
-from ..models import (Descriptor, OptionAssociation, Resource,
+from ..models import (Descriptor, OptionAssociation, ResourceBase,
                       ResourceSuggestion, TextAssociation)
 
 
@@ -18,7 +18,7 @@ from ..models import (Descriptor, OptionAssociation, Resource,
 @login_required
 def index():
     """View all suggestions in a list."""
-    suggestions = ResourceSuggestion.query.all()
+    suggestions = ResourceResourceSuggestion.query.all()
     return render_template('suggestion/index.html', suggestions=suggestions)
 
 
@@ -26,8 +26,8 @@ def index():
 @login_required
 def unread():
     """Returns the number of unread suggestions."""
-    num_unread = ResourceSuggestion.query.filter(
-        ResourceSuggestion.read == False  # noqa
+    num_unread = ResourceResourceSuggestion.query.filter(
+        ResourceResourceSuggestion.read == False  # noqa
     ).count()
     return "%d" % num_unread
 
@@ -36,7 +36,7 @@ def unread():
 @login_required
 def toggle_read(sugg_id):
     """Toggles the readability of a given suggestion."""
-    suggestion = ResourceSuggestion.query.get(sugg_id)
+    suggestion = ResourceResourceSuggestion.query.get(sugg_id)
     if suggestion is None:
         abort(404)
     suggestion.read = not suggestion.read
@@ -53,7 +53,7 @@ def toggle_read(sugg_id):
 @login_required
 def delete(sugg_id):
     """Delete a given suggestion."""
-    suggestion = ResourceSuggestion.query.get(sugg_id)
+    suggestion = ResourceResourceSuggestion.query.get(sugg_id)
     if suggestion is None:
         abort(404)
     db.session.delete(suggestion)
@@ -139,12 +139,12 @@ def suggest_create():
 @suggestion.route('/<int:resource_id>', methods=['GET', 'POST'])
 def suggest_edit(resource_id):
     """Create a suggestion for a resource edit."""
-    resource = Resource.query.get(resource_id)
+    resource = ResourceBase.query.get(resource_id)
     if resource is None:
         abort(404)
     name = resource.name
 
-    resource_field_names = Resource.__table__.columns.keys()
+    resource_field_names = ResourceBase.__table__.columns.keys()
     descriptors = Descriptor.query.all()
     for descriptor in descriptors:
         if descriptor.is_option_descriptor:

@@ -8,7 +8,7 @@ from forms import (ChangeAccountTypeForm, ChangeUserEmailForm, InviteUserForm,
 from . import admin
 from .. import db
 from ..email import send_email
-from ..models import Rating, Resource, Role, User
+from ..models import Rating, ResourceBase, Role, User
 
 
 @admin.route('/')
@@ -161,7 +161,7 @@ def ratings_table():
     ratings = Rating.query.all()
     for rating in ratings:
         if rating.resource_id is not None:
-            temp = Resource.query.filter_by(id=rating.resource_id)
+            temp = ResourceBase.query.filter_by(id=rating.resource_id)
             if temp is not None:
                 rating.resource_name = temp.first().name
     return render_template('rating/index.html', ratings=ratings)
