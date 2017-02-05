@@ -242,8 +242,7 @@ class Resource(ResourceBase):
         supercategory_descriptor = Descriptor(
             name='supercategory',
             values=[
-                'Medical', 'Legal', 'Education', 'Community Support',
-                'Mental Health'
+                'Medical', 'Legal', 'Education', 'Community', 'Mental Health'
             ],
             is_searchable=True)
 
