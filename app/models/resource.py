@@ -181,7 +181,7 @@ class ResourceBase(db.Model):
 
             # Create one or two resources with that location.
             for i in range(randint(1, 2)):
-                resource = Resource(
+                resource = ResourceBase(
                     name=fake.name(),
                     address=location.address,
                     latitude=latitude,
@@ -280,7 +280,7 @@ class ResourceBase(db.Model):
                 doc = yaml.load(f)
 
             address = doc['address']
-            resource = Resource(
+            resource = ResourceBase(
                 name=doc['name'],
                 address=address,
                 latitude=doc['lat'],

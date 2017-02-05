@@ -652,7 +652,7 @@ def save_csv():
                 if cached is None:
                     db.session.rollback()
                     abort(404)
-                resource = Resource(
+                resource = ResourceBase(
                     name=name,
                     address=address,
                     latitude=cached.latitude,

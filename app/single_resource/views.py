@@ -85,7 +85,7 @@ def create():
             setattr(SingleResourceForm, descriptor.name, TextAreaField())
     form = SingleResourceForm()
     if form.validate_on_submit():
-        new_resource = Resource(
+        new_resource = ResourceBase(
             name=form.name.data,
             address=form.address.data,
             latitude=form.latitude.data,
