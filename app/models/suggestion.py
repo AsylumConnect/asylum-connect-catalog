@@ -3,7 +3,7 @@ from datetime import datetime
 import pytz
 
 from .. import db
-from ..models.resource import ResourceBase
+from ..models.resource import Resource, ResourceBase
 
 
 class ResourceSuggestion(ResourceBase):
@@ -11,7 +11,9 @@ class ResourceSuggestion(ResourceBase):
     Schema for resource suggestions, which are either new resources to be added
     or changes to be made to existing resources.
     """
-    resource_id = db.Column(db.Integer, db.ForeignKey(ResourceBase.id))
+    # resource_id = db.Column(db.Integer, db.ForeignKey(Resource.id))
+    resource_id = db.Column(db.Integer,
+                            db.ForeignKey('resources.id', ondelete='CASCADE'))
     additional_information = db.Column(db.String(250))
     # 0 stands for read, 1 stands for unread.
     read = db.Column(db.Boolean, default=False)
@@ -62,12 +64,12 @@ class ResourceSuggestion(ResourceBase):
         from sqlalchemy.exc import IntegrityError
         from faker import Faker
         from random import choice
-        from ..models import ResourceBase
+        from ..models import Resource
 
         fake = Faker()
 
         num_words = 10
-        resources = ResourceBase.query.all()
+        resources = Resource.query.all()
         if len(resources) == 0:
             raise Exception('Resources must exist in order to generate fake '
                             'edits.')

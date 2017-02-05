@@ -27,7 +27,7 @@ class OptionAssociation(db.Model):
     resource_id = db.Column(db.Integer, db.ForeignKey('resources.id', ondelete='CASCADE'))
     descriptor_id = db.Column(db.Integer, db.ForeignKey('descriptors.id', ondelete='CASCADE'))
     option = db.Column(db.Integer)
-    resource = db.relationship('Resource',
+    resource = db.relationship('ResourceBase',
                                back_populates='option_descriptors')
     descriptor = db.relationship('Descriptor',
                                  back_populates='option_resources')
@@ -48,7 +48,7 @@ class TextAssociation(db.Model):
     resource_id = db.Column(db.Integer, db.ForeignKey('resources.id', ondelete='CASCADE'))
     descriptor_id = db.Column(db.Integer, db.ForeignKey('descriptors.id', ondelete='CASCADE'))
     text = db.Column(db.Text)
-    resource = db.relationship('Resource', back_populates='text_descriptors')
+    resource = db.relationship('ResourceBase', back_populates='text_descriptors')
     descriptor = db.relationship('Descriptor', back_populates='text_resources')
 
     def __repr__(self):
@@ -132,18 +132,27 @@ class ResourceBase(db.Model):
         back_populates='resource',
         cascade='all, delete-orphan'
     )
+    type = db.Column(db.String(20))
+
+    __mapper_args__ = {
+        'polymorphic_on': type,
+        'polymorphic_identity': 'resource_base'
+    }
+
+    def __repr__(self):
+        return '<ResourceBase \'%s\'>' % self.name
+
+class Resource(ResourceBase):
+    """
+    Schema for approved resources.
+    """
     suggestions = db.relationship(
-        'Suggestion',
+        'ResourceSuggestion',
         backref='resource',
         uselist=True,
-        cascade='all, delete-orphan'
-    )
-    ratings = db.relationship(
-        'Rating',
-        backref='resource',
-        uselist=True,
-        cascade='all, delete-orphan',
-    )
+        remote_side='ResourceSuggestion.id')
+
+    __mapper_args__ = {'polymorphic_identity': 'resource'}
 
     def __repr__(self):
         return '<Resource \'%s\'>' % self.name
@@ -181,7 +190,7 @@ class ResourceBase(db.Model):
 
             # Create one or two resources with that location.
             for i in range(randint(1, 2)):
-                resource = ResourceBase(
+                resource = Resource(
                     name=fake.name(),
                     address=location.address,
                     latitude=latitude,
@@ -280,7 +289,7 @@ class ResourceBase(db.Model):
                 doc = yaml.load(f)
 
             address = doc['address']
-            resource = ResourceBase(
+            resource = Resource(
                 name=doc['name'],
                 address=address,
                 latitude=doc['lat'],
@@ -464,7 +473,7 @@ class ResourceBase(db.Model):
 
     @staticmethod
     def print_resources():
-        resources = ResourceBase.query.all()
+        resources = Resource.query.all()
         for resource in resources:
             print resource
             print resource.address

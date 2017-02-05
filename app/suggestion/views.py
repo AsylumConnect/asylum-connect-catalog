@@ -10,7 +10,7 @@ from forms import ContactInformationForm, ResourceSuggestionForm
 
 from . import suggestion
 from .. import db
-from ..models import (Descriptor, OptionAssociation, ResourceBase,
+from ..models import (Descriptor, OptionAssociation, Resource,
                       ResourceSuggestion, TextAssociation)
 
 
@@ -139,12 +139,12 @@ def suggest_create():
 @suggestion.route('/<int:resource_id>', methods=['GET', 'POST'])
 def suggest_edit(resource_id):
     """Create a suggestion for a resource edit."""
-    resource = ResourceBase.query.get(resource_id)
+    resource = Resource.query.get(resource_id)
     if resource is None:
         abort(404)
     name = resource.name
 
-    resource_field_names = ResourceBase.__table__.columns.keys()
+    resource_field_names = Resource.__table__.columns.keys()
     descriptors = Descriptor.query.all()
     for descriptor in descriptors:
         if descriptor.is_option_descriptor:

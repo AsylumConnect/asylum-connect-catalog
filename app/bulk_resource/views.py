@@ -24,7 +24,7 @@ from ..models import (
     Descriptor,
     OptionAssociation,
     Rating,
-    ResourceBase,
+    Resource,
     RequiredOptionDescriptor,
     RequiredOptionDescriptorConstructor,
     ResourceSuggestion,
@@ -245,7 +245,7 @@ def upload_row():
                 data=clean_row
             )
             # See if resource already exists
-            existing_resource = ResourceBase.query.filter_by(
+            existing_resource = Resource.query.filter_by(
                 name=row['Name']
             ).first()
             if existing_resource is not None:
@@ -516,7 +516,7 @@ def validate_required_option_descriptor():
             if req_descriptor is not None:
                 curr_req = req_descriptor.name
 
-        resources = ResourceBase.query.all()
+        resources = Resource.query.all()
         for r in resources:
             # If no previous required option descriptor
             # or new required is not same as old
@@ -603,7 +603,7 @@ def save_csv():
             ResourceSuggestion.query.filter(ResourceSuggestion.resource_id != None).delete()
             Rating.query.delete()
             Descriptor.query.delete()
-            ResourceBase.query.delete()
+            Resource.query.delete()
 
         # Create/Update descriptors
         for desc in csv_storage.csv_descriptors:
@@ -628,7 +628,7 @@ def save_csv():
         # Create/update rows and descriptor associations
         for row in csv_storage.csv_rows:
             if csv_storage.action == 'update' and row.resource_id:
-                resource = ResourceBase.query.filter_by(
+                resource = Resource.query.filter_by(
                     id=row.resource_id
                 ).first()
                 address = row.data['Address']
@@ -652,7 +652,7 @@ def save_csv():
                 if cached is None:
                     db.session.rollback()
                     abort(404)
-                resource = ResourceBase(
+                resource = Resource(
                     name=name,
                     address=address,
                     latitude=cached.latitude,
@@ -742,7 +742,7 @@ def save_csv():
             # Add associations for the resources missing values for the required option descriptor
             if req_opt_desc_const.missing_dict:
                 for name in req_opt_desc_const.missing_dict.keys():
-                    resource = ResourceBase.query.filter_by(
+                    resource = Resource.query.filter_by(
                         name=name
                     ).first()
                     if resource is not None:
