@@ -233,7 +233,7 @@ class Resource(ResourceBase):
                 'Trans Health', 'Dental Care', 'Legal Aid', 'Documentation',
                 'Housing', 'Food', 'Hygiene', 'Computers & Internet',
                 'Employment', 'English Classes', 'Libraries',
-                'Community Centers', 'Cultural Centers', 'LGBTQ+ Centers',
+                'Community Centers', 'LGBTQ+ Centers', 'Cultural Centers',
                 'Support Groups', 'Private Counseling', 'Psychiatry', 'Mail',
                 'Sport & Entertainment'
             ],
