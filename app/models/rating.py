@@ -10,5 +10,5 @@ class Rating(db.Model):
 	review = db.Column(db.Text)
 	submission_time = db.Column(db.DateTime)
 
-    def __repr__(self):
-        return '%s: %s' % (self.id, self.resource_id)
+	def __repr__(self):
+		return '%s: %s' % (self.id, self.resource_id)
