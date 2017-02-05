@@ -4,7 +4,7 @@ import pytz
 from flask import abort, flash, redirect, render_template, url_for
 from flask.ext.login import login_required
 from sqlalchemy.exc import IntegrityError
-from wtforms.fields import FormField, SelectMultipleField, TextAreaField
+from wtforms.fields import FormField, SelectField, TextAreaField
 
 from forms import ContactInformationForm, ResourceSuggestionForm
 
@@ -65,6 +65,23 @@ def delete(sugg_id):
         flash('Database error occurred. Please try again.', 'error')
     return redirect(url_for('suggestion.index'))
 
+category_to_supercategory = {
+    "Medical Clinics": "Medical",
+    "Women's Health": "Medical",
+    "Sexual Health": "Medical",
+    "Trans Health": "Medical",
+    "Dental Care": "Medical",
+    "Legal Aid": "Legal",
+    "Documentation": "Legal",
+    "English Classes": "Education",
+    "Libraries": "Education",
+    "Community Centers": "Community",
+    "LGBTQ+ Centers": "Community",
+    "Cultural Centers": "Community",
+    "Support Groups": "Mental Health",
+    "Private Counseling": "Mental Health",
+    "Psychiatry": "Mental Health"
+}
 
 @suggestion.route('/new', methods=['GET', 'POST'])
 def suggest_create():
@@ -72,11 +89,14 @@ def suggest_create():
     descriptors = Descriptor.query.all()
     for descriptor in descriptors:
         if descriptor.is_option_descriptor:  # Fields for option descriptors.
-            choices = [(str(i), v) for i, v in enumerate(descriptor.values)]
-            setattr(
-                ResourceSuggestionForm,
-                descriptor.name,
-                SelectMultipleField(choices=choices))
+            if descriptor.name != 'supercategory':
+                choices = [(str(i), v) for i, v in enumerate(descriptor.values)]
+                setattr(
+                    ResourceSuggestionForm,
+                    descriptor.name,
+                    SelectField(choices=choices))
+            else:
+                pass
         else:  # Fields for text descriptors.
             setattr(ResourceSuggestionForm, descriptor.name, TextAreaField())
 
@@ -130,14 +150,14 @@ def suggest_edit(resource_id):
         if descriptor.is_option_descriptor:
             choices = [(str(i), v) for i, v in enumerate(descriptor.values)]
             default = None
-            option_associations = OptionAssociation.query.filter_by(
+            option_association = OptionAssociation.query.filter_by(
                 resource_id=resource_id, descriptor_id=descriptor.id).first()
-            if option_associations is not None:
-                default = [assoc.option for assoc in option_associations]
+            if option_association is not None:
+                default = option_association.option
             setattr(
                 ResourceSuggestionForm,
                 descriptor.name,
-                SelectMultipleField(
+                SelectField(
                     choices=choices, default=default))
         else:
             default = None
@@ -202,7 +222,18 @@ def save_associations(resource_suggestion, form, descriptors):
     for descriptor in descriptors:
         if descriptor.is_option_descriptor:
             AssociationClass = OptionAssociation
-            value = int(form[descriptor.name].data[0])
+            if descriptor.name != 'supercategory':
+                if form[descriptor.name].data == []:
+                    continue
+                value = form[descriptor.name].data[0]
+            else:
+                category_descriptor = filter(lambda d: d.name == 'category', descriptors)[0]
+                category_values = category_descriptor.values
+                category_option = int(form[category_descriptor.name].data)
+                category_value = category_values[category_option]
+                supercategory_descriptor = filter(lambda d: d.name == 'supercategory', descriptors)[0]
+                supercategory_value = category_to_supercategory[category_value]
+                value = supercategory_descriptor.values.index(supercategory_value)
             keyword = 'option'
         else:
             AssociationClass = TextAssociation

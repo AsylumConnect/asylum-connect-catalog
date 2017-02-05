@@ -14,7 +14,7 @@ from ..models import (Descriptor, EditableHTML, OptionAssociation, Rating,
 
 @main.route('/')
 def index():
-    return redirect(url_for('.city_view', city_name='seattle'))
+    return redirect(url_for('.city_view', city_name='seattle, washington'))
 
 
 @main.route('/catalog/<string:city_name>')

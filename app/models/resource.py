@@ -233,7 +233,7 @@ class Resource(ResourceBase):
                 'Trans Health', 'Dental Care', 'Legal Aid', 'Documentation',
                 'Housing', 'Food', 'Hygiene', 'Computers & Internet',
                 'Employment', 'English Classes', 'Libraries',
-                'Community Centers', 'Cultural Centers', 'LGBTQ+ Centers',
+                'Community Centers', 'LGBTQ+ Centers', 'Cultural Centers',
                 'Support Groups', 'Private Counseling', 'Psychiatry', 'Mail',
                 'Sport & Entertainment'
             ],
@@ -254,7 +254,13 @@ class Resource(ResourceBase):
 
         city_descriptor = Descriptor(
             name='city',
-            values=['Seattle', 'Philadelphia'],
+            values=['Seattle, Washington', 'Philadelphia, Pennsylvania'],
+            is_searchable=True)
+
+        requirement_descriptor = Descriptor(
+            name='requirement',
+            values=['Require a Birth Certificate', 'Require Proof of Residence', 'Require a Social Security',
+                    'Require Income Verification', 'Require Contact Information'],
             is_searchable=True)
 
         script_dir = os.path.dirname("__file__")
@@ -359,6 +365,13 @@ class Resource(ResourceBase):
                     descriptor=city_descriptor,
                     option=city_descriptor.values.index(city))
                 resource.option_descriptors.append(city_association)
+
+            if 'requirements' in doc:
+                requirements = doc['requirements']
+                requirements_association = OptionAssociation(
+                    descriptor=requirement_descriptor,
+                    option=requirement_descriptor.values.index(requirements[0]))
+                resource.option_descriptors.append(requirements_association)
 
             db.session.add(resource)
             try:
