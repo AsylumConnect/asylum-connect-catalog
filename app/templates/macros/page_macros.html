@@ -1,20 +1,28 @@
 {% macro render_inline_editor(editable_html_obj, current_user) %}
     {% if current_user.is_admin() %}
-        <div class="ui segment">
-            <div id="editor-{{ editable_html_obj.editor_name }}" class="editor-admin" contenteditable="false">
-            {{ editable_html_obj.value|safe }}
-            </div>
+        <div class="ui positive message updated-alert">
+          <i class="close icon"></i>
+          Updated successfully
         </div>
-       <button class="ui button start-edit">
-        Edit
-       </button>
+        <div class="ui divider"></div>
+        <h3 class="ui header">Extra Instructions</h3>
+        <h4 class="ui header">Inserting Links</h4>
+        <p><i>To insert links and open them in a new tab, choose the "target" tab after clicking the link button, and select "New Window".</i></p>
+        <h4 class="ui header">Linking Phone Numbers</h4> 
+        <p><i>To insert a linkable phone number, choose the "link" button, and in the "Display Text" field type the phone number, in the "Link type" field, choose "URL", in the "Protocol" field choose "other", and in the "URL" field, type "tel:+[countrycode]-[xxx]-[xxx]-[xxxx]", replacing the text with the number you want to link to.</i></p>
+        <button class="ui button start-edit">
+         Edit
+        </button>
+        <div class="ui hidden divider"></div>
+        <div id="editor-{{ editable_html_obj.editor_name }}" class="editor-admin" contenteditable="false">
+        {{ editable_html_obj.value|safe }}
+        </div>
        <button class="ui primary button end-edit">
         Save
        </button>
        <button class="ui primary button cancel-edit">
         Cancel
        </button>
-       <div class="ui positive message updated-alert">Updated successfully</div>
     {% else %}
         <div id="editor-{{ editable_html_obj.editor_name }}" class="editor-user" contenteditable="false">
         {{ editable_html_obj.value|safe }}
@@ -27,7 +35,7 @@
     $(document).ready(function() {
         $(".start-edit").click(function() {
             CKEDITOR.disableAutoInline = true;
-            var editor = CKEDITOR.inline(editorIDName, {
+            var editor = CKEDITOR.replace(editorIDName, {
                 startupFocus: true,
                 autoGrow_onStartup: true
             });
@@ -36,6 +44,7 @@
             editor.on('blur', function(e) {
                 return false;
             });
+
             original_data = CKEDITOR.instances[editorIDName].getData();
             $(".start-edit").hide();
             $(".end-edit").show();
@@ -43,6 +52,7 @@
             $(".updated-alert").hide();
             $("#" + editorIDName).attr("contenteditable","true");
         });
+
         $(".end-edit").click(function() {
             if ( CKEDITOR.instances[editorIDName] ) {
                 var json_data = {
@@ -51,7 +61,7 @@
                     edit_data: CKEDITOR.instances[editorIDName].getData(),
                 };
                 $.post("{{ url_for('main.update_editor_contents') }}", json_data);
-                CKEDITOR.instances[editorIDName].destroy();
+                tearDownEditor();
             }
             $(".end-edit").hide();
             $(".cancel-edit").hide();
@@ -60,28 +70,35 @@
             $("#" + editorIDName).attr("contenteditable","false");
         });
 
-        function cancelEdit(){
-          if ( CKEDITOR.instances[editorIDName] ) {
-                if ( original_data !== null) {
-                    CKEDITOR.instances[editorIDName].setData(original_data);
+        $(".cancel-edit").click(function() {
+            if ( CKEDITOR.instances[editorIDName] ) {
+                if ( original_data !== null ) {
+                  CKEDITOR.instances[editorIDName].setData(original_data, {
+                    // setData is asynchronous so calling editor after needs to
+                    // be in a callback
+                    callback: function() {
+                      tearDownEditor();
+                    }
+                  });
+                } else {
+                  tearDownEditor();
                 }
-                CKEDITOR.instances[editorIDName].destroy();
             }
             $(".cancel-edit").hide();
             $(".end-edit").hide();
             $(".start-edit").show();
             $(".updated-alert").hide();
             $("#" + editorIDName).attr("contenteditable","false");
+        });
+
+        $(".updated-alert .close").click(function() {
+          $(".updated-alert").hide();
+        });
+
+        function tearDownEditor() {
+          CKEDITOR.instances[editorIDName].focusManager.blur(true);
+          CKEDITOR.instances[editorIDName].destroy();
         }
-
-        $(".cancel-edit").click(function() {
-            cancelEdit();
-        });
-
-        //We want the blue focus border to appear even when we click outside of the border in order to denote an edit state
-        $("#" + editorIDName).focusout(function() {
-            this.focus();
-        });
     });
     </script>
 

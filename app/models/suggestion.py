@@ -16,11 +16,11 @@ class ResourceSuggestion(ResourceBase):
     # 0 stands for read, 1 stands for unread.
     read = db.Column(db.Boolean, default=False)
     submission_time = db.Column(db.DateTime)
-    contact_name = db.Column(db.String(64))
-    contact_email = db.Column(db.String(64))
+    contact_name = db.Column(db.String(500))
+    contact_email = db.Column(db.String(500))
     contact_phone_number = db.Column(db.String(64))
-    resource_name = db.Column(db.String(64))
-    resource_address = db.Column(db.String(250))
+    resource_name = db.Column(db.String(500))
+    resource_address = db.Column(db.String(500))
 
     __mapper_args__ = {'polymorphic_identity': 'resource_suggestion'}
 

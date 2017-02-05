@@ -15,21 +15,22 @@ def normalize_string(s):
     return s.lower().replace(' ', '_')
 
 
+
 class OptionAssociation(db.Model):
     """
     Association between a resource and a descriptor with an index for the
-    value of the option.
+    value of the option. Can have multiple OptionAssociation between an
+    option descriptor and resource
     """
     __tablename__ = 'option_associations'
-    resource_id = db.Column(
-        db.Integer, db.ForeignKey('resources.id'), primary_key=True)
-    descriptor_id = db.Column(
-        db.Integer, db.ForeignKey('descriptors.id'), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    resource_id = db.Column(db.Integer, db.ForeignKey('resources.id', ondelete='CASCADE'))
+    descriptor_id = db.Column(db.Integer, db.ForeignKey('descriptors.id', ondelete='CASCADE'))
     option = db.Column(db.Integer)
-    resource = db.relationship(
-        'ResourceBase', back_populates='option_descriptors')
-    descriptor = db.relationship(
-        'Descriptor', back_populates='option_resources')
+    resource = db.relationship('Resource',
+                               back_populates='option_descriptors')
+    descriptor = db.relationship('Descriptor',
+                                 back_populates='option_resources')
 
     def __repr__(self):
         return '%s: %s' % (self.descriptor.name,
@@ -39,16 +40,15 @@ class OptionAssociation(db.Model):
 class TextAssociation(db.Model):
     """
     Association between a resource and a descriptor with a text field for the
-    value of the descriptor.
+    value of the descriptor. Currently only support one text association between
+    a resource and descriptor.
     """
     __tablename__ = 'text_associations'
-    resource_id = db.Column(
-        db.Integer, db.ForeignKey('resources.id'), primary_key=True)
-    descriptor_id = db.Column(
-        db.Integer, db.ForeignKey('descriptors.id'), primary_key=True)
-    text = db.Column(db.String(1024))
-    resource = db.relationship(
-        'ResourceBase', back_populates='text_descriptors')
+    id = db.Column(db.Integer, primary_key=True)
+    resource_id = db.Column(db.Integer, db.ForeignKey('resources.id', ondelete='CASCADE'))
+    descriptor_id = db.Column(db.Integer, db.ForeignKey('descriptors.id', ondelete='CASCADE'))
+    text = db.Column(db.Text)
+    resource = db.relationship('Resource', back_populates='text_descriptors')
     descriptor = db.relationship('Descriptor', back_populates='text_resources')
 
     def __repr__(self):
@@ -62,17 +62,19 @@ class Descriptor(db.Model):
     """
     __tablename__ = 'descriptors'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), index=True)
-    values = db.Column(db.PickleType)
+    name = db.Column(db.String(500), index=True)
+    values = db.Column(db.PickleType) # should only have value for option descriptor
     is_searchable = db.Column(db.Boolean)
     text_resources = db.relationship(
         'TextAssociation',
         back_populates='descriptor',
-        cascade='save-update, merge, delete, delete-orphan')
+        cascade='all, delete-orphan'
+    )
     option_resources = db.relationship(
         'OptionAssociation',
         back_populates='descriptor',
-        cascade='save-update, merge, delete, delete-orphan')
+        cascade='all, delete-orphan'
+    )
 
     def __repr__(self):
         return '<Descriptor \'%s\'>' % self.name
@@ -85,14 +87,25 @@ class Descriptor(db.Model):
     def is_option_descriptor(self):
         return len(self.values) > 0
 
+    def value_string(self):
+        if not self.values:
+            return ''
+        l = list(self.values)
+        l.sort()
+        return ', '.join(map(str, l))
+
 
 class RequiredOptionDescriptor(db.Model):
+    """ Option descriptor designated as a required option descriptor meaning
+    that all resources need to have an option association for this descriptor.
+    Restricted to one.
+    """
     __tablename__ = 'required_option_descriptor'
     id = db.Column(db.Integer, primary_key=True)
-    descriptor_id = db.Column(db.Integer)
+    descriptor_id = db.Column(db.Integer); # -1 if none
 
     @staticmethod
-    def insert_required_option_descriptor():
+    def init_required_option_descriptor():
         required_option_descriptor = RequiredOptionDescriptor(descriptor_id=-1)
         db.session.add(required_option_descriptor)
         db.session.commit()
@@ -105,40 +118,32 @@ class ResourceBase(db.Model):
     """
     __tablename__ = 'resources'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(128), index=True)
-    address = db.Column(db.String(128))
+    name = db.Column(db.String(500), index=True)
+    address = db.Column(db.String(500))
     latitude = db.Column(db.Float)
     longitude = db.Column(db.Float)
     text_descriptors = db.relationship(
         'TextAssociation',
         back_populates='resource',
-        cascade='save-update, merge, delete, delete-orphan')
+        cascade='all, delete-orphan'
+    )
     option_descriptors = db.relationship(
         'OptionAssociation',
         back_populates='resource',
-        cascade='save-update, merge, delete, delete-orphan')
-    type = db.Column(db.String(20))
-
-    __mapper_args__ = {
-        'polymorphic_on': type,
-        'polymorphic_identity': 'resource_base'
-    }
-
-    def __repr__(self):
-        return '<ResourceBase \'%s\'>' % self.name
-
-
-class Resource(ResourceBase):
-    """
-    Schema for approved resources.
-    """
+        cascade='all, delete-orphan'
+    )
     suggestions = db.relationship(
-        'ResourceSuggestion',
+        'Suggestion',
         backref='resource',
         uselist=True,
-        remote_side='ResourceSuggestion.id')
-
-    __mapper_args__ = {'polymorphic_identity': 'resource'}
+        cascade='all, delete-orphan'
+    )
+    ratings = db.relationship(
+        'Rating',
+        backref='resource',
+        uselist=True,
+        cascade='all, delete-orphan',
+    )
 
     def __repr__(self):
         return '<Resource \'%s\'>' % self.name

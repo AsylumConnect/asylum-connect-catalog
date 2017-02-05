@@ -5,18 +5,18 @@ from wtforms.validators import InputRequired, Length
 
 
 class NewDescriptorForm(Form):
-    desc_type = SelectField(
-        'Descriptor type',
-        choices=[('Text', 'Text'), ('Option', 'Option')],
-        validators=[InputRequired()])
-    name = TextField('Name', validators=[InputRequired(), Length(1, 64)])
-    option_values = FieldList(TextField('Option', [Length(0, 64)]))
+    desc_type = SelectField('Descriptor type',
+                            choices=[('Text', 'Text'), ('Option', 'Option')],
+                            validators=[InputRequired()]
+                            )
+    name = TextField('Name', validators=[InputRequired(), Length(1, 500)])
+    option_values = FieldList(TextField('Option', [Length(0, 500)]))
     is_searchable = BooleanField('Searchable')
     submit = SubmitField('Add descriptor')
 
 
 class EditDescriptorNameForm(Form):
-    name = TextField('Name', validators=[InputRequired(), Length(1, 64)])
+    name = TextField('Name', validators=[InputRequired(), Length(1, 500)])
     submit = SubmitField('Update name')
 
 
@@ -26,18 +26,18 @@ class EditDescriptorSearchableForm(Form):
 
 
 class EditDescriptorOptionValueForm(Form):
-    value = TextField(
-        'Option Value', validators=[InputRequired(), Length(1, 64)])
+    value = TextField('Option Value',
+                      validators=[InputRequired(), Length(1, 500)])
     submit = SubmitField('Update option value')
 
 
 class AddDescriptorOptionValueForm(Form):
-    value = TextField('', validators=[InputRequired(), Length(1, 64)])
+    value = TextField('', validators=[InputRequired(), Length(1, 500)])
     submit = SubmitField('Add option')
 
 
 class FixAllResourceOptionValueForm(Form):
-    submit = SubmitField('Update resource option values')
+    submit = SubmitField('I understand, delete this option')
 
 
 class ChangeRequiredOptionDescriptorForm(Form):

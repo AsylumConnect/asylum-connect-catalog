@@ -30,6 +30,26 @@
         </div>
 
         <div class="twelve wide column">
+            <h2 class="ui header">
+                CSV Upload Workflow
+            </h2>
+        </div>
+        <div class="twelve wide column">
+          <h4 class="ui header">
+            Set Required Option Descriptor
+            <div class="sub header">
+              Select one of the following option descriptors to be the required option descriptor.
+              Required option descriptor denotes an option descriptor that every resource
+              needs to have a value for and will be the primary filter in search.
+              You can only choose from the option descriptors in the current CSV and the
+              current required option descriptor (if any).
+              {% if current %}
+                <p>The current required option descriptor is: <b>{{ current }}</b></p>
+              {% endif %}
+            </div>
+          </h4>
+        </div>
+        <div class="twelve wide column">
             {{ f.render_form(form) }}
         </div>
     </div>
