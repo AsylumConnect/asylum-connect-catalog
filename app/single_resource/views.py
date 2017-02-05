@@ -72,12 +72,15 @@ def create():
     descriptors = Descriptor.query.all()
     # req_opt_desc = RequiredOptionDescriptor.query.all()[0]
     for descriptor in descriptors:
-        if descriptor.values:  # Fields for option descriptors.
-            choices = [(str(i), v) for i, v in enumerate(descriptor.values)]
-            setattr(
-                SingleResourceForm,
-                descriptor.name,
-                SelectMultipleField(choices=choices))
+        if descriptor.is_option_descriptor:  # Fields for option descriptors.
+            if descriptor.name != 'supercategory':
+                choices = [(str(i), v) for i, v in enumerate(descriptor.values)]
+                setattr(
+                    SingleResourceForm,
+                    descriptor.name,
+                    SelectMultipleField(choices=choices))
+            else:
+                pass
         else:  # Fields for text descriptors
             setattr(SingleResourceForm, descriptor.name, TextAreaField())
     form = SingleResourceForm()
@@ -165,14 +168,44 @@ def edit(resource_id):
     return render_template(
         'single_resource/edit.html', form=form, resource_id=resource_id)
 
+category_to_supercategory = {
+    "Medical Clinics": "Medical",
+    "Women's Health": "Medical",
+    "Sexual Health": "Medical",
+    "Trans Health": "Medical",
+    "Dental Care": "Medical",
+    "Legal Aid": "Legal",
+    "Documentation": "Legal",
+    "English Classes": "Education",
+    "Libraries": "Education",
+    "Community Centers": "Community",
+    "LGBTQ+ Centers": "Community",
+    "Cultural Centers": "Community",
+    "Support Groups": "Mental Health",
+    "Private Counseling": "Mental Health",
+    "Psychiatry": "Mental Health"
+}
 
 def save_associations(resource, form, descriptors, resource_existed=True):
     """Save associations from the forms received by 'create' and 'edit' route
     handlers to the database."""
     for descriptor in descriptors:
-        if descriptor.values:
+        if descriptor.is_option_descriptor:
             AssociationClass = OptionAssociation
-            values = [int(i) for i in form[descriptor.name].data]
+            if descriptor.name != 'supercategory':
+                if form[descriptor.name].data == []:
+                    continue
+                    values = [int(i) for i in form[descriptor.name].data]
+            else:
+                category_descriptor = filter(lambda d: d.name == 'category', descriptors)[0]
+                category_values = category_descriptor.values
+                category_options = [int(i) for i in form[category_descriptor.name].data]
+                category_values = [category_values[category_option] for category_option in category_options]
+                supercategory_descriptor = filter(lambda d: d.name == 'supercategory', descriptors)[0]
+                supercategory_values = [category_to_supercategory[category_value]
+                                        for category_value in category_values]
+                values = [supercategory_descriptor.values.index(supercategory_value)
+                          for supercategory_value in supercategory_values]
             keyword = 'option'
         else:
             AssociationClass = TextAssociation
