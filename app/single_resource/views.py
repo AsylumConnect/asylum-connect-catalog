@@ -162,7 +162,7 @@ def edit(resource_id):
                   'form-error')
     # Field id is not needed for the form, hence omitted with [1:].
     for field_name in resource_field_names[1:]:
-        if form[field_name]:
+        if field_name in form:
             form[field_name].data = resource.__dict__[field_name]
     return render_template('single_resource/edit.html',
                            form=form,
