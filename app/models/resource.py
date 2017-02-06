@@ -249,7 +249,7 @@ class Resource(ResourceBase):
                 'Trans Health', 'Dental Care', 'Legal Aid', 'Documentation',
                 'Housing', 'Food', 'Hygiene', 'Computers & Internet',
                 'Employment', 'English Classes', 'Libraries',
-                'Community Centers', 'LGBTQ+ Centers', 'Cultural Centers',
+                'Community Centers', 'LGBT Centers', 'Cultural Centers',
                 'Support Groups', 'Private Counseling', 'Psychiatry', 'Mail',
                 'Sport & Entertainment'
             ],
@@ -357,26 +357,27 @@ class Resource(ResourceBase):
 
             city = doc['city']
 
-            first_category = categories[0]
-            category_association = OptionAssociation(
-                descriptor=category_descriptor,
-                option=category_descriptor.values.index(first_category))
-            resource.option_descriptors.append(category_association)
+            if categories:
+                for category in categories:
+                    category_association = OptionAssociation(
+                        descriptor=category_descriptor,
+                        option=category_descriptor.values.index(category))
+                    resource.option_descriptors.append(category_association)
 
             if supercategories:
-                first_supercategory = supercategories[0]
-                supercategory_association = OptionAssociation(
-                    descriptor=supercategory_descriptor,
-                    option=supercategory_descriptor.values.index(
-                        first_supercategory))
-                resource.option_descriptors.append(supercategory_association)
+                for supercategory in supercategories:
+                    supercategory_association = OptionAssociation(
+                        descriptor=supercategory_descriptor,
+                        option=supercategory_descriptor.values.index(
+                            supercategory))
+                    resource.option_descriptors.append(supercategory_association)
 
             if features:
-                first_feature = features[0]
-                feature_association = OptionAssociation(
-                    descriptor=feature_descriptor,
-                    option=feature_descriptor.values.index(first_feature))
-                resource.option_descriptors.append(feature_association)
+                for feature in features:
+                    feature_association = OptionAssociation(
+                        descriptor=feature_descriptor,
+                        option=feature_descriptor.values.index(feature))
+                    resource.option_descriptors.append(feature_association)
 
             if city:
                 city_association = OptionAssociation(
