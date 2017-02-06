@@ -18,7 +18,7 @@ from ..models import (Descriptor, OptionAssociation, Resource,
 @login_required
 def index():
     """View all suggestions in a list."""
-    suggestions = ResourceResourceSuggestion.query.all()
+    suggestions = ResourceSuggestion.query.all()
     return render_template('suggestion/index.html', suggestions=suggestions)
 
 
@@ -26,8 +26,8 @@ def index():
 @login_required
 def unread():
     """Returns the number of unread suggestions."""
-    num_unread = ResourceResourceSuggestion.query.filter(
-        ResourceResourceSuggestion.read == False  # noqa
+    num_unread = ResourceSuggestion.query.filter(
+        ResourceSuggestion.read == False  # noqa
     ).count()
     return "%d" % num_unread
 
@@ -36,7 +36,7 @@ def unread():
 @login_required
 def toggle_read(sugg_id):
     """Toggles the readability of a given suggestion."""
-    suggestion = ResourceResourceSuggestion.query.get(sugg_id)
+    suggestion = ResourceSuggestion.query.get(sugg_id)
     if suggestion is None:
         abort(404)
     suggestion.read = not suggestion.read
@@ -53,7 +53,7 @@ def toggle_read(sugg_id):
 @login_required
 def delete(sugg_id):
     """Delete a given suggestion."""
-    suggestion = ResourceResourceSuggestion.query.get(sugg_id)
+    suggestion = ResourceSuggestion.query.get(sugg_id)
     if suggestion is None:
         abort(404)
     db.session.delete(suggestion)
