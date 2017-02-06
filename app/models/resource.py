@@ -242,28 +242,28 @@ class Resource(ResourceBase):
         additional_information_descriptor = Descriptor(
             name='additional information', values=[], is_searchable=True)
 
-        category_descriptor = Descriptor(
-            name='category',
+        categories_descriptor = Descriptor(
+            name='categories',
             values=[
                 'Medical Clinics', 'Women\'s Health', 'Sexual Health',
                 'Trans Health', 'Dental Care', 'Legal Aid', 'Documentation',
                 'Housing', 'Food', 'Hygiene', 'Computers & Internet',
                 'Employment', 'English Classes', 'Libraries',
-                'Community Centers', 'LGBTQ+ Centers', 'Cultural Centers',
+                'Community Centers', 'LGBT Centers', 'Cultural Centers',
                 'Support Groups', 'Private Counseling', 'Psychiatry', 'Mail',
                 'Sport & Entertainment'
             ],
             is_searchable=True)
 
-        supercategory_descriptor = Descriptor(
-            name='supercategory',
+        supercategories_descriptor = Descriptor(
+            name='supercategories',
             values=[
                 'Medical', 'Legal', 'Education', 'Community', 'Mental Health'
             ],
             is_searchable=True)
 
-        feature_descriptor = Descriptor(
-            name='feature',
+        features_descriptor = Descriptor(
+            name='features',
             values=['Confidential', 'Free', 'Translation'],
             is_searchable=True)
 
@@ -357,26 +357,27 @@ class Resource(ResourceBase):
 
             city = doc['city']
 
-            first_category = categories[0]
-            category_association = OptionAssociation(
-                descriptor=category_descriptor,
-                option=category_descriptor.values.index(first_category))
-            resource.option_descriptors.append(category_association)
+            if categories:
+                for category in categories:
+                    category_association = OptionAssociation(
+                        descriptor=categories_descriptor,
+                        option=categories_descriptor.values.index(category))
+                    resource.option_descriptors.append(category_association)
 
             if supercategories:
-                first_supercategory = supercategories[0]
-                supercategory_association = OptionAssociation(
-                    descriptor=supercategory_descriptor,
-                    option=supercategory_descriptor.values.index(
-                        first_supercategory))
-                resource.option_descriptors.append(supercategory_association)
+                for supercategory in supercategories:
+                    supercategory_association = OptionAssociation(
+                        descriptor=supercategories_descriptor,
+                        option=supercategories_descriptor.values.index(
+                            supercategory))
+                    resource.option_descriptors.append(supercategory_association)
 
             if features:
-                first_feature = features[0]
-                feature_association = OptionAssociation(
-                    descriptor=feature_descriptor,
-                    option=feature_descriptor.values.index(first_feature))
-                resource.option_descriptors.append(feature_association)
+                for feature in features:
+                    feature_association = OptionAssociation(
+                        descriptor=features_descriptor,
+                        option=features_descriptor.values.index(feature))
+                    resource.option_descriptors.append(feature_association)
 
             if city:
                 city_association = OptionAssociation(
@@ -434,6 +435,7 @@ class Resource(ResourceBase):
         # maps array of resources to array of useful dictionaries containing
         # all of the information/associations for that resources
         resources_as_dicts = []
+
         for resource in resources:
             resource_as_dict = resource.__dict__
             resource_as_dict['long'] = resource_as_dict['longitude']
@@ -446,7 +448,10 @@ class Resource(ResourceBase):
             for od in resource.option_descriptors:
                 key = normalize_string(od.descriptor.name)
                 value = od.descriptor.values[od.option]
-                resource_as_dict[key] = value
+                if key not in resource_as_dict:
+                    resource_as_dict[key] = [value]
+                else:
+                    resource_as_dict[key].append(value)
 
             if '_sa_instance_state' in resource_as_dict:
                 del resource_as_dict['_sa_instance_state']
@@ -454,23 +459,6 @@ class Resource(ResourceBase):
                 del resource_as_dict['text_descriptors']
             if 'option_descriptors' in resource_as_dict:
                 del resource_as_dict['option_descriptors']
-            """
-            TEMPORARY
-            the following code packages categories/supercategories/etc.
-            into lists, this is TEMPORARY since eventually these will be
-            lists in the underlying model, but for right now they are just
-            strings. after multi-options are added, we can remove this
-            """
-            resource_as_dict['categories'] = [resource_as_dict['category']]
-            resource_as_dict['supercategories'] = \
-                [resource_as_dict['supercategory']] if 'supercategory' in \
-                                                       resource_as_dict else []
-            resource_as_dict['features'] = \
-                [resource_as_dict['feature']] if 'feature' in \
-                                                 resource_as_dict else []
-            """
-            end of TEMPORARY section
-            """
             resources_as_dicts.append(resource_as_dict)
 
         return resources_as_dicts
