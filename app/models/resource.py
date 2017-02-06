@@ -264,7 +264,8 @@ class Resource(ResourceBase):
 
         features_descriptor = Descriptor(
             name='features',
-            values=['Confidential', 'Free', 'Translation'],
+            values=['Has A Confidentiality Policy', 'Is Free',
+                    'Has Translation Services'],
             is_searchable=True)
 
         city_descriptor = Descriptor(
