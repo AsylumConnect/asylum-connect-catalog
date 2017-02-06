@@ -262,8 +262,8 @@ class Resource(ResourceBase):
             ],
             is_searchable=True)
 
-        feature_descriptor = Descriptor(
-            name='feature',
+        features_descriptor = Descriptor(
+            name='features',
             values=['Confidential', 'Free', 'Translation'],
             is_searchable=True)
 
@@ -375,8 +375,8 @@ class Resource(ResourceBase):
             if features:
                 for feature in features:
                     feature_association = OptionAssociation(
-                        descriptor=feature_descriptor,
-                        option=feature_descriptor.values.index(feature))
+                        descriptor=features_descriptor,
+                        option=features_descriptor.values.index(feature))
                     resource.option_descriptors.append(feature_association)
 
             if city:
