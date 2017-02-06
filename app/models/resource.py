@@ -264,8 +264,10 @@ class Resource(ResourceBase):
 
         features_descriptor = Descriptor(
             name='features',
-            values=['Has A Confidentiality Policy', 'Is Free',
-                    'Has Translation Services'],
+            values=[
+                'Has A Confidentiality Policy', 'Is Free',
+                'Has Translation Services'
+            ],
             is_searchable=True)
 
         city_descriptor = Descriptor(
@@ -373,7 +375,8 @@ class Resource(ResourceBase):
                         descriptor=supercategories_descriptor,
                         option=supercategories_descriptor.values.index(
                             supercategory))
-                    resource.option_descriptors.append(supercategory_association)
+                    resource.option_descriptors.append(
+                        supercategory_association)
 
             if features:
                 for feature in features:

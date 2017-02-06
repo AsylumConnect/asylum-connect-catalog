@@ -211,8 +211,8 @@ def save_associations(resource, form, descriptors, resource_existed):
                     continue
                     values = [int(i) for i in form[descriptor.name].data]
             else:
-                categories_descriptor = filter(lambda d: d.name == 'categories',
-                                             descriptors)[0]
+                categories_descriptor = filter(
+                    lambda d: d.name == 'categories', descriptors)[0]
                 categories_values = categories_descriptor.values
                 categories_options = [
                     int(i) for i in form[categories_descriptor.name].data
@@ -228,7 +228,8 @@ def save_associations(resource, form, descriptors, resource_existed):
                     for category_value in categories_values
                 ]
                 values = [
-                    supercategories_descriptor.values.index(supercategory_value)
+                    supercategories_descriptor.values.index(
+                        supercategory_value)
                     for supercategory_value in supercategories_values
                 ]
             keyword = 'option'

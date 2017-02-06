@@ -227,26 +227,27 @@ def save_associations(resource_suggestion, form, descriptors):
                     continue
                 value = form[descriptor.name].data[0]
             else:
-                categories_descriptor = filter(lambda d: d.name == 'categories',
-                                               descriptors)[0]
+                categories_descriptor = filter(
+                    lambda d: d.name == 'categories', descriptors)[0]
                 categories_values = categories_descriptor.values
                 categories_options = [
                     int(i) for i in form[categories_descriptor.name].data
-                    ]
+                ]
                 categories_values = [
                     categories_values[category_option]
                     for category_option in categories_options
-                    ]
+                ]
                 supercategories_descriptor = filter(
                     lambda d: d.name == 'supercategories', descriptors)[0]
                 supercategories_values = [
                     category_to_supercategory[category_value]
                     for category_value in categories_values
-                    ]
+                ]
                 values = [
-                    supercategories_descriptor.values.index(supercategory_value)
+                    supercategories_descriptor.values.index(
+                        supercategory_value)
                     for supercategory_value in supercategories_values
-                    ]
+                ]
             keyword = 'option'
         else:
             AssociationClass = TextAssociation
