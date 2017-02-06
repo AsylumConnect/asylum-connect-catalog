@@ -264,7 +264,8 @@ class Resource(ResourceBase):
 
         features_descriptor = Descriptor(
             name='features',
-            values=['Confidential', 'Free', 'Translation'],
+            values=['Has A Confidentiality Policy', 'Is Free',
+                    'Has Translation Services'],
             is_searchable=True)
 
         city_descriptor = Descriptor(
@@ -353,9 +354,11 @@ class Resource(ResourceBase):
 
             categories = doc['categories']
             supercategories = doc['supercategories']
-            features = doc['features']
+            if 'features' in doc:
+                features = doc['features']
 
-            city = doc['city']
+            if 'city' in doc:
+                city = doc['city']
 
             if categories:
                 for category in categories:
