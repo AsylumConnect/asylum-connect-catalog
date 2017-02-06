@@ -62,7 +62,7 @@ def invite_user():
             subject='You Are Invited To Join',
             template='account/email/invite',
             user=user,
-            invite_link=invite_link, )
+            invite_link=invite_link,)
         flash('User {} successfully invited'.format(user.full_name()),
               'form-success')
     return render_template('admin/new_user.html', form=form)
@@ -106,8 +106,7 @@ def change_user_email(user_id):
     return render_template('admin/manage_user.html', user=user, form=form)
 
 
-@admin.route(
-    '/user/<int:user_id>/change-account-type', methods=['GET', 'POST'])
+@admin.route('/user/<int:user_id>/change-account-type', methods=['GET', 'POST'])
 @login_required
 def change_account_type(user_id):
     """Change a user's account type."""

@@ -46,7 +46,7 @@ def upload_row():
             csv_storage = CsvStorage(
                 date_uploaded=datetime.now(),
                 user=current_user,
-                action='reset', )
+                action='reset',)
 
             # Store new descriptors
             fields = [
@@ -57,7 +57,7 @@ def upload_row():
                 desc = CsvDescriptor(
                     csv_storage=csv_storage,
                     name=f,
-                    values=set(), )
+                    values=set(),)
                 db.session.add(desc)
             db.session.add(csv_storage)
             db.session.commit()
@@ -74,7 +74,7 @@ def upload_row():
             csv_storage = CsvStorage(
                 date_uploaded=datetime.now(),
                 user=current_user,
-                action='update', )
+                action='update',)
 
             # get old fields
             descriptors = Descriptor.query.all()
@@ -95,7 +95,7 @@ def upload_row():
                 desc = CsvDescriptorRemove(
                     csv_storage=csv_storage,
                     descriptor_id=old_desc.id,
-                    name=old_desc.name, )
+                    name=old_desc.name,)
                 db.session.add(desc)
 
             # store old descriptors not removed
@@ -109,7 +109,7 @@ def upload_row():
                     name=f,
                     values=set(),
                     descriptor_id=existing_desc.id,
-                    descriptor_type=existing_type, )
+                    descriptor_type=existing_type,)
                 db.session.add(desc)
 
             # store new descriptors
@@ -118,7 +118,7 @@ def upload_row():
                 desc = CsvDescriptor(
                     csv_storage=csv_storage,
                     name=f,
-                    values=set(), )
+                    values=set(),)
                 db.session.add(desc)
 
             db.session.add(csv_storage)
@@ -169,7 +169,7 @@ def upload_row():
 
             csv_row = CsvRow(
                 csv_storage=csv_storage,
-                data=clean_row, )
+                data=clean_row,)
             db.session.add(csv_row)
             db.session.commit()
             return jsonify({
@@ -368,8 +368,7 @@ Can only select from option descriptors in the CSV or the existing required
 option descriptor if any.'''
 
 
-@bulk_resource.route(
-    '/set-required-option-descriptor', methods=['GET', 'POST'])
+@bulk_resource.route('/set-required-option-descriptor', methods=['GET', 'POST'])
 @login_required
 def set_required_option_descriptor():
     csv_storage = CsvStorage.most_recent(user=current_user)
@@ -411,8 +410,7 @@ def set_required_option_descriptor():
                     db.session.commit()
                     return redirect(
                         url_for(
-                            'bulk_resource.validate_required_option_descriptor'
-                        ))
+                            'bulk_resource.validate_required_option_descriptor'))
 
             # If not in CSV, see if it is existing required option descriptor
             req_opt_desc = RequiredOptionDescriptor.query.all()[0]
@@ -426,8 +424,7 @@ def set_required_option_descriptor():
                     db.session.commit()
                     return redirect(
                         url_for(
-                            'bulk_resource.validate_required_option_descriptor'
-                        ))
+                            'bulk_resource.validate_required_option_descriptor'))
             # If no descriptor found
             flash('Error: No required option descriptor. Please try again.',
                   'form-error')
@@ -485,8 +482,7 @@ def validate_required_option_descriptor():
     csv_resources = set()
     for row in csv_storage.csv_rows:
         csv_resources.add(row.data['Name'])
-        if req_opt_desc not in row.data or row.data[
-                req_opt_desc].strip() == '':
+        if req_opt_desc not in row.data or row.data[req_opt_desc].strip() == '':
             missing_resources.add(row.data['Name'])
 
     # Find all existing resources that lack an
@@ -530,8 +526,7 @@ def validate_required_option_descriptor():
                   'Please try again.', 'form-error')
         else:
             for num, name in enumerate(missing_resources):
-                req_opt_desc_const.missing_dict[name] = form.resources.data[
-                    num]
+                req_opt_desc_const.missing_dict[name] = form.resources.data[num]
             db.session.commit()
             return redirect(url_for('bulk_resource.save_csv'))
 
@@ -555,7 +550,7 @@ def validate_required_option_descriptor():
     return render_template(
         'bulk_resource/review_required_option_descriptor.html',
         form=form,
-        required=req_opt_desc, )
+        required=req_opt_desc,)
 
 
 ''' Last step in CSV workflow to update the resource and descriptor data models'''
@@ -613,7 +608,7 @@ def save_csv():
                 descriptor = Descriptor(
                     name=desc.name,
                     values=list(desc.values),
-                    is_searchable=True, )
+                    is_searchable=True,)
                 db.session.add(descriptor)
 
         # Create/update rows and descriptor associations
@@ -658,7 +653,7 @@ def save_csv():
                         if csv_storage.action == 'update':
                             text_association = TextAssociation.query.filter_by(
                                 resource_id=resource.id,
-                                descriptor_id=descriptor.id, ).first()
+                                descriptor_id=descriptor.id,).first()
                             if text_association is None:
                                 assocValues.append(row.data[key])
                             # Just update text value if only text changed

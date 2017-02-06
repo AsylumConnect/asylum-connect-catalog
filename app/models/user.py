@@ -210,6 +210,7 @@ class User(UserMixin, db.Model):
 
 
 class AnonymousUser(AnonymousUserMixin):
+
     def can(self, _):
         return False
 

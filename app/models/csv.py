@@ -50,8 +50,8 @@ class CsvStorage(db.Model):
 
     @staticmethod
     def most_recent(user):
-        return CsvStorage.query.filter_by(user=user).order_by(
-            desc(CsvStorage.date_uploaded)).limit(1).first()
+        return CsvStorage.query.filter_by(
+            user=user).order_by(desc(CsvStorage.date_uploaded)).limit(1).first()
 
 
 class CsvRow(db.Model):
