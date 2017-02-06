@@ -91,7 +91,7 @@ def suggest_create():
     descriptors = Descriptor.query.all()
     for descriptor in descriptors:
         if descriptor.is_option_descriptor:  # Fields for option descriptors.
-            if descriptor.name != 'supercategory':
+            if descriptor.name != 'supercategories':
                 choices = [(str(i), v)
                            for i, v in enumerate(descriptor.values)]
                 setattr(
@@ -222,32 +222,43 @@ def save_associations(resource_suggestion, form, descriptors):
     for descriptor in descriptors:
         if descriptor.is_option_descriptor:
             AssociationClass = OptionAssociation
-            if descriptor.name != 'supercategory':
+            if descriptor.name != 'supercategories':
                 if form[descriptor.name].data == []:
                     continue
                 value = form[descriptor.name].data[0]
             else:
-                category_descriptor = filter(lambda d: d.name == 'category',
-                                             descriptors)[0]
-                category_values = category_descriptor.values
-                category_option = int(form[category_descriptor.name].data)
-                category_value = category_values[category_option]
-                supercategory_descriptor = filter(
-                    lambda d: d.name == 'supercategory', descriptors)[0]
-                supercategory_value = category_to_supercategory[category_value]
-                value = supercategory_descriptor.values.index(
-                    supercategory_value)
+                categories_descriptor = filter(lambda d: d.name == 'categories',
+                                               descriptors)[0]
+                categories_values = categories_descriptor.values
+                categories_options = [
+                    int(i) for i in form[categories_descriptor.name].data
+                    ]
+                categories_values = [
+                    categories_values[category_option]
+                    for category_option in categories_options
+                    ]
+                supercategories_descriptor = filter(
+                    lambda d: d.name == 'supercategories', descriptors)[0]
+                supercategories_values = [
+                    category_to_supercategory[category_value]
+                    for category_value in categories_values
+                    ]
+                values = [
+                    supercategories_descriptor.values.index(supercategory_value)
+                    for supercategory_value in supercategories_values
+                    ]
             keyword = 'option'
         else:
             AssociationClass = TextAssociation
             value = form[descriptor.name].data
             keyword = 'text'
-        arguments = {
-            'resource_id': resource_suggestion.id,
-            'descriptor_id': descriptor.id,
-            keyword: value,
-            'resource': resource_suggestion,
-            'descriptor': descriptor
-        }
-        new_association = AssociationClass(**arguments)
-        db.session.add(new_association)
+        for value in values:
+            arguments = {
+                'resource_id': resource_suggestion.id,
+                'descriptor_id': descriptor.id,
+                keyword: value,
+                'resource': resource_suggestion,
+                'descriptor': descriptor
+            }
+            new_association = AssociationClass(**arguments)
+            db.session.add(new_association)

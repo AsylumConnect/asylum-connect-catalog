@@ -73,7 +73,7 @@ def create():
     # req_opt_desc = RequiredOptionDescriptor.query.all()[0]
     for descriptor in descriptors:
         if descriptor.is_option_descriptor:  # Fields for option descriptors.
-            if descriptor.name != 'supercategory':
+            if descriptor.name != 'supercategories':
                 choices = [(str(i), v)
                            for i, v in enumerate(descriptor.values)]
                 setattr(
@@ -206,30 +206,30 @@ def save_associations(resource, form, descriptors, resource_existed):
     for descriptor in descriptors:
         if descriptor.is_option_descriptor:
             AssociationClass = OptionAssociation
-            if descriptor.name != 'supercategory':
+            if descriptor.name != 'supercategories':
                 if form[descriptor.name].data == []:
                     continue
                     values = [int(i) for i in form[descriptor.name].data]
             else:
-                category_descriptor = filter(lambda d: d.name == 'category',
+                categories_descriptor = filter(lambda d: d.name == 'categories',
                                              descriptors)[0]
-                category_values = category_descriptor.values
-                category_options = [
-                    int(i) for i in form[category_descriptor.name].data
+                categories_values = categories_descriptor.values
+                categories_options = [
+                    int(i) for i in form[categories_descriptor.name].data
                 ]
-                category_values = [
-                    category_values[category_option]
-                    for category_option in category_options
+                categories_values = [
+                    categories_values[category_option]
+                    for category_option in categories_options
                 ]
-                supercategory_descriptor = filter(
-                    lambda d: d.name == 'supercategory', descriptors)[0]
-                supercategory_values = [
+                supercategories_descriptor = filter(
+                    lambda d: d.name == 'supercategories', descriptors)[0]
+                supercategories_values = [
                     category_to_supercategory[category_value]
-                    for category_value in category_values
+                    for category_value in categories_values
                 ]
                 values = [
-                    supercategory_descriptor.values.index(supercategory_value)
-                    for supercategory_value in supercategory_values
+                    supercategories_descriptor.values.index(supercategory_value)
+                    for supercategory_value in supercategories_values
                 ]
             keyword = 'option'
         else:
