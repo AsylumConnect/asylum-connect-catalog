@@ -5,10 +5,10 @@ from wtforms.validators import InputRequired, Length
 
 
 class NewDescriptorForm(Form):
-    desc_type = SelectField('Descriptor type',
-                            choices=[('Text', 'Text'), ('Option', 'Option')],
-                            validators=[InputRequired()]
-                            )
+    desc_type = SelectField(
+        'Descriptor type',
+        choices=[('Text', 'Text'), ('Option', 'Option')],
+        validators=[InputRequired()])
     name = TextField('Name', validators=[InputRequired(), Length(1, 500)])
     option_values = FieldList(TextField('Option', [Length(0, 500)]))
     is_searchable = BooleanField('Searchable')
@@ -26,8 +26,8 @@ class EditDescriptorSearchableForm(Form):
 
 
 class EditDescriptorOptionValueForm(Form):
-    value = TextField('Option Value',
-                      validators=[InputRequired(), Length(1, 500)])
+    value = TextField(
+        'Option Value', validators=[InputRequired(), Length(1, 500)])
     submit = SubmitField('Update option value')
 
 
