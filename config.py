@@ -106,7 +106,6 @@ class ProductionConfig(Config):
 
 
 class HerokuConfig(ProductionConfig):
-
     @classmethod
     def init_app(cls, app):
         ProductionConfig.init_app(app)
@@ -117,7 +116,6 @@ class HerokuConfig(ProductionConfig):
 
 
 class UnixConfig(ProductionConfig):
-
     @classmethod
     def init_app(cls, app):
         ProductionConfig.init_app(app)

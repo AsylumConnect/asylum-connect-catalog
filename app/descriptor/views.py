@@ -342,7 +342,8 @@ def delete_descriptor(desc_id):
     return redirect(url_for('descriptor.index'))
 
 
-@descriptor.route('/change-required-option-descriptor', methods=['GET', 'POST'])
+@descriptor.route(
+    '/change-required-option-descriptor', methods=['GET', 'POST'])
 @login_required
 def change_required_option_descriptor():
     descriptors = Descriptor.query.all()
@@ -368,7 +369,8 @@ def change_required_option_descriptor():
         if form.validate_on_submit():
             RequiredOptionDescriptorConstructor.query.delete()
             db.session.commit()
-            desc = Descriptor.query.filter_by(name=form.descriptor.data).first()
+            desc = Descriptor.query.filter_by(
+                name=form.descriptor.data).first()
             if desc is not None:
                 req_opt_desc_const = RequiredOptionDescriptorConstructor(
                     name=desc.name, values=desc.values)
@@ -382,7 +384,8 @@ def change_required_option_descriptor():
         'descriptor/change_required_option_descriptor.html', form=form)
 
 
-@descriptor.route('/review-required-option-descriptor', methods=['GET', 'POST'])
+@descriptor.route(
+    '/review-required-option-descriptor', methods=['GET', 'POST'])
 @login_required
 def review_required_option_descriptor():
     req_opt_desc_const = RequiredOptionDescriptorConstructor.query.all()[0]
@@ -416,7 +419,8 @@ def review_required_option_descriptor():
                             descriptor=descriptor)
                         db.session.add(new_association)
             RequiredOptionDescriptor.query.delete()
-            req_opt_desc = RequiredOptionDescriptor(descriptor_id=descriptor.id)
+            req_opt_desc = RequiredOptionDescriptor(
+                descriptor_id=descriptor.id)
             db.session.add(req_opt_desc)
             db.session.commit()
             return redirect(url_for('descriptor.index'))

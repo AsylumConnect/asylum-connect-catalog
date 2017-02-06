@@ -336,7 +336,8 @@ class Resource(ResourceBase):
             additional_information_association = TextAssociation(
                 text=doc['additional_information'],
                 descriptor=additional_information_descriptor)
-            resource.text_descriptors.append(additional_information_association)
+            resource.text_descriptors.append(
+                additional_information_association)
 
             if doc['phone_numbers']:
                 phone_numbers = doc['phone_numbers']
@@ -394,7 +395,8 @@ class Resource(ResourceBase):
                 requirements = doc['requirements']
                 requirements_association = OptionAssociation(
                     descriptor=requirement_descriptor,
-                    option=requirement_descriptor.values.index(requirements[0]))
+                    option=requirement_descriptor.values.index(
+                        requirements[0]))
                 resource.option_descriptors.append(requirements_association)
 
             db.session.add(resource)

@@ -92,7 +92,8 @@ def suggest_create():
     for descriptor in descriptors:
         if descriptor.is_option_descriptor:  # Fields for option descriptors.
             if descriptor.name != 'supercategories':
-                choices = [(str(i), v) for i, v in enumerate(descriptor.values)]
+                choices = [(str(i), v)
+                           for i, v in enumerate(descriptor.values)]
                 setattr(
                     ResourceSuggestionForm,
                     descriptor.name,
@@ -226,8 +227,8 @@ def save_associations(resource_suggestion, form, descriptors):
                     continue
                 value = form[descriptor.name].data[0]
             else:
-                categories_descriptor = filter(lambda d: d.name == 'categories',
-                                               descriptors)[0]
+                categories_descriptor = filter(
+                    lambda d: d.name == 'categories', descriptors)[0]
                 categories_values = categories_descriptor.values
                 categories_options = [
                     int(i) for i in form[categories_descriptor.name].data
@@ -243,7 +244,8 @@ def save_associations(resource_suggestion, form, descriptors):
                     for category_value in categories_values
                 ]
                 values = [
-                    supercategories_descriptor.values.index(supercategory_value)
+                    supercategories_descriptor.values.index(
+                        supercategory_value)
                     for supercategory_value in supercategories_values
                 ]
             keyword = 'option'

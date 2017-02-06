@@ -65,7 +65,8 @@ class CsvHeaderRow(db.Model):
     """
     __tablename__ = 'csv_header_rows'
     id = db.Column(db.Integer, primary_key=True)
-    csv_container_id = db.Column(db.Integer, db.ForeignKey('csv_containers.id'))
+    csv_container_id = db.Column(db.Integer,
+                                 db.ForeignKey('csv_containers.id'))
     csv_header_cells = db.relationship(
         'CsvHeaderCell',
         backref='csv_header_row',
@@ -80,7 +81,8 @@ class CsvBodyRow(db.Model):
     """
     __tablename__ = 'csv_body_rows'
     id = db.Column(db.Integer, primary_key=True)
-    csv_container_id = db.Column(db.Integer, db.ForeignKey('csv_containers.id'))
+    csv_container_id = db.Column(db.Integer,
+                                 db.ForeignKey('csv_containers.id'))
     csv_body_cells = db.relationship(
         'CsvBodyCell', backref='csv_body_row', uselist=True, cascade='delete')
 
