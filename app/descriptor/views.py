@@ -83,22 +83,24 @@ def edit_name(desc_id):
     old_name = descriptor.name
     form = EditDescriptorNameForm()
     if form.validate_on_submit():
-        descriptor.name = form.name.data
         if Descriptor.query.filter(Descriptor.name == form.name.data).first() \
                 is not None:
-            flash('Descriptor {} already exists.'.format(descriptor.name),
-                  'form-error')
+            if old_name == form.name.data:
+                flash('No change was made', 'form-error')
+            else:
+                flash('Descriptor {} already exists.'.format(form.name.data),
+                      'form-error')
             return render_template(
                 'descriptor/manage_descriptor.html',
                 desc=descriptor,
                 form=form,
                 is_option=is_option)
-
+        descriptor.name = form.name.data
         db.session.add(descriptor)
         try:
             db.session.commit()
-            flash('Name for descriptor {} successfully changed to {}.'
-                  .format(old_name, descriptor.name), 'form-success')
+            flash('Name for descriptor {} successfully changed to {}.'.format(
+                old_name, descriptor.name), 'form-success')
         except IntegrityError:
             db.session.rollback()
             flash('Database error occurred. Please try again.', 'form-error')
@@ -213,8 +215,7 @@ def edit_option_value(desc_id, option_index):
                   .format(old_value, descriptor.name,
                           descriptor.values[option_index]), 'form-success')
             return redirect(
-                url_for(
-                    'descriptor.descriptor_info', desc_id=desc_id))
+                url_for('descriptor.descriptor_info', desc_id=desc_id))
         except IntegrityError:
             db.session.rollback()
             flash('Database error occurred. Please try again.', 'form-error')
@@ -243,8 +244,7 @@ def remove_option_value(desc_id, option_index):
         flash('Descriptor {} only has one value.'.format(descriptor.name),
               'form-error')
         return redirect(
-            url_for(
-                'descriptor.change_option_values_index', desc_id=desc_id))
+            url_for('descriptor.change_option_values_index', desc_id=desc_id))
 
     option_assocs = OptionAssociation.query.filter(
         db.and_(OptionAssociation.descriptor_id == desc_id,
@@ -254,38 +254,20 @@ def remove_option_value(desc_id, option_index):
 
     # If no resources are affected, just remove the option value.
     if len(option_assocs) == 0:
-        # Index starting from 1 to skip 'Remove this descriptor'
-        remove_value_from_db(descriptor, choice_names[1:], old_value)
+        remove_value_from_db(descriptor, choice_names, old_value)
         return redirect(url_for('descriptor.descriptor_info', desc_id=desc_id))
 
-    # Create the select field for each resource.
-    for oa in option_assocs:
-        setattr(
-            FixAllResourceOptionValueForm,
-            oa.resource.name,
-            SelectField(
-                '', coerce=int, choices=choices))
     form = FixAllResourceOptionValueForm()
-
-    # Delete the dynamic fields after the form is instantiated
-    for oa in option_assocs:
-        delattr(FixAllResourceOptionValueForm, oa.resource.name)
 
     if form.validate_on_submit():
         for oa in option_assocs:
-            choice = form[oa.resource.name].data
-            # Case for 'Remove this descriptor'
-            if choice == -1:
-                db.session.delete(oa)
-            else:
-                oa.option = choice
-                db.session.add(oa)
+            db.session.delete(oa)
 
-        # Index starting from 1 to skip 'Remove this descriptor'
-        if remove_value_from_db(descriptor, choice_names[1:], old_value):
+        if remove_value_from_db(descriptor, choice_names, old_value):
             return redirect(
-                url_for(
-                    'descriptor.descriptor_info', desc_id=desc_id))
+                url_for('descriptor.descriptor_info', desc_id=desc_id))
+        else:
+            flash('Database error occurred. Please try again', 'form-error')
     return render_template(
         'descriptor/confirm_resources.html',
         option_assocs=option_assocs,
@@ -296,13 +278,12 @@ def remove_option_value(desc_id, option_index):
 
 
 def generate_option_choices(descriptor, removed_index):
-    """Helper function to generate the option values for a SelectField."""
-    choice_names = (
-        ['Remove this descriptor'] + descriptor.values[:removed_index] +
-        descriptor.values[removed_index + 1:])
+    """Helper function to generate the new options + indices"""
+    choice_names = (descriptor.values[:removed_index] +
+                    descriptor.values[removed_index + 1:])
     choices = []
     for i in range(len(choice_names)):
-        choices.append((i - 1, choice_names[i]))
+        choices.append((i, choice_names[i]))
     return choice_names, choices
 
 
@@ -378,14 +359,12 @@ def change_required_option_descriptor():
         if descriptor is not None:
             current_name = descriptor.name
     if current_name != "":
-        setattr(
-            ChangeRequiredOptionDescriptorForm,
-            'descriptor',
-            SelectField(
-                'Option Descriptor',
-                choices=choices,
-                validators=[InputRequired()],
-                default=current_name))
+        setattr(ChangeRequiredOptionDescriptorForm, 'descriptor',
+                SelectField(
+                    'Option Descriptor',
+                    choices=choices,
+                    validators=[InputRequired()],
+                    default=current_name))
         form = ChangeRequiredOptionDescriptorForm()
         if form.validate_on_submit():
             RequiredOptionDescriptorConstructor.query.delete()
@@ -439,11 +418,11 @@ def review_required_option_descriptor():
                             resource=resource,
                             descriptor=descriptor)
                         db.session.add(new_association)
-                RequiredOptionDescriptor.query.delete()
-                req_opt_desc = RequiredOptionDescriptor(
-                    descriptor_id=descriptor.id)
-                db.session.add(req_opt_desc)
-                db.session.commit()
+            RequiredOptionDescriptor.query.delete()
+            req_opt_desc = RequiredOptionDescriptor(
+                descriptor_id=descriptor.id)
+            db.session.add(req_opt_desc)
+            db.session.commit()
             return redirect(url_for('descriptor.index'))
     for j, r_name in enumerate(missing_resources):
         form.resources.append_entry()

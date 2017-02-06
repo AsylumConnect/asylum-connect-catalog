@@ -38,7 +38,6 @@ def make_shell_context():
         CsvContainer=CsvContainer,
         CsvHeaderCell=CsvHeaderCell,
         CsvHeaderRow=CsvHeaderRow,
-        Resource=Resource,
         ResourceBase=ResourceBase,
         ResourceSuggestion=ResourceSuggestion,
         Descriptor=Descriptor,
@@ -111,7 +110,7 @@ def setup_prod():
 def setup_general():
     """Runs the set-up needed for both local development and production."""
     Role.insert_roles()
-    RequiredOptionDescriptor.insert_required_option_descriptor()
+    RequiredOptionDescriptor.init_required_option_descriptor()
 
 
 @manager.command

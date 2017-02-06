@@ -73,8 +73,9 @@ def create():
     # req_opt_desc = RequiredOptionDescriptor.query.all()[0]
     for descriptor in descriptors:
         if descriptor.is_option_descriptor:  # Fields for option descriptors.
-            if descriptor.name != 'supercategory':
-                choices = [(str(i), v) for i, v in enumerate(descriptor.values)]
+            if descriptor.name != 'supercategories':
+                choices = [(str(i), v)
+                           for i, v in enumerate(descriptor.values)]
                 setattr(
                     SingleResourceForm,
                     descriptor.name,
@@ -125,11 +126,8 @@ def edit(resource_id):
                 resource_id=resource_id, descriptor_id=descriptor.id)
             if option_associations is not None:
                 default = [assoc.option for assoc in option_associations]
-            setattr(
-                SingleResourceForm,
-                descriptor.name,
-                SelectMultipleField(
-                    choices=choices, default=default))
+            setattr(SingleResourceForm, descriptor.name,
+                    SelectMultipleField(choices=choices, default=default))
         else:  # Fields for text descriptors.
             default = None
             text_association = TextAssociation.query.filter_by(
@@ -162,11 +160,11 @@ def edit(resource_id):
                   'form-error')
     # Field id is not needed for the form, hence omitted with [1:].
     for field_name in resource_field_names[1:]:
-        # Avoid KeyError from polymorphic, contact variables.
         if field_name in form:
             form[field_name].data = resource.__dict__[field_name]
     return render_template(
         'single_resource/edit.html', form=form, resource_id=resource_id)
+
 
 category_to_supercategory = {
     "Medical Clinics": "Medical",
@@ -186,51 +184,68 @@ category_to_supercategory = {
     "Psychiatry": "Mental Health"
 }
 
-def save_associations(resource, form, descriptors, resource_existed=True):
+
+def save_associations(resource, form, descriptors, resource_existed):
     """Save associations from the forms received by 'create' and 'edit' route
     handlers to the database."""
+    #first delete all the associations for this resource if it already existed (to handle the "empty" case)
+    if resource_existed:
+        options = OptionAssociation.query.filter_by(
+            resource_id=resource.id).all()
+        texts = TextAssociation.query.filter_by(resource_id=resource.id).all()
+        associations = options + texts
+        for a in associations:
+            db.session.delete(a)
+        try:
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+            flash('Error: failed to save edits. Please try again.',
+                  'form-error')
+
     for descriptor in descriptors:
         if descriptor.is_option_descriptor:
             AssociationClass = OptionAssociation
-            if descriptor.name != 'supercategory':
+            if descriptor.name != 'supercategories':
                 if form[descriptor.name].data == []:
                     continue
                     values = [int(i) for i in form[descriptor.name].data]
             else:
-                category_descriptor = filter(lambda d: d.name == 'category', descriptors)[0]
-                category_values = category_descriptor.values
-                category_options = [int(i) for i in form[category_descriptor.name].data]
-                category_values = [category_values[category_option] for category_option in category_options]
-                supercategory_descriptor = filter(lambda d: d.name == 'supercategory', descriptors)[0]
-                supercategory_values = [category_to_supercategory[category_value]
-                                        for category_value in category_values]
-                values = [supercategory_descriptor.values.index(supercategory_value)
-                          for supercategory_value in supercategory_values]
+                categories_descriptor = filter(lambda d: d.name == 'categories',
+                                             descriptors)[0]
+                categories_values = categories_descriptor.values
+                categories_options = [
+                    int(i) for i in form[categories_descriptor.name].data
+                ]
+                categories_values = [
+                    categories_values[category_option]
+                    for category_option in categories_options
+                ]
+                supercategories_descriptor = filter(
+                    lambda d: d.name == 'supercategories', descriptors)[0]
+                supercategories_values = [
+                    category_to_supercategory[category_value]
+                    for category_value in categories_values
+                ]
+                values = [
+                    supercategories_descriptor.values.index(supercategory_value)
+                    for supercategory_value in supercategories_values
+                ]
             keyword = 'option'
         else:
             AssociationClass = TextAssociation
             values = [form[descriptor.name].data]
             keyword = 'text'
         for value in values:
-            association = None
-            # if resource_existed:
-            #     associations = AssociationClass.query.filter_by(
-            #         resource_id=resource.id,
-            #         descriptor_id=descriptor.id).first()
-
-            if association is not None:
-                # NEED TO LOOK INTO THIS
-                setattr(association, keyword, value)
-            else:
-                arguments = {
-                    'resource_id': resource.id,
-                    'descriptor_id': descriptor.id,
-                    keyword: value,
-                    'resource': resource,
-                    'descriptor': descriptor
-                }
-                new_association = AssociationClass(**arguments)
-                db.session.add(new_association)
+            arguments = {
+                'resource_id': resource.id,
+                'descriptor_id': descriptor.id,
+                keyword: value,
+                'resource': resource,
+                'descriptor': descriptor
+            }
+            new_association = AssociationClass(**arguments)
+            db.session.add(new_association)
 
 
 @single_resource.route('/<int:resource_id>/delete', methods=['POST'])

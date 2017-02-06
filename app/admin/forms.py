@@ -11,7 +11,7 @@ from ..models import Role, User
 
 class ChangeUserEmailForm(Form):
     email = EmailField(
-        'New email', validators=[InputRequired(), Length(1, 64), Email()])
+        'New email', validators=[InputRequired(), Length(1, 500), Email()])
     submit = SubmitField('Update email')
 
     def validate_email(self, field):
@@ -35,11 +35,11 @@ class InviteUserForm(Form):
         get_label='name',
         query_factory=lambda: db.session.query(Role).order_by('permissions'))
     first_name = StringField(
-        'First name', validators=[InputRequired(), Length(1, 64)])
+        'First name', validators=[InputRequired(), Length(1, 500)])
     last_name = StringField(
-        'Last name', validators=[InputRequired(), Length(1, 64)])
+        'Last name', validators=[InputRequired(), Length(1, 500)])
     email = EmailField(
-        'Email', validators=[InputRequired(), Length(1, 64), Email()])
+        'Email', validators=[InputRequired(), Length(1, 500), Email()])
     submit = SubmitField('Invite')
 
     def validate_email(self, field):

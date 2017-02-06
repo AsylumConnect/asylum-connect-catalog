@@ -18,13 +18,15 @@ def normalize_string(s):
 class OptionAssociation(db.Model):
     """
     Association between a resource and a descriptor with an index for the
-    value of the option.
+    value of the option. Can have multiple OptionAssociation between an
+    option descriptor and resource
     """
     __tablename__ = 'option_associations'
-    resource_id = db.Column(
-        db.Integer, db.ForeignKey('resources.id'), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    resource_id = db.Column(db.Integer,
+                            db.ForeignKey('resources.id', ondelete='CASCADE'))
     descriptor_id = db.Column(
-        db.Integer, db.ForeignKey('descriptors.id'), primary_key=True)
+        db.Integer, db.ForeignKey('descriptors.id', ondelete='CASCADE'))
     option = db.Column(db.Integer)
     resource = db.relationship(
         'ResourceBase', back_populates='option_descriptors')
@@ -39,14 +41,16 @@ class OptionAssociation(db.Model):
 class TextAssociation(db.Model):
     """
     Association between a resource and a descriptor with a text field for the
-    value of the descriptor.
+    value of the descriptor. Currently only support one text association between
+    a resource and descriptor.
     """
     __tablename__ = 'text_associations'
-    resource_id = db.Column(
-        db.Integer, db.ForeignKey('resources.id'), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    resource_id = db.Column(db.Integer,
+                            db.ForeignKey('resources.id', ondelete='CASCADE'))
     descriptor_id = db.Column(
-        db.Integer, db.ForeignKey('descriptors.id'), primary_key=True)
-    text = db.Column(db.String(1024))
+        db.Integer, db.ForeignKey('descriptors.id', ondelete='CASCADE'))
+    text = db.Column(db.Text)
     resource = db.relationship(
         'ResourceBase', back_populates='text_descriptors')
     descriptor = db.relationship('Descriptor', back_populates='text_resources')
@@ -62,17 +66,18 @@ class Descriptor(db.Model):
     """
     __tablename__ = 'descriptors'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), index=True)
-    values = db.Column(db.PickleType)
+    name = db.Column(db.String(500), index=True)
+    values = db.Column(
+        db.PickleType)  # should only have value for option descriptor
     is_searchable = db.Column(db.Boolean)
     text_resources = db.relationship(
         'TextAssociation',
         back_populates='descriptor',
-        cascade='save-update, merge, delete, delete-orphan')
+        cascade='all, delete-orphan')
     option_resources = db.relationship(
         'OptionAssociation',
         back_populates='descriptor',
-        cascade='save-update, merge, delete, delete-orphan')
+        cascade='all, delete-orphan')
 
     def __repr__(self):
         return '<Descriptor \'%s\'>' % self.name
@@ -85,14 +90,26 @@ class Descriptor(db.Model):
     def is_option_descriptor(self):
         return len(self.values) > 0
 
+    def value_string(self):
+        if not self.values:
+            return ''
+        l = list(self.values)
+        l.sort()
+        return ', '.join(map(str, l))
+
 
 class RequiredOptionDescriptor(db.Model):
+    """ Option descriptor designated as a required option descriptor meaning
+    that all resources need to have an option association for this descriptor.
+    Restricted to one.
+    """
     __tablename__ = 'required_option_descriptor'
     id = db.Column(db.Integer, primary_key=True)
     descriptor_id = db.Column(db.Integer)
+    # -1 if none
 
     @staticmethod
-    def insert_required_option_descriptor():
+    def init_required_option_descriptor():
         required_option_descriptor = RequiredOptionDescriptor(descriptor_id=-1)
         db.session.add(required_option_descriptor)
         db.session.commit()
@@ -105,18 +122,18 @@ class ResourceBase(db.Model):
     """
     __tablename__ = 'resources'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(128), index=True)
-    address = db.Column(db.String(128))
+    name = db.Column(db.String(500), index=True)
+    address = db.Column(db.String(500))
     latitude = db.Column(db.Float)
     longitude = db.Column(db.Float)
     text_descriptors = db.relationship(
         'TextAssociation',
         back_populates='resource',
-        cascade='save-update, merge, delete, delete-orphan')
+        cascade='all, delete-orphan')
     option_descriptors = db.relationship(
         'OptionAssociation',
         back_populates='resource',
-        cascade='save-update, merge, delete, delete-orphan')
+        cascade='all, delete-orphan')
     type = db.Column(db.String(20))
 
     __mapper_args__ = {
@@ -169,8 +186,7 @@ class Resource(ResourceBase):
             # Generates random coordinates around Philadelphia.
             latitude = str(fake.geo_coordinate(center=center_lat, radius=0.01))
             longitude = str(
-                fake.geo_coordinate(
-                    center=center_long, radius=0.01))
+                fake.geo_coordinate(center=center_long, radius=0.01))
 
             location = geolocater.reverse(latitude + ', ' + longitude)
 
@@ -226,31 +242,29 @@ class Resource(ResourceBase):
         additional_information_descriptor = Descriptor(
             name='additional information', values=[], is_searchable=True)
 
-        category_descriptor = Descriptor(
-            name='category',
+        categories_descriptor = Descriptor(
+            name='categories',
             values=[
                 'Medical Clinics', 'Women\'s Health', 'Sexual Health',
                 'Trans Health', 'Dental Care', 'Legal Aid', 'Documentation',
                 'Housing', 'Food', 'Hygiene', 'Computers & Internet',
                 'Employment', 'English Classes', 'Libraries',
-                'Community Centers', 'LGBTQ+ Centers', 'Cultural Centers',
+                'Community Centers', 'LGBT Centers', 'Cultural Centers',
                 'Support Groups', 'Private Counseling', 'Psychiatry', 'Mail',
                 'Sport & Entertainment'
             ],
             is_searchable=True)
 
-        supercategory_descriptor = Descriptor(
-            name='supercategory',
+        supercategories_descriptor = Descriptor(
+            name='supercategories',
             values=[
-                'Medical', 'Legal', 'Education', 'Community Support',
-                'Mental Health'
+                'Medical', 'Legal', 'Education', 'Community', 'Mental Health'
             ],
             is_searchable=True)
 
-        feature_descriptor = Descriptor(
-            name='feature',
-            values=['Has A Confidentiality Policy', 'Is Free',
-                    'Has Translation Services'],
+        features_descriptor = Descriptor(
+            name='features',
+            values=['Confidential', 'Free', 'Translation'],
             is_searchable=True)
 
         city_descriptor = Descriptor(
@@ -260,8 +274,11 @@ class Resource(ResourceBase):
 
         requirement_descriptor = Descriptor(
             name='requirement',
-            values=['Require a Birth Certificate', 'Require Proof of Residence', 'Require a Social Security',
-                    'Require Income Verification', 'Require Contact Information'],
+            values=[
+                'Require a Birth Certificate', 'Require Proof of Residence',
+                'Require a Social Security', 'Require Income Verification',
+                'Require Contact Information'
+            ],
             is_searchable=True)
 
         script_dir = os.path.dirname("__file__")
@@ -342,26 +359,27 @@ class Resource(ResourceBase):
             if 'city' in doc:
                 city = doc['city']
 
-            first_category = categories[0]
-            category_association = OptionAssociation(
-                descriptor=category_descriptor,
-                option=category_descriptor.values.index(first_category))
-            resource.option_descriptors.append(category_association)
+            if categories:
+                for category in categories:
+                    category_association = OptionAssociation(
+                        descriptor=categories_descriptor,
+                        option=categories_descriptor.values.index(category))
+                    resource.option_descriptors.append(category_association)
 
             if supercategories:
-                first_supercategory = supercategories[0]
-                supercategory_association = OptionAssociation(
-                    descriptor=supercategory_descriptor,
-                    option=supercategory_descriptor.values.index(
-                        first_supercategory))
-                resource.option_descriptors.append(supercategory_association)
+                for supercategory in supercategories:
+                    supercategory_association = OptionAssociation(
+                        descriptor=supercategories_descriptor,
+                        option=supercategories_descriptor.values.index(
+                            supercategory))
+                    resource.option_descriptors.append(supercategory_association)
 
             if features:
-                first_feature = features[0]
-                feature_association = OptionAssociation(
-                    descriptor=feature_descriptor,
-                    option=feature_descriptor.values.index(first_feature))
-                resource.option_descriptors.append(feature_association)
+                for feature in features:
+                    feature_association = OptionAssociation(
+                        descriptor=features_descriptor,
+                        option=features_descriptor.values.index(feature))
+                    resource.option_descriptors.append(feature_association)
 
             if city:
                 city_association = OptionAssociation(
@@ -373,7 +391,8 @@ class Resource(ResourceBase):
                 requirements = doc['requirements']
                 requirements_association = OptionAssociation(
                     descriptor=requirement_descriptor,
-                    option=requirement_descriptor.values.index(requirements[0]))
+                    option=requirement_descriptor.values.index(
+                        requirements[0]))
                 resource.option_descriptors.append(requirements_association)
 
             db.session.add(resource)
@@ -387,8 +406,7 @@ class Resource(ResourceBase):
         # get required option descriptor
         req_opt_desc = RequiredOptionDescriptor.query.all()[0]
         req_opt_desc = Descriptor.query.filter_by(
-            id=req_opt_desc.descriptor_id
-        ).first()
+            id=req_opt_desc.descriptor_id).first()
 
         resources_as_dicts = []
         for resource in resources:
@@ -399,8 +417,7 @@ class Resource(ResourceBase):
             if req_opt_desc is not None:
                 associations = OptionAssociation.query.filter_by(
                     resource_id=resource.id,
-                    descriptor_id=req_opt_desc.id
-                ).all()
+                    descriptor_id=req_opt_desc.id).all()
                 req = [a.descriptor.values[a.option] for a in associations]
             res['requiredOpts'] = req
 
@@ -420,6 +437,7 @@ class Resource(ResourceBase):
         # maps array of resources to array of useful dictionaries containing
         # all of the information/associations for that resources
         resources_as_dicts = []
+
         for resource in resources:
             resource_as_dict = resource.__dict__
             resource_as_dict['long'] = resource_as_dict['longitude']
@@ -432,7 +450,10 @@ class Resource(ResourceBase):
             for od in resource.option_descriptors:
                 key = normalize_string(od.descriptor.name)
                 value = od.descriptor.values[od.option]
-                resource_as_dict[key] = value
+                if key not in resource_as_dict:
+                    resource_as_dict[key] = [value]
+                else:
+                    resource_as_dict[key].append(value)
 
             if '_sa_instance_state' in resource_as_dict:
                 del resource_as_dict['_sa_instance_state']
@@ -440,23 +461,6 @@ class Resource(ResourceBase):
                 del resource_as_dict['text_descriptors']
             if 'option_descriptors' in resource_as_dict:
                 del resource_as_dict['option_descriptors']
-            """
-            TEMPORARY
-            the following code packages categories/supercategories/etc.
-            into lists, this is TEMPORARY since eventually these will be
-            lists in the underlying model, but for right now they are just
-            strings. after multi-options are added, we can remove this
-            """
-            resource_as_dict['categories'] = [resource_as_dict['category']]
-            resource_as_dict['supercategories'] = \
-                [resource_as_dict['supercategory']] if 'supercategory' in \
-                                                       resource_as_dict else []
-            resource_as_dict['features'] = \
-                [resource_as_dict['feature']] if 'feature' in \
-                                                 resource_as_dict else []
-            """
-            end of TEMPORARY section
-            """
             resources_as_dicts.append(resource_as_dict)
 
         return resources_as_dicts

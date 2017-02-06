@@ -1,8 +1,13 @@
 import json
+import os
 from datetime import datetime
 
 from flask import jsonify, redirect, render_template, request, url_for
 from flask.ext.login import login_required
+from twilio import twiml
+from twilio.rest import TwilioRestClient
+from twilio.rest.lookups import TwilioLookupsClient
+from wtforms.fields import SelectMultipleField, TextAreaField
 
 from app import csrf
 
@@ -10,10 +15,28 @@ from . import main
 from .. import db
 from ..models import (Descriptor, EditableHTML, OptionAssociation, Rating,
                       RequiredOptionDescriptor, Resource)
+from ..single_resource.forms import SingleResourceForm
 
 
 @main.route('/')
 def index():
+    # req_opt_desc = RequiredOptionDescriptor.query.all()[0]
+    # req_opt_desc = Descriptor.query.filter_by(
+    #     id=req_opt_desc.descriptor_id
+    # ).first()
+    # req_opt_id = -1
+    # if req_opt_desc is not None:
+    #     req_opt_id = req_opt_desc.id
+    # options = Descriptor.query.all()
+    # options = [o for o in options if len(o.text_resources) == 0 and o.id != req_opt_id]
+    # options_dict = {}
+    # for o in options:
+    #     options_dict[o.name] = o.values
+    # req_options = {}
+    # if req_opt_desc is not None:
+    #     for val in req_opt_desc.values:
+    #         req_options[val] = False
+    # return render_template('main/index.html', options=options_dict, req_options=req_options, req_desc=req_opt_desc)
     return redirect(url_for('.city_view', city_name='seattle, washington'))
 
 
@@ -72,11 +95,12 @@ def search_resources():
     req_options = request.args.getlist('reqoption')
     if req_options is None:
         req_options = []
-    resource_pool = Resource.query.filter(Resource.name.contains(name)).all()
+    # case insensitive search
+    resource_pool = Resource.query.filter(
+        Resource.name.ilike('%{}%'.format(name))).all()
     req_opt_desc = RequiredOptionDescriptor.query.all()[0]
     req_opt_desc = Descriptor.query.filter_by(
-        id=req_opt_desc.descriptor_id
-    ).first()
+        id=req_opt_desc.descriptor_id).first()
     resources = []
     if req_opt_desc is not None and len(req_options) > 0:
         int_req_options = []
@@ -103,7 +127,7 @@ def search_resources():
                 else:
                     option_map[key_val[0]] = [key_val[1]]
 
-    # descriptors = Descriptor.query.all()
+    descriptors = Descriptor.query.all()
     new_pool = resource_pool
     if len(req_options) > 0:
         new_pool = resources
@@ -116,8 +140,7 @@ def search_resources():
         number_of_options_found = 0
         for opt in option_map.keys():
             opt_descriptors = OptionAssociation.query.filter_by(
-                resource_id=resource.id
-            )
+                resource_id=resource.id)
             for desc in opt_descriptors:
                 if desc.descriptor.name == opt:
                     if desc.descriptor.values[desc.option] in option_map[opt]:
@@ -138,7 +161,16 @@ def get_associations(resource_id):
     for td in resource.text_descriptors:
         associations[td.descriptor.name] = td.text
     for od in resource.option_descriptors:
-        associations[od.descriptor.name] = od.descriptor.values[od.option]
+        val = od.descriptor.values[od.option]
+        values = set()
+        # multiple option association values
+        if associations.get(od.descriptor.name):
+            curr = associations.get(od.descriptor.name)
+            curr.append(val)
+            values = set(curr)
+        else:
+            values.add(val)
+        associations[od.descriptor.name] = list(values)
     return json.dumps(associations)
 
 
@@ -159,24 +191,51 @@ def update_editor_contents():
 
 
 @csrf.exempt
+@main.route('/send-sms', methods=['POST'])
+def send_sms():
+    sid = os.environ.get('TWILIO_ACCOUNT_SID')
+    auth = os.environ.get('TWILIO_AUTH_TOKEN')
+    client = TwilioLookupsClient(account=sid, token=auth)
+    send_client = TwilioRestClient(account=sid, token=auth)
+    if request is not None:
+        phone_num = request.json['number']
+        resourceID = request.json['id']
+        curr_res = Resource.query.get(resourceID)
+        name = "Name: " + curr_res.name
+        address = "Address: " + curr_res.address
+        message = name + "\n" + address
+        try:
+            number = client.phone_numbers.get(
+                phone_num, include_carrier_info=False)
+            num = number.phone_number
+            send_client.messages.create(
+                to=num, from_="+17657692023", body=message)
+            return jsonify(status='success')
+        except:
+            return jsonify(status='error')
+
+
+@csrf.exempt
 @main.route('/rating-post', methods=['POST'])
 def post_rating():
     if request is not None:
-            time = datetime.now()
-            star_rating = request.json['rating']
-            comment = request.json['review']
-            resourceID = request.json['id']
-            if comment and star_rating:
-                rating = Rating(submission_time=time,
-                                rating=star_rating,
-                                review=comment,
-                                resource_id=resourceID)
-                db.session.add(rating)
-                db.session.commit()
-            elif star_rating:
-                rating = Rating(submission_time=time,
-                                rating=star_rating,
-                                resource_id=resourceID)
-                db.session.add(rating)
-                db.session.commit()
+        time = datetime.now()
+        star_rating = request.json['rating']
+        comment = request.json['review']
+        resourceID = request.json['id']
+        if comment and star_rating:
+            rating = Rating(
+                submission_time=time,
+                rating=star_rating,
+                review=comment,
+                resource_id=resourceID)
+            db.session.add(rating)
+            db.session.commit()
+        elif star_rating:
+            rating = Rating(
+                submission_time=time,
+                rating=star_rating,
+                resource_id=resourceID)
+            db.session.add(rating)
+            db.session.commit()
     return jsonify(status='success')

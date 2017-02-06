@@ -8,8 +8,9 @@
         method        – <form> method attribute (default 'POST')
         extra_classes – The classes to add to the <form>.
         enctype       – <form> enctype attribute. If None, will automatically be set to
-                        multipart/form-data if a FileField is present in the form. #}
-{% macro render_form(form, method='POST', extra_classes='', enctype=None) %}
+                        multipart/form-data if a FileField is present in the form.
+        style         - Render form with specified style #}
+{% macro render_form(form, method='POST', extra_classes='', enctype=None, style='') %}
     {% set flashes = {
         'error':   get_flashed_messages(category_filter=['form-error']),
         'warning': get_flashed_messages(category_filter=['form-check-email']),
@@ -32,23 +33,20 @@
             </div>
 
         {{ end_form(form) }}
-    {% elif form.type == 'FormField' and form.form_class.__name__ == 'ContactInformationForm' %}
-        {% set name_field = form.__getitem__('contact_name') %}
-        {% set phone_number_field = form.__getitem__('contact_phone_number') %}
-        {% set email_field = form.__getitem__('contact_email') %}
-        {% set additional_information_field = form.__getitem__('additional_information') %}
+    {% elif style == 'SubmitForm' %}
+        {{ begin_form(form, flashes, method=method, extra_classes=extra_classes, enctype=enctype) }}
 
+            {% set back_field = form.__getitem__('submit_back') %}
+            {% set cancel_field = form.__getitem__('submit_cancel') %}
+            {% set submit_field = form.__getitem__('submit') %}
 
-        <div class="ui secondary segment">
-            <h3>Your Contact Information</h3>
+            <div class="three ui buttons">
+                {{ back_field(class='ui button') }}
+                {{ cancel_field(class='ui button') }}
+                {{ submit_field(class='ui primary button') }}
+            </div>
 
-            <p>Not required, but useful if we need to reach out to you to learn more about the resource.</p>
-
-            {{ render_form_field(name_field) }}
-            {{ render_form_field(phone_number_field) }}
-            {{ render_form_field(email_field) }}
-            {{ render_form_field(additional_information_field) }}
-        </div>
+        {{ end_form(form) }}
     {% else %}
         {{ begin_form(form, flashes, method=method, extra_classes=extra_classes, enctype=enctype) }}
 

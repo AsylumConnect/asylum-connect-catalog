@@ -4,9 +4,9 @@ from wtforms.validators import InputRequired, Length
 
 
 class SingleResourceForm(Form):
-    name = StringField('Name', validators=[InputRequired(), Length(1, 512)])
+    name = StringField('Name', validators=[InputRequired(), Length(1, 500)])
     address = StringField(
-        'Address', validators=[InputRequired(), Length(1, 512)])
+        'Address', validators=[InputRequired(), Length(1, 500)])
     latitude = HiddenField('Latitude', validators=[InputRequired()])
     longitude = HiddenField('Longitude', validators=[InputRequired()])
     submit = SubmitField('Save Resource')

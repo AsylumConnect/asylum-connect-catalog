@@ -11,7 +11,7 @@ from ..models import User
 
 class LoginForm(Form):
     email = EmailField(
-        'Email', validators=[InputRequired(), Length(1, 64), Email()])
+        'Email', validators=[InputRequired(), Length(1, 500), Email()])
     password = PasswordField('Password', validators=[InputRequired()])
     remember_me = BooleanField('Keep me logged in')
     submit = SubmitField('Log in')
@@ -41,7 +41,7 @@ class RegistrationForm(Form):
 
 class RequestResetPasswordForm(Form):
     email = EmailField(
-        'Email', validators=[InputRequired(), Length(1, 64), Email()])
+        'Email', validators=[InputRequired(), Length(1, 500), Email()])
     submit = SubmitField('Reset password')
 
     # We don't validate the email address so we don't confirm to attackers
@@ -50,7 +50,7 @@ class RequestResetPasswordForm(Form):
 
 class ResetPasswordForm(Form):
     email = EmailField(
-        'Email', validators=[InputRequired(), Length(1, 64), Email()])
+        'Email', validators=[InputRequired(), Length(1, 500), Email()])
     new_password = PasswordField(
         'New password',
         validators=[
@@ -90,7 +90,7 @@ class ChangePasswordForm(Form):
 
 class ChangeEmailForm(Form):
     email = EmailField(
-        'New email', validators=[InputRequired(), Length(1, 64), Email()])
+        'New email', validators=[InputRequired(), Length(1, 500), Email()])
     password = PasswordField('Password', validators=[InputRequired()])
     submit = SubmitField('Update email')
 
@@ -101,7 +101,7 @@ class ChangeEmailForm(Form):
 
 class ChangeAccountInfoForm(Form):
     first_name = StringField(
-        'First name', validators=[InputRequired(), Length(1, 64)])
+        'First name', validators=[InputRequired(), Length(1, 500)])
     last_name = StringField(
-        'Last name', validators=[InputRequired(), Length(1, 64)])
+        'Last name', validators=[InputRequired(), Length(1, 500)])
     submit = SubmitField('Update account information')

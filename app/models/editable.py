@@ -2,6 +2,7 @@ from .. import db
 
 
 class EditableHTML(db.Model):
+    """ CKEditor instances """
     id = db.Column(db.Integer, primary_key=True)
     editor_name = db.Column(db.String(100), unique=True)
     value = db.Column(db.Text)
