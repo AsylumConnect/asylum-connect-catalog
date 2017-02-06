@@ -65,6 +65,7 @@ def delete(sugg_id):
         flash('Database error occurred. Please try again.', 'error')
     return redirect(url_for('suggestion.index'))
 
+
 category_to_supercategory = {
     "Medical Clinics": "Medical",
     "Women's Health": "Medical",
@@ -83,6 +84,7 @@ category_to_supercategory = {
     "Psychiatry": "Mental Health"
 }
 
+
 @suggestion.route('/new', methods=['GET', 'POST'])
 def suggest_create():
     """Create a suggestion for a resource."""
@@ -90,7 +92,8 @@ def suggest_create():
     for descriptor in descriptors:
         if descriptor.is_option_descriptor:  # Fields for option descriptors.
             if descriptor.name != 'supercategory':
-                choices = [(str(i), v) for i, v in enumerate(descriptor.values)]
+                choices = [(str(i), v)
+                           for i, v in enumerate(descriptor.values)]
                 setattr(
                     ResourceSuggestionForm,
                     descriptor.name,
@@ -154,11 +157,8 @@ def suggest_edit(resource_id):
                 resource_id=resource_id, descriptor_id=descriptor.id).first()
             if option_association is not None:
                 default = option_association.option
-            setattr(
-                ResourceSuggestionForm,
-                descriptor.name,
-                SelectField(
-                    choices=choices, default=default))
+            setattr(ResourceSuggestionForm, descriptor.name,
+                    SelectField(choices=choices, default=default))
         else:
             default = None
             text_association = TextAssociation.query.filter_by(
@@ -227,13 +227,16 @@ def save_associations(resource_suggestion, form, descriptors):
                     continue
                 value = form[descriptor.name].data[0]
             else:
-                category_descriptor = filter(lambda d: d.name == 'category', descriptors)[0]
+                category_descriptor = filter(lambda d: d.name == 'category',
+                                             descriptors)[0]
                 category_values = category_descriptor.values
                 category_option = int(form[category_descriptor.name].data)
                 category_value = category_values[category_option]
-                supercategory_descriptor = filter(lambda d: d.name == 'supercategory', descriptors)[0]
+                supercategory_descriptor = filter(
+                    lambda d: d.name == 'supercategory', descriptors)[0]
                 supercategory_value = category_to_supercategory[category_value]
-                value = supercategory_descriptor.values.index(supercategory_value)
+                value = supercategory_descriptor.values.index(
+                    supercategory_value)
             keyword = 'option'
         else:
             AssociationClass = TextAssociation

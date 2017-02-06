@@ -1,6 +1,7 @@
+import logging
 import os
+import sys
 import urlparse
-import logging, sys
 
 from raygun4py.middleware import flask as flask_raygun
 

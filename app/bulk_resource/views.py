@@ -1,43 +1,24 @@
 import json
-import geocoder
-import time
 import os
+import time
 
 import geocoder
 from flask import (abort, flash, jsonify, redirect, render_template, request,
                    url_for)
 from flask.ext.login import current_user, login_required
 
+from app import csrf
 from forms import (DetermineDescriptorTypesForm, DetermineOptionsForm,
-                   DetermineRequiredOptionDescriptorForm,
+                   DetermineRequiredOptionDescriptorForm, NavigationForm,
                    RequiredOptionDescriptorMissingForm, SaveCsvDataForm)
 
-from app import csrf
 from . import bulk_resource
 from .. import db
-from ..models import (
-    CsvStorage,
-    CsvRow,
-    CsvDescriptor,
-    CsvDescriptorRemove,
-    GeocoderCache,
-    Descriptor,
-    OptionAssociation,
-    Rating,
-    Resource,
-    RequiredOptionDescriptor,
-    RequiredOptionDescriptorConstructor,
-    ResourceSuggestion,
-    TextAssociation
-)
-from forms import (
-    DetermineRequiredOptionDescriptorForm,
-    RequiredOptionDescriptorMissingForm,
-    DetermineDescriptorTypesForm,
-    DetermineOptionsForm,
-    NavigationForm,
-    SaveCsvDataForm
-)
+from ..models import (CsvDescriptor, CsvDescriptorRemove, CsvRow, CsvStorage,
+                      Descriptor, GeocoderCache, OptionAssociation, Rating,
+                      RequiredOptionDescriptor,
+                      RequiredOptionDescriptorConstructor, Resource,
+                      ResourceSuggestion, TextAssociation)
 
 
 @csrf.exempt
@@ -49,13 +30,15 @@ def upload():
 
 
 ''' Processes each Deferred Ajax request '''
+
+
 @csrf.exempt
 @bulk_resource.route('/_upload', methods=['POST'])
 def upload_row():
     data = json.loads(request.form['json'])
 
     # Store CSV fields as descriptors
-    if data['action'] == 'fields-reset': # Reset operation
+    if data['action'] == 'fields-reset':  # Reset operation
         try:
             fields = data['fields']
 
@@ -63,36 +46,35 @@ def upload_row():
             csv_storage = CsvStorage(
                 date_uploaded=datetime.now(),
                 user=current_user,
-                action='reset',
-            )
+                action='reset', )
 
             # Store new descriptors
-            fields = [f.strip() for f in fields if
-                f.strip() and f.strip() != 'Name' and f.strip() != 'Address']
+            fields = [
+                f.strip() for f in fields
+                if f.strip() and f.strip() != 'Name' and f.strip() != 'Address'
+            ]
             for f in fields:
                 desc = CsvDescriptor(
                     csv_storage=csv_storage,
                     name=f,
-                    values=set(),
-                )
+                    values=set(), )
                 db.session.add(desc)
             db.session.add(csv_storage)
             db.session.commit()
             return jsonify({
                 "status": "Success",
                 "message": "Successfully added fields",
-                })
+            })
         except:
             db.session.rollback()
             abort(404)
-    if data['action'] == 'fields-update': # Update operation
+    if data['action'] == 'fields-update':  # Update operation
         try:
             fields = data['fields']
             csv_storage = CsvStorage(
                 date_uploaded=datetime.now(),
                 user=current_user,
-                action='update',
-            )
+                action='update', )
 
             # get old fields
             descriptors = Descriptor.query.all()
@@ -100,21 +82,20 @@ def upload_row():
             old_d = descriptors.keys()
 
             # compare with new fields
-            new_d = [f.strip() for f in fields if
-                f.strip() and f.strip() != 'Name' and f.strip() != 'Address']
+            new_d = [
+                f.strip() for f in fields
+                if f.strip() and f.strip() != 'Name' and f.strip() != 'Address'
+            ]
 
             # store descriptors to remove
             # TODO: handle to remove descriptors in CSV workflow
             removed = set(old_d) - set(new_d)
             for f in removed:
-                old_desc = Descriptor.query.filter_by(
-                    name=f
-                ).first()
+                old_desc = Descriptor.query.filter_by(name=f).first()
                 desc = CsvDescriptorRemove(
                     csv_storage=csv_storage,
                     descriptor_id=old_desc.id,
-                    name=old_desc.name,
-                )
+                    name=old_desc.name, )
                 db.session.add(desc)
 
             # store old descriptors not removed
@@ -128,8 +109,7 @@ def upload_row():
                     name=f,
                     values=set(),
                     descriptor_id=existing_desc.id,
-                    descriptor_type=existing_type,
-                )
+                    descriptor_type=existing_type, )
                 db.session.add(desc)
 
             # store new descriptors
@@ -138,8 +118,7 @@ def upload_row():
                 desc = CsvDescriptor(
                     csv_storage=csv_storage,
                     name=f,
-                    values=set(),
-                )
+                    values=set(), )
                 db.session.add(desc)
 
             db.session.add(csv_storage)
@@ -147,43 +126,41 @@ def upload_row():
             return jsonify({
                 "status": "Success",
                 "message": "Successfully added fields"
-                })
+            })
         except:
             db.session.rollback()
             abort(404)
 
     # Store CSV rows
-    if data['action'] == 'reset-update': # Reset operation
+    if data['action'] == 'reset-update':  # Reset operation
         try:
             row = data['row']
-            clean_row = {k.strip():v.strip() for k, v in row.iteritems()}
+            clean_row = {k.strip(): v.strip() for k, v in row.iteritems()}
 
             # Validate addresses
             address = clean_row['Address']
             # See if address exists in cache
-            cached = GeocoderCache.query.filter_by(
-                address=address
-            ).first()
+            cached = GeocoderCache.query.filter_by(address=address).first()
             if cached is None:
                 # Toggle API to avoid Google geocoder API limit - temp solution
                 if data['count'] % 45 == 0:
-                    if os.environ.get('GOOGLE_API_KEY') == os.environ.get('GOOGLE_API_1'):
-                        os.environ['GOOGLE_API_KEY'] = os.environ.get('GOOGLE_API_2')
+                    if os.environ.get('GOOGLE_API_KEY') == os.environ.get(
+                            'GOOGLE_API_1'):
+                        os.environ['GOOGLE_API_KEY'] = os.environ.get(
+                            'GOOGLE_API_2')
                     else:
-                        os.environ['GOOGLE_API_KEY'] = os.environ.get('GOOGLE_API_1')
-                g = geocoder.google(address, key=os.environ.get('GOOGLE_API_KEY'))
+                        os.environ['GOOGLE_API_KEY'] = os.environ.get(
+                            'GOOGLE_API_1')
+                g = geocoder.google(
+                    address, key=os.environ.get('GOOGLE_API_KEY'))
                 if g.status != 'OK':
                     msg = 'Address cannot be geocoded due to ' + g.status + ": " + address
-                    return jsonify({
-                        "status": "Error",
-                        "message": msg
-                        })
+                    return jsonify({"status": "Error", "message": msg})
                 else:
                     geo = GeocoderCache(
                         address=address,
                         latitude=g.latlng[0],
-                        longitude=g.latlng[1]
-                    )
+                        longitude=g.latlng[1])
                     db.session.add(geo)
 
             csv_storage = CsvStorage.most_recent(user=current_user)
@@ -192,62 +169,55 @@ def upload_row():
 
             csv_row = CsvRow(
                 csv_storage=csv_storage,
-                data=clean_row,
-            )
+                data=clean_row, )
             db.session.add(csv_row)
             db.session.commit()
             return jsonify({
                 "status": "Success",
                 "message": "Successfully added row"
-                })
+            })
         except:
             db.session.rollback()
             abort(404)
-    if data['action'] == 'update': # Update operation
+    if data['action'] == 'update':  # Update operation
         try:
             row = data['row']
-            clean_row = {k.strip():v.strip() for k, v in row.iteritems()}
+            clean_row = {k.strip(): v.strip() for k, v in row.iteritems()}
 
             # Validate addresses
             address = clean_row['Address']
             # See if address exists in cache
-            cached = GeocoderCache.query.filter_by(
-                address=address
-            ).first()
+            cached = GeocoderCache.query.filter_by(address=address).first()
             if cached is None:
                 # Toggle API to avoid Google geocoder API limit - temp solution
                 if data['count'] % 45 == 0:
-                    if os.environ.get('GOOGLE_API_KEY') == os.environ.get('GOOGLE_API_1'):
-                        os.environ['GOOGLE_API_KEY'] = os.environ.get('GOOGLE_API_2')
+                    if os.environ.get('GOOGLE_API_KEY') == os.environ.get(
+                            'GOOGLE_API_1'):
+                        os.environ['GOOGLE_API_KEY'] = os.environ.get(
+                            'GOOGLE_API_2')
                     else:
-                        os.environ['GOOGLE_API_KEY'] = os.environ.get('GOOGLE_API_1')
-                g = geocoder.google(address, key=os.environ.get('GOOGLE_API_KEY'))
+                        os.environ['GOOGLE_API_KEY'] = os.environ.get(
+                            'GOOGLE_API_1')
+                g = geocoder.google(
+                    address, key=os.environ.get('GOOGLE_API_KEY'))
                 if g.status != 'OK':
                     msg = 'Address cannot be geocoded due to ' + g.status + ": " + address
-                    return jsonify({
-                        "status": "Error",
-                        "message": msg
-                        })
+                    return jsonify({"status": "Error", "message": msg})
                 else:
                     geo = GeocoderCache(
                         address=address,
                         latitude=g.latlng[0],
-                        longitude=g.latlng[1]
-                    )
+                        longitude=g.latlng[1])
                     db.session.add(geo)
 
             csv_storage = CsvStorage.most_recent(user=current_user)
             if csv_storage is None:
                 abort(404)
 
-            csv_row = CsvRow(
-                csv_storage=csv_storage,
-                data=clean_row
-            )
+            csv_row = CsvRow(csv_storage=csv_storage, data=clean_row)
             # See if resource already exists
             existing_resource = Resource.query.filter_by(
-                name=row['Name']
-            ).first()
+                name=row['Name']).first()
             if existing_resource is not None:
                 csv_row.resource_id = existing_resource.id
 
@@ -256,7 +226,7 @@ def upload_row():
             return jsonify({
                 "status": "Success",
                 "message": "Successfully added row"
-                })
+            })
         except:
             db.session.rollback()
             abort(404)
@@ -271,14 +241,14 @@ def upload_row():
             return jsonify({
                 "status": "Error",
                 "message": 'No resources to update from CSV'
-                })
+            })
 
-        return jsonify(
-            redirect=url_for('bulk_resource.set_descriptor_types')
-        )
+        return jsonify(redirect=url_for('bulk_resource.set_descriptor_types'))
 
 
 ''' Sets each descriptor in the CSV to be an option or a text descriptor '''
+
+
 @bulk_resource.route('/set-descriptor-types', methods=['GET', 'POST'])
 @login_required
 def set_descriptor_types():
@@ -306,7 +276,8 @@ def set_descriptor_types():
             if contains_options:
                 csv_storage.set_desc_values()
                 return redirect(url_for('bulk_resource.review_desc_options'))
-            return redirect(url_for('bulk_resource.set_required_option_descriptor'))
+            return redirect(
+                url_for('bulk_resource.set_required_option_descriptor'))
 
         elif form.navigation.data['submit_back']:
             db.session.delete(csv_storage)
@@ -337,12 +308,17 @@ def set_descriptor_types():
     existing_descs = []
     if csv_storage.action == 'update':
         existing_descs = Descriptor.query.all()
-    return render_template('bulk_resource/set_descriptor_types.html',
-                           form=form, existing_descs=existing_descs, num=num)
+    return render_template(
+        'bulk_resource/set_descriptor_types.html',
+        form=form,
+        existing_descs=existing_descs,
+        num=num)
 
 
 ''' If there are option descriptors in the CSV, display the option values parsed
 from the CSV for verification '''
+
+
 @bulk_resource.route('/review-desc-options', methods=['GET', 'POST'])
 @login_required
 def review_desc_options():
@@ -354,7 +330,8 @@ def review_desc_options():
 
     if form.validate_on_submit():
         if form.navigation.data['submit_next']:
-            return redirect(url_for('bulk_resource.set_required_option_descriptor'))
+            return redirect(
+                url_for('bulk_resource.set_required_option_descriptor'))
         elif form.navigation.data['submit_back']:
             return redirect(url_for('bulk_resource.set_descriptor_types'))
         elif form.navigation.data['submit_cancel']:
@@ -363,30 +340,36 @@ def review_desc_options():
             return redirect(url_for('bulk_resource.upload'))
 
     # New option descriptors found in the CSV
-    new_opt_descs = [desc for desc in csv_storage.csv_descriptors
-                 if desc.descriptor_type == 'option' and not desc.descriptor_id]
+    new_opt_descs = [
+        desc for desc in csv_storage.csv_descriptors
+        if desc.descriptor_type == 'option' and not desc.descriptor_id
+    ]
 
     # Old option descriptors found in the app
     old_opt_descs = []
     if csv_storage.action == 'update':
-        old_opt_descs_csv = [desc for desc in csv_storage.csv_descriptors
-                     if desc.descriptor_type == 'option' and desc.descriptor_id]
+        old_opt_descs_csv = [
+            desc for desc in csv_storage.csv_descriptors
+            if desc.descriptor_type == 'option' and desc.descriptor_id
+        ]
         for d in old_opt_descs_csv:
-            old_d = Descriptor.query.filter_by(
-                id=d.descriptor_id
-            ).first()
+            old_d = Descriptor.query.filter_by(id=d.descriptor_id).first()
             old_opt_descs.append((d, old_d))
         old_opt_descs = dict(old_opt_descs)
-    return render_template('bulk_resource/review_desc_options.html',
-                           new_opt_descs=new_opt_descs,
-                           old_opt_descs=old_opt_descs,
-                           form=form)
+    return render_template(
+        'bulk_resource/review_desc_options.html',
+        new_opt_descs=new_opt_descs,
+        old_opt_descs=old_opt_descs,
+        form=form)
 
 
 ''' Choose one option descriptor to be the required option descriptor.
 Can only select from option descriptors in the CSV or the existing required
 option descriptor if any.'''
-@bulk_resource.route('/set-required-option-descriptor', methods=['GET', 'POST'])
+
+
+@bulk_resource.route(
+    '/set-required-option-descriptor', methods=['GET', 'POST'])
 @login_required
 def set_required_option_descriptor():
     csv_storage = CsvStorage.most_recent(user=current_user)
@@ -419,34 +402,35 @@ def set_required_option_descriptor():
                     if csv_storage.action == 'update':
                         if desc.descriptor_id:
                             descriptor = Descriptor.query.filter_by(
-                                id=desc.descriptor_id
-                            ).first()
+                                id=desc.descriptor_id).first()
                             for v in descriptor.values:
                                 values.add(v)
                     req_opt_desc_const = RequiredOptionDescriptorConstructor(
-                        name=desc.name,
-                        values=desc.values
-                    )
+                        name=desc.name, values=desc.values)
                     db.session.add(req_opt_desc_const)
                     db.session.commit()
-                    return redirect(url_for('bulk_resource.validate_required_option_descriptor'))
+                    return redirect(
+                        url_for(
+                            'bulk_resource.validate_required_option_descriptor'
+                        ))
 
             # If not in CSV, see if it is existing required option descriptor
             req_opt_desc = RequiredOptionDescriptor.query.all()[0]
             if req_opt_desc.descriptor_id != -1:
                 descriptor = Descriptor.query.filter_by(
-                    id=req_opt_desc.descriptor_id
-                ).first()
+                    id=req_opt_desc.descriptor_id).first()
                 if descriptor is not None and descriptor.name == form.required_option_descriptor.data:
                     req_opt_desc_const = RequiredOptionDescriptorConstructor(
-                        name=descriptor.name,
-                        values=descriptor.values
-                    )
+                        name=descriptor.name, values=descriptor.values)
                     db.session.add(req_opt_desc_const)
                     db.session.commit()
-                    return redirect(url_for('bulk_resource.validate_required_option_descriptor'))
+                    return redirect(
+                        url_for(
+                            'bulk_resource.validate_required_option_descriptor'
+                        ))
             # If no descriptor found
-            flash('Error: No required option descriptor. Please try again.', 'form-error')
+            flash('Error: No required option descriptor. Please try again.',
+                  'form-error')
 
     descriptors = []
     # If there is an existing required option descriptor, then make it
@@ -456,8 +440,7 @@ def set_required_option_descriptor():
         req_opt_desc = RequiredOptionDescriptor.query.all()[0]
         if req_opt_desc.descriptor_id != -1:
             descriptor = Descriptor.query.filter_by(
-                id=req_opt_desc.descriptor_id
-            ).first()
+                id=req_opt_desc.descriptor_id).first()
             if descriptor is not None:
                 req_name = descriptor.name
                 descriptors.append(req_name)
@@ -475,15 +458,17 @@ def set_required_option_descriptor():
 
     form.required_option_descriptor.choices = [(d, d) for d in descriptors]
     return render_template(
-                'bulk_resource/get_required_option_descriptor.html',
-                current=req_name,
-                form=form
-    )
+        'bulk_resource/get_required_option_descriptor.html',
+        current=req_name,
+        form=form)
 
 
 ''' If there are resources that don't have the selected required option descriptor value set,
 enforce that they are updated to have the required option descriptor'''
-@bulk_resource.route('/validate-required-option-descriptor', methods=['GET', 'POST'])
+
+
+@bulk_resource.route(
+    '/validate-required-option-descriptor', methods=['GET', 'POST'])
 @login_required
 def validate_required_option_descriptor():
     csv_storage = CsvStorage.most_recent(user=current_user)
@@ -500,7 +485,8 @@ def validate_required_option_descriptor():
     csv_resources = set()
     for row in csv_storage.csv_rows:
         csv_resources.add(row.data['Name'])
-        if req_opt_desc not in row.data or row.data[req_opt_desc].strip() == '':
+        if req_opt_desc not in row.data or row.data[
+                req_opt_desc].strip() == '':
             missing_resources.add(row.data['Name'])
 
     # Find all existing resources that lack an
@@ -511,8 +497,7 @@ def validate_required_option_descriptor():
         curr_req = ''
         if curr_req_opt_desc.descriptor_id != -1:
             req_descriptor = Descriptor.query.filter_by(
-                id=curr_req_opt_desc.descriptor_id
-            ).first()
+                id=curr_req_opt_desc.descriptor_id).first()
             if req_descriptor is not None:
                 curr_req = req_descriptor.name
 
@@ -531,7 +516,8 @@ def validate_required_option_descriptor():
     # For form submission
     if request.method == 'POST':
         if form.navigation.data['submit_back']:
-            return redirect(url_for('bulk_resource.set_required_option_descriptor'))
+            return redirect(
+                url_for('bulk_resource.set_required_option_descriptor'))
         elif form.navigation.data['submit_cancel']:
             db.session.delete(csv_storage)
             db.session.commit()
@@ -544,7 +530,8 @@ def validate_required_option_descriptor():
                   'Please try again.', 'form-error')
         else:
             for num, name in enumerate(missing_resources):
-                req_opt_desc_const.missing_dict[name] = form.resources.data[num]
+                req_opt_desc_const.missing_dict[name] = form.resources.data[
+                    num]
             db.session.commit()
             return redirect(url_for('bulk_resource.save_csv'))
 
@@ -559,19 +546,21 @@ def validate_required_option_descriptor():
     for num, name in enumerate(missing_resources):
         form.resources.append_entry()
         form.resources[num].label = name
-        form.resources[num].choices = [(v, v) for v in req_opt_desc_const.values]
+        form.resources[num].choices = [(v, v)
+                                       for v in req_opt_desc_const.values]
 
     # Remove auto form label
     form.resources.label = ''
 
     return render_template(
-                'bulk_resource/review_required_option_descriptor.html',
-                form=form,
-                required=req_opt_desc,
-    )
+        'bulk_resource/review_required_option_descriptor.html',
+        form=form,
+        required=req_opt_desc, )
 
 
 ''' Last step in CSV workflow to update the resource and descriptor data models'''
+
+
 @bulk_resource.route('/save-csv', methods=['GET', 'POST'])
 @login_required
 def save_csv():
@@ -587,9 +576,12 @@ def save_csv():
             if not req_opt_desc_const:
                 return redirect(url_for('bulk_resource.set_descriptor_types'))
             elif req_opt_desc_const[0].missing_dict:
-                return redirect(url_for('bulk_resource.validate_required_option_descriptor'))
+                return redirect(
+                    url_for(
+                        'bulk_resource.validate_required_option_descriptor'))
             else:
-                return redirect(url_for('bulk_resource.set_required_option_descriptor'))
+                return redirect(
+                    url_for('bulk_resource.set_required_option_descriptor'))
         elif form.data['submit_cancel']:
             db.session.delete(csv_storage)
             db.session.commit()
@@ -600,7 +592,8 @@ def save_csv():
             OptionAssociation.query.delete()
             TextAssociation.query.delete()
             # on delete suggestions linked to resources
-            ResourceSuggestion.query.filter(ResourceSuggestion.resource_id != None).delete()
+            ResourceSuggestion.query.filter(
+                ResourceSuggestion.resource_id != None).delete()
             Rating.query.delete()
             Descriptor.query.delete()
             Resource.query.delete()
@@ -611,8 +604,7 @@ def save_csv():
             if csv_storage.action == 'update' and desc.descriptor_id:
                 if desc.descriptor_type == 'option':
                     existing_descriptor = Descriptor.query.filter_by(
-                        id=desc.descriptor_id
-                    ).first()
+                        id=desc.descriptor_id).first()
                     values = existing_descriptor.values
                     values.extend(desc.values)
                     existing_descriptor.values = list(set(values))
@@ -621,22 +613,18 @@ def save_csv():
                 descriptor = Descriptor(
                     name=desc.name,
                     values=list(desc.values),
-                    is_searchable=True,
-                )
+                    is_searchable=True, )
                 db.session.add(descriptor)
 
         # Create/update rows and descriptor associations
         for row in csv_storage.csv_rows:
             if csv_storage.action == 'update' and row.resource_id:
-                resource = Resource.query.filter_by(
-                    id=row.resource_id
-                ).first()
+                resource = Resource.query.filter_by(id=row.resource_id).first()
                 address = row.data['Address']
                 if resource.address != address:
                     resource.address = address
                     cached = GeocoderCache.query.filter_by(
-                        address=address
-                    ).first()
+                        address=address).first()
                     if cached is None:
                         db.session.rollback()
                         abort(404)
@@ -646,9 +634,7 @@ def save_csv():
             else:
                 name = row.data['Name']
                 address = row.data['Address']
-                cached = GeocoderCache.query.filter_by(
-                    address=address
-                ).first()
+                cached = GeocoderCache.query.filter_by(address=address).first()
                 if cached is None:
                     db.session.rollback()
                     abort(404)
@@ -656,16 +642,13 @@ def save_csv():
                     name=name,
                     address=address,
                     latitude=cached.latitude,
-                    longitude=cached.longitude
-                )
+                    longitude=cached.longitude)
                 db.session.add(resource)
 
             # Loop through descriptors on the resource rows
             for key in row.data:
                 if key and key != 'Name' and key != 'Address':
-                    descriptor = Descriptor.query.filter_by(
-                        name=key
-                    ).first()
+                    descriptor = Descriptor.query.filter_by(name=key).first()
                     values = list(descriptor.values)
                     assocValues = []
                     if len(descriptor.values) == 0:  # text descriptor
@@ -675,8 +658,7 @@ def save_csv():
                         if csv_storage.action == 'update':
                             text_association = TextAssociation.query.filter_by(
                                 resource_id=resource.id,
-                                descriptor_id=descriptor.id,
-                            ).first()
+                                descriptor_id=descriptor.id, ).first()
                             if text_association is None:
                                 assocValues.append(row.data[key])
                             # Just update text value if only text changed
@@ -697,13 +679,14 @@ def save_csv():
                         if csv_storage.action == 'update':
                             option_associations = OptionAssociation.query.filter_by(
                                 resource_id=resource.id,
-                                descriptor_id=descriptor.id
-                            )
+                                descriptor_id=descriptor.id)
                             if option_associations is None:
                                 assocValues.extend(curr_opts)
                             else:
                                 # Check if existing options same as new ones in CSV
-                                old_opts = [opt.option for opt in option_associations]
+                                old_opts = [
+                                    opt.option for opt in option_associations
+                                ]
                                 if set(curr_opts) != set(old_opts):
                                     # If options different, delete existing and add new ones after
                                     for o in option_associations:
@@ -729,29 +712,29 @@ def save_csv():
         if req_opt_desc_const:
             req_opt_desc_const = req_opt_desc_const[0]
             required_option_descriptor = Descriptor.query.filter_by(
-                name=req_opt_desc_const.name
-            ).first()
+                name=req_opt_desc_const.name).first()
             if required_option_descriptor is None:
                 required_option_descriptor = Descriptor(
-                                                name=req_opt_desc_const.name,
-                                                values=req_opt_desc_const.values,
-                                                is_searchable=True)
+                    name=req_opt_desc_const.name,
+                    values=req_opt_desc_const.values,
+                    is_searchable=True)
                 db.session.add(required_option_descriptor)
-            req_opt_desc = RequiredOptionDescriptor(descriptor_id=required_option_descriptor.id)
+            req_opt_desc = RequiredOptionDescriptor(
+                descriptor_id=required_option_descriptor.id)
 
             # Add associations for the resources missing values for the required option descriptor
             if req_opt_desc_const.missing_dict:
                 for name in req_opt_desc_const.missing_dict.keys():
-                    resource = Resource.query.filter_by(
-                        name=name
-                    ).first()
+                    resource = Resource.query.filter_by(name=name).first()
                     if resource is not None:
                         for val in req_opt_desc_const.missing_dict[name]:
                             new_association = OptionAssociation(
-                                                resource_id=resource.id,
-                                                descriptor_id=required_option_descriptor.id,
-                                                option=required_option_descriptor.values.index(val),
-                                                resource=resource, descriptor=required_option_descriptor)
+                                resource_id=resource.id,
+                                descriptor_id=required_option_descriptor.id,
+                                option=required_option_descriptor.values.index(
+                                    val),
+                                resource=resource,
+                                descriptor=required_option_descriptor)
                             db.session.add(new_association)
             db.session.delete(req_opt_desc_const)
             db.session.add(req_opt_desc)
