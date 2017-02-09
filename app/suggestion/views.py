@@ -225,7 +225,7 @@ def save_associations(resource_suggestion, form, descriptors):
             if descriptor.name != 'supercategories':
                 if form[descriptor.name].data == []:
                     continue
-                value = form[descriptor.name].data[0]
+                values = form[descriptor.name].data[0]
             else:
                 categories_descriptor = filter(
                     lambda d: d.name == 'categories', descriptors)[0]
@@ -251,7 +251,7 @@ def save_associations(resource_suggestion, form, descriptors):
             keyword = 'option'
         else:
             AssociationClass = TextAssociation
-            value = form[descriptor.name].data
+            values = form[descriptor.name].data
             keyword = 'text'
         for value in values:
             arguments = {
