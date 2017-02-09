@@ -20,7 +20,6 @@ class ResourceForm(Form):
         'Address', validators=[InputRequired(), Length(1, 512)])
     latitude = HiddenField('Latitude', validators=[InputRequired()])
     longitude = HiddenField('Longitude', validators=[InputRequired()])
-    submit = SubmitField('Submit')
 
 class ResourceSuggestionForm(ResourceForm):
     submit = SubmitField('Suggest Resource')
