@@ -6,7 +6,7 @@ from wtforms.fields import SelectMultipleField, TextAreaField
 from . import single_resource
 from .. import db
 from ..models import (Descriptor, OptionAssociation, RequiredOptionDescriptor,
-                      Resource, TextAssociation)
+                      Resource, ResourceSuggestion, TextAssociation)
 from .forms import SingleResourceForm
 
 
@@ -106,6 +106,77 @@ def create():
             flash('Error: failed to save resource. Please try again.',
                   'form-error')
     return render_template('single_resource/create.html', form=form)
+
+@single_resource.route('/create/<int:suggestion_id>', methods=['GET', 'POST'])
+@login_required
+def create_from_suggestion(suggestion_id):
+    """Add a resource from suggestion."""
+    suggestion = ResourceSuggestion.query.get(suggestion_id)
+    if suggestion is None:
+        abort(404)
+    name = suggestion.name
+
+    suggestion_field_names = Resource.__table__.columns.keys()
+    descriptors = Descriptor.query.all()
+    # req_opt_desc = RequiredOptionDescriptor.query.all()[0]
+    for descriptor in descriptors:
+        if descriptor.is_option_descriptor:  # Fields for option descriptors.
+            if descriptor.name != 'supercategories':
+                choices = [(str(i), v)
+                           for i, v in enumerate(descriptor.values)]
+                default = None
+                option_associations = OptionAssociation.query.filter_by(
+                    resource_id=suggestion_id, descriptor_id=descriptor.id)
+                if option_associations is not None:
+                    default = [assoc.option for assoc in option_associations]
+                setattr(
+                    SingleResourceForm,
+                    descriptor.name,
+                    SelectMultipleField(choices=choices, default=default))
+            else:
+                pass
+        else:  # Fields for text descriptors
+            default = None
+            text_association = TextAssociation.query.filter_by(
+                resource_id=suggestion_id, descriptor_id=descriptor.id).first()
+            if text_association is not None:
+                default = text_association.text
+            setattr(
+                SingleResourceForm,
+                descriptor.name,
+                TextAreaField(default=default))
+
+    form = SingleResourceForm()
+    if form.validate_on_submit():
+        new_resource = Resource(
+            name=form.name.data,
+            address=form.address.data,
+            latitude=form.latitude.data,
+            longitude=form.longitude.data)
+        # Field id is not needed for the form, hence omitted with [1:].
+        for field_name in suggestion_field_names[1:]:
+            if field_name in form:
+                setattr(new_resource, field_name, form[field_name].data)
+        db.session.add(new_resource) #Why here?
+        save_associations(
+            resource=new_resource,
+            form=form,
+            descriptors=descriptors,
+            resource_existed=False)
+        try:
+            db.session.commit()
+            flash('Resource added', 'form-success')
+            return redirect(url_for('single_resource.index'))
+        except IntegrityError:
+            db.session.rollback()
+            flash('Error: failed to save resource. Please try again.',
+                  'form-error')
+    for field_name in suggestion_field_names:
+        if field_name in form:
+            form[field_name].data = suggestion.__dict__[field_name]
+
+    return render_template('single_resource/create.html', form=form)
+
 
 
 @single_resource.route('/<int:resource_id>', methods=['GET', 'POST'])
