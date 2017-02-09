@@ -178,53 +178,6 @@ def create_from_suggestion(suggestion_id):
     return render_template('single_resource/create.html', form=form)
 
 
-    # """Create a suggestion for a resource edit."""
-
-    #
-    # # Add form fields asking for the suggester's name, email, and phone number.
-    # # Dynamically added here so that form's fields are displayed in the
-    # # correct order.
-    # # setattr(ResourceSuggestionForm, 'contact_information',
-    # #         FormField(ContactInformationForm))
-    #
-    # form = ResourceSuggestionForm()
-    #
-    # if form.validate_on_submit():
-    #     resource_suggestion = ResourceSuggestion(
-    #         resource_id=resource.id,
-    #         name=form.name.data,
-    #         address=form.address.data,
-    #         latitude=form.latitude.data,
-    #         longitude=form.longitude.data,
-    #         # contact_name=form.contact_information.contact_name.data,
-    #         # contact_email=form.contact_information.contact_email.data,
-    #         # contact_phone_number=form.contact_information.contact_phone_number.
-    #         # data,
-    #         # additional_information=form.contact_information.
-    #         # additional_information.data,
-    #         submission_time=datetime.now(pytz.timezone('US/Eastern')))
-    #     # Field id is not needed for the form, hence omitted with [1:].
-    #     for field_name in resource_field_names[1:]:
-    #         if field_name in form:
-    #             setattr(resource_suggestion, field_name, form[field_name].data)
-    #     save_associations(
-    #         resource_suggestion=resource_suggestion,
-    #         form=form,
-    #         descriptors=descriptors)
-    #     db.session.add(resource_suggestion)
-    #     try:
-    #         db.session.commit()
-    #         flash('Thanks for the suggestion!', 'success')
-    #         return redirect(url_for('main.index'))
-    #     except IntegrityError:
-    #         db.session.rollback()
-    #         flash('Database error occurred. Please try again.', 'error')
-    #
-    # for field_name in resource_field_names:
-    #     if field_name in form:
-    #         form[field_name].data = resource.__dict__[field_name]
-    #
-    # return render_template('suggestion/suggest.html', form=form, name=name)
 
 @single_resource.route('/<int:resource_id>', methods=['GET', 'POST'])
 @login_required
