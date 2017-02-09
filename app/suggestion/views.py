@@ -4,7 +4,7 @@ import pytz
 from flask import abort, flash, redirect, render_template, url_for
 from flask.ext.login import login_required
 from sqlalchemy.exc import IntegrityError
-from wtforms.fields import FormField, SelectField, TextAreaField
+from wtforms.fields import FormField, SelectMultipleField, TextAreaField
 
 from forms import ContactInformationForm, ResourceSuggestionForm
 
@@ -97,7 +97,7 @@ def suggest_create():
                 setattr(
                     ResourceSuggestionForm,
                     descriptor.name,
-                    SelectField(choices=choices))
+                    SelectMultipleField(choices=choices))
             else:
                 pass
         else:  # Fields for text descriptors.
@@ -158,7 +158,7 @@ def suggest_edit(resource_id):
             if option_association is not None:
                 default = option_association.option
             setattr(ResourceSuggestionForm, descriptor.name,
-                    SelectField(choices=choices, default=default))
+                    SelectMultipleField(choices=choices, default=default))
         else:
             default = None
             text_association = TextAssociation.query.filter_by(
