@@ -106,8 +106,8 @@ def suggest_create():
     # Add form fields asking for the suggester's name, email, and phone number.
     # Dynamically added here so that form's fields are displayed in the
     # correct order.
-    setattr(ResourceSuggestionForm, 'contact_information',
-            FormField(ContactInformationForm))
+    # setattr(ResourceSuggestionForm, 'contact_information',
+    #         FormField(ContactInformationForm))
 
     form = ResourceSuggestionForm()
 
@@ -117,12 +117,12 @@ def suggest_create():
             address=form.address.data,
             latitude=form.latitude.data,
             longitude=form.longitude.data,
-            contact_name=form.contact_information.contact_name.data,
-            contact_email=form.contact_information.contact_email.data,
-            contact_phone_number=form.contact_information.contact_phone_number.
-            data,
-            additional_information=form.contact_information.
-            additional_information.data,
+            # contact_name=form.contact_information.contact_name.data,
+            # contact_email=form.contact_information.contact_email.data,
+            # contact_phone_number=form.contact_information.contact_phone_number.
+            # data,
+            # additional_information=form.contact_information.
+            # additional_information.data,
             submission_time=datetime.now(pytz.timezone('US/Eastern')))
         save_associations(
             resource_suggestion=resource_suggestion,
@@ -173,8 +173,8 @@ def suggest_edit(resource_id):
     # Add form fields asking for the suggester's name, email, and phone number.
     # Dynamically added here so that form's fields are displayed in the
     # correct order.
-    setattr(ResourceSuggestionForm, 'contact_information',
-            FormField(ContactInformationForm))
+    # setattr(ResourceSuggestionForm, 'contact_information',
+    #         FormField(ContactInformationForm))
 
     form = ResourceSuggestionForm()
 
@@ -185,12 +185,12 @@ def suggest_edit(resource_id):
             address=form.address.data,
             latitude=form.latitude.data,
             longitude=form.longitude.data,
-            contact_name=form.contact_information.contact_name.data,
-            contact_email=form.contact_information.contact_email.data,
-            contact_phone_number=form.contact_information.contact_phone_number.
-            data,
-            additional_information=form.contact_information.
-            additional_information.data,
+            # contact_name=form.contact_information.contact_name.data,
+            # contact_email=form.contact_information.contact_email.data,
+            # contact_phone_number=form.contact_information.contact_phone_number.
+            # data,
+            # additional_information=form.contact_information.
+            # additional_information.data,
             submission_time=datetime.now(pytz.timezone('US/Eastern')))
         # Field id is not needed for the form, hence omitted with [1:].
         for field_name in resource_field_names[1:]:
