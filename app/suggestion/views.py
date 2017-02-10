@@ -125,9 +125,10 @@ def suggest_create():
             # additional_information.data,
             submission_time=datetime.now(pytz.timezone('US/Eastern')))
         save_associations(
-            resource_suggestion=resource_suggestion,
-            form=form,
-            descriptors=descriptors)
+            resource_suggestion,
+            form,
+            descriptors,
+            False)
         db.session.add(resource_suggestion)
         try:
             db.session.commit()
@@ -197,9 +198,10 @@ def suggest_edit(resource_id):
             if field_name in form:
                 setattr(resource_suggestion, field_name, form[field_name].data)
         save_associations(
-            resource_suggestion=resource_suggestion,
-            form=form,
-            descriptors=descriptors)
+            resource_suggestion,
+            form,
+            descriptors,
+            False)
         db.session.add(resource_suggestion)
         try:
             db.session.commit()
@@ -216,16 +218,29 @@ def suggest_edit(resource_id):
     return render_template('suggestion/suggest.html', form=form, name=name)
 
 
-def save_associations(resource_suggestion, form, descriptors):
+def save_associations(resource, form, descriptors, resource_existed):
     """Save associations from the forms received by 'create' and 'edit' route
     handlers to the database."""
+    #first delete all the associations for this resource if it already existed (to handle the "empty" case)
+    if resource_existed:
+        options = OptionAssociation.query.filter_by(
+            resource_id=resource.id).all()
+        texts = TextAssociation.query.filter_by(resource_id=resource.id).all()
+        associations = options + texts
+        for a in associations:
+            db.session.delete(a)
+        try:
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+            flash('Error: failed to save edits. Please try again.',
+                  'form-error')
+
     for descriptor in descriptors:
         if descriptor.is_option_descriptor:
             AssociationClass = OptionAssociation
             if descriptor.name != 'supercategories':
-                if form[descriptor.name].data == []:
-                    continue
-                values = form[descriptor.name].data[0]
+                values = [int(i) for i in form[descriptor.name].data]
             else:
                 categories_descriptor = filter(
                     lambda d: d.name == 'categories', descriptors)[0]
@@ -242,6 +257,7 @@ def save_associations(resource_suggestion, form, descriptors):
                 supercategories_values = [
                     category_to_supercategory[category_value]
                     for category_value in categories_values
+                    if category_value in category_to_supercategory
                 ]
                 values = [
                     supercategories_descriptor.values.index(
@@ -251,14 +267,14 @@ def save_associations(resource_suggestion, form, descriptors):
             keyword = 'option'
         else:
             AssociationClass = TextAssociation
-            values = form[descriptor.name].data
+            values = [form[descriptor.name].data]
             keyword = 'text'
         for value in values:
             arguments = {
-                'resource_id': resource_suggestion.id,
+                'resource_id': resource.id,
                 'descriptor_id': descriptor.id,
                 keyword: value,
-                'resource': resource_suggestion,
+                'resource': resource,
                 'descriptor': descriptor
             }
             new_association = AssociationClass(**arguments)
