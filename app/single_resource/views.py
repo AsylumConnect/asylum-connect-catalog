@@ -8,6 +8,8 @@ from .. import db
 from ..models import (Descriptor, OptionAssociation, RequiredOptionDescriptor,
                       Resource, ResourceSuggestion, TextAssociation)
 from .forms import SingleResourceForm
+from ..suggestion.forms import ResourceForm
+from ..suggestion.views import save_associations
 
 
 @single_resource.route('/')
@@ -237,6 +239,109 @@ def edit(resource_id):
         'single_resource/edit.html', form=form, resource_id=resource_id)
 
 
+@single_resource.route('/edit/<int:suggestion_id>', methods=['GET', 'POST'])
+@login_required
+def edit_from_suggestion(suggestion_id):
+    """Edit a resource from suggestion."""
+    suggestion = ResourceSuggestion.query.get(suggestion_id)
+    if suggestion is None:
+        abort(404)
+    resource = Resource.query.get(suggestion.resource_id)
+    if resource is None:
+        abort(404)
+    name = suggestion.name
+
+    resource_field_names = Resource.__table__.columns.keys()
+    suggestion_field_names = ResourceSuggestion.__table__.columns.keys()
+    descriptors = Descriptor.query.all()
+    # req_opt_desc = RequiredOptionDescriptor.query.all()[0]
+    for descriptor in descriptors:
+        if descriptor.is_option_descriptor:  # Fields for option descriptors.
+            if descriptor.name != 'supercategories':
+                choices = [(str(i), v)
+                           for i, v in enumerate(descriptor.values)]
+
+                default_resource = None
+                option_associations_resource = OptionAssociation.query.filter_by(
+                    resource_id=resource.id, descriptor_id=descriptor.id)
+                if option_associations_resource is not None:
+                    default_resource = [assoc.option for assoc in option_associations_resource]
+                setattr(
+                    ResourceForm,
+                    descriptor.name,
+                    SelectMultipleField(choices=choices, default=default_resource))
+
+                default_suggestion = None
+                option_associations_suggestion = OptionAssociation.query.filter_by(
+                    resource_id=suggestion_id, descriptor_id=descriptor.id)
+                if option_associations_suggestion is not None:
+                    default_suggestion = [assoc.option for assoc in option_associations_suggestion]
+                setattr(
+                    SingleResourceForm,
+                    descriptor.name,
+                    SelectMultipleField(choices=choices, default=default_suggestion))
+            else:
+                pass
+        else:  # Fields for text descriptors
+            default_resource = None
+            text_association_resource = TextAssociation.query.filter_by(
+                resource_id=resource.id, descriptor_id=descriptor.id).first()
+            if text_association_resource is not None:
+                default_resource = text_association_resource.text
+            setattr(
+                ResourceForm,
+                descriptor.name,
+                TextAreaField(default=default_resource))
+
+            default_suggestion = None
+            text_association_suggestion = TextAssociation.query.filter_by(
+                resource_id=suggestion_id, descriptor_id=descriptor.id).first()
+            if text_association_suggestion is not None:
+                default_suggestion = text_association_suggestion.text
+            setattr(
+                SingleResourceForm,
+                descriptor.name,
+                TextAreaField(default=default_suggestion))
+
+    form_resource = ResourceForm()
+    form_suggestion = SingleResourceForm()
+    if form_suggestion.validate_on_submit():
+        # replace reosurce's fields
+        resource.name=form_suggestion.name.data
+        resource.address=form_suggestion.address.data
+        resource.latitude=form_suggestion.latitude.data
+        resource.longitude=form_suggestion.longitude.data
+        # Field id is not needed for the form, hence omitted with [1:].
+        for field_name in suggestion_field_names[1:]:
+            if field_name in form_suggestion:
+                setattr(resource, field_name, form_suggestion[field_name].data)
+        save_associations(
+            resource=resource,
+            form=form_suggestion,
+            descriptors=descriptors,
+            resource_existed=True)
+        db.session.add(resource)
+        try:
+            db.session.commit()
+            flash('Resource added', 'form-success')
+            return redirect(url_for('single_resource.index'))
+        except IntegrityError:
+            db.session.rollback()
+            flash('Error: failed to save resource. Please try again.',
+                  'form-error')
+
+    for field_name in resource_field_names:
+        if field_name in form_resource:
+            form_resource[field_name].data = resource.__dict__[field_name]
+
+    for field_name in suggestion_field_names:
+        if field_name in form_suggestion:
+            form_suggestion[field_name].data = suggestion.__dict__[field_name]
+
+    return render_template('single_resource/edit_from_suggestion.html',
+                           form_resource=form_resource, form=form_suggestion)
+
+
 category_to_supercategory = {
     "Medical Clinics": "Medical",
     "Women's Health": "Medical",
@@ -255,69 +360,6 @@ category_to_supercategory = {
     "Psychiatry": "Mental Health"
 }
 
-
-def save_associations(resource, form, descriptors, resource_existed):
-    """Save associations from the forms received by 'create' and 'edit' route
-    handlers to the database."""
-    #first delete all the associations for this resource if it already existed (to handle the "empty" case)
-    if resource_existed:
-        options = OptionAssociation.query.filter_by(
-            resource_id=resource.id).all()
-        texts = TextAssociation.query.filter_by(resource_id=resource.id).all()
-        associations = options + texts
-        for a in associations:
-            db.session.delete(a)
-        try:
-            db.session.commit()
-        except IntegrityError:
-            db.session.rollback()
-            flash('Error: failed to save edits. Please try again.',
-                  'form-error')
-
-    for descriptor in descriptors:
-        if descriptor.is_option_descriptor:
-            AssociationClass = OptionAssociation
-            if descriptor.name != 'supercategories':
-                if form[descriptor.name].data == []:
-                    continue
-                    values = [int(i) for i in form[descriptor.name].data]
-            else:
-                categories_descriptor = filter(
-                    lambda d: d.name == 'categories', descriptors)[0]
-                categories_values = categories_descriptor.values
-                categories_options = [
-                    int(i) for i in form[categories_descriptor.name].data
-                ]
-                categories_values = [
-                    categories_values[category_option]
-                    for category_option in categories_options
-                ]
-                supercategories_descriptor = filter(
-                    lambda d: d.name == 'supercategories', descriptors)[0]
-                supercategories_values = [
-                    category_to_supercategory[category_value]
-                    for category_value in categories_values
-                ]
-                values = [
-                    supercategories_descriptor.values.index(
-                        supercategory_value)
-                    for supercategory_value in supercategories_values
-                ]
-            keyword = 'option'
-        else:
-            AssociationClass = TextAssociation
-            values = [form[descriptor.name].data]
-            keyword = 'text'
-        for value in values:
-            arguments = {
-                'resource_id': resource.id,
-                'descriptor_id': descriptor.id,
-                keyword: value,
-                'resource': resource,
-                'descriptor': descriptor
-            }
-            new_association = AssociationClass(**arguments)
-            db.session.add(new_association)
 
 
 @single_resource.route('/<int:resource_id>/delete', methods=['POST'])
