@@ -1,0 +1,16 @@
+{% extends 'layouts/base.html' %}
+{% import 'macros/form_macros.html' as f %}
+
+{% block content %}
+    <div class="ui grid container">
+        <div class="eight wide column">
+            <h2 class="ui dividing header">Existing Resource</h2>
+            {{ f.render_form(form_resource) }}
+        </div>
+        <div class="eight wide column">
+            <h2 class="ui dividing header">Suggested Resource</h2>
+            {% include 'single_resource/resource_form.html' %}
+        </div>
+    </div>
+
+{% endblock %}
