@@ -275,12 +275,11 @@ class Resource(ResourceBase):
             values=['Seattle, Washington', 'Philadelphia, Pennsylvania'],
             is_searchable=True)
 
-        requirement_descriptor = Descriptor(
-            name='requirement',
+        requirements_descriptor = Descriptor(
+            name='requirements',
             values=[
-                'Require a Birth Certificate', 'Require Proof of Residence',
-                'Require a Social Security', 'Require Income Verification',
-                'Require Contact Information'
+                'Photo ID', 'Proof of Age', 'Proof of Residence',
+                'Proof of Income', 'Medical Insurance', 'A Referral'
             ],
             is_searchable=True)
 
@@ -393,11 +392,11 @@ class Resource(ResourceBase):
 
             if 'requirements' in doc:
                 requirements = doc['requirements']
-                requirements_association = OptionAssociation(
-                    descriptor=requirement_descriptor,
-                    option=requirement_descriptor.values.index(
-                        requirements[0]))
-                resource.option_descriptors.append(requirements_association)
+                for requirement in requirements:
+                    requirements_association = OptionAssociation(
+                        descriptor=requirements_descriptor,
+                        option=requirements_descriptor.values.index(requirement))
+                    resource.option_descriptors.append(requirements_association)
 
             db.session.add(resource)
             try:

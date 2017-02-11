@@ -22,4 +22,6 @@ features:
   - Has A Confidentiality Policy
   - Is Free
 city: Seattle, Washington
-
+requirements:
+  - Photo ID
+  - Proof of Income

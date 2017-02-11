@@ -2,6 +2,7 @@
 
 var categories = [];
 var features = [];
+var requirements = [];
 var markers = [];
 
 var buttonClick = function (button, list) {
@@ -25,12 +26,17 @@ var displayResources = function() {
     hideAllMapPoints();
   }
   var areSelectedCategories = categories.length > 0;
+  var areSelectedRequirements = requirements.length > 0;
 
   if (areSelectedCategories || features.length > 0) {
     var toDisplay = $('.resource' + features.join('')); //
 
     if (areSelectedCategories) {
       toDisplay = toDisplay.filter(categories.join(', '));
+    }
+
+    if (areSelectedRequirements) {
+      toDisplay = toDisplay.not(requirements.join(', '));
     }
 
     toDisplay.addClass("active"); // shows appropriate resources e.g., $('.resource.translation').filter('.dental-care, .hygiene')')
@@ -124,7 +130,10 @@ function initMap() {
           lng : parseFloat(long)
         }
       });
-      clickListener(marker, that, map);
+      google.maps.event.addListener(marker, 'click', function(){
+        infoWindow.setContent(that.html());
+        infoWindow.open(map, marker);
+      });
 
       markers[address] = marker;
       markers[address].setVisible(false);
@@ -138,7 +147,10 @@ function initMap() {
             position: results[0].geometry.location
           });
 
-          clickListener(marker, that, map);
+          google.maps.event.addListener(marker, 'click', function(){
+            infoWindow.setContent(that.html());
+            infoWindow.open(map, marker);
+          });
 
           markers[address] = marker;
           markers[address].setVisible(false);
@@ -172,12 +184,6 @@ function initMap() {
 //                         'Error: Your browser doesn\'t support geolocation.');
 }
 
-var clickListener = function (marker, that, map) {
-    google.maps.event.addListener(marker, 'click', function(){
-        infoWindow.setContent(that.html());
-        infoWindow.open(map, marker);
-    });
-};
 
 $(document).ready(function(){
   $('.resource-header').click(function() {
@@ -186,7 +192,8 @@ $(document).ready(function(){
 
   buttonClick('.btn-filter', features);
   buttonClick('.btn-category', categories);
-  buttonClick('input[type="checkbox"]', categories);
+  buttonClick('.checkbox-category', categories);
+  buttonClick('.checkbox-requirement', requirements);
 
   $('.dropdown-menu').click(function(e) {
     e.stopPropagation();

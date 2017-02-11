@@ -29,3 +29,5 @@ features:
   - Has Translation Services
   - Is Free
 city: Seattle, Washington
+requirements:
+  - Photo ID
