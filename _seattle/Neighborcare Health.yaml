@@ -27,4 +27,6 @@ features:
   - Is Free
   - Has Translation Services
 city: Seattle, Washington
-
+requirements:
+  - Medical Insurance
+  - Proof of Income

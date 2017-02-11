@@ -32,4 +32,6 @@ features:
   - Has A Confidentiality Policy
   - Has Translation Services
 city: Seattle, Washington
-
+requirements:
+  - Proof of Residence
+  - Proof of Income
