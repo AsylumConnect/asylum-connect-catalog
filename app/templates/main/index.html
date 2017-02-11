@@ -93,14 +93,14 @@
         <button type="button" id="is-free" class="btn-filter btn btn-default" data-toggle="button"><span class="icon-free btn-icon"></span>Is Free</button>
         <button type="button" id="has-translation-services" class="btn-filter btn btn-default" data-toggle="button"><span class="icon-translation btn-icon"></span>Has Translation Services</button>
 
+        <h4 id="requirement-query" class="hide-in-screen">With these additional requirements:</h4>
         <div class="panel panel-default" id="requirement-query" class="hide-in-print">
-          <h4 id="requirement-query" class="hide-in-screen">With these additional requirements:</h4>
           <div class="panel-heading">
             <h4 class="panel-title">
               <a data-toggle="collapse" data-parent="#requirement-query" href="#collapse">Don't show me resources that require...</a>
             </h4>
           </div>
-          <div id="collapse" class="panel-collapse collapse in">
+          <div id="collapse" class="panel-collapse collapse">
             <div class="panel-body">
               <form>
                 <label class="checkbox-inline checkbox-requirement" id="photo-id"><input type="checkbox" value="">Photo ID</label>
@@ -195,12 +195,3 @@
       </div>
     </div>
 {% endblock %}
-
-<script>
-  $(document).ready(function() {
-    $("#advanced-options-checkboxes").hide(); // Hide advanced options
-    $("#advanced-options-expand").click(function() {
-      toggleExpansion('advanced-options-checkboxes', 'search-expand');
-    });
-  });
-</script>
