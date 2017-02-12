@@ -136,8 +136,10 @@
               {% if resource.report_count|int > 0 %}
                 <span class="icon-housing btn-icon" title="This resource has been reported {{ resource.report_count }} time(s) to AsylumConnect for negative user experience"></span>
               {% endif %}
-              <span class="hide-in-print"><a href="{{ url_for('suggestion.suggest_edit', resource_id=resource.id) }}" target="_blank">EDIT</a></span>
-              <span class="hide-in-print"><a href="https://goo.gl/forms/8bWRpNs7P2pj7ORx2" target="_blank">REPORT</a></span>
+              <div style="float: right">
+                <span class="hide-in-print" style="display: inline-block; margin: 10px"><a href="{{ url_for('suggestion.suggest_edit', resource_id=resource.id) }}" target="_blank">EDIT</a></span>
+                <span class="hide-in-print" style="display: inline-block; margin: 10px"><a href="https://goo.gl/forms/8bWRpNs7P2pj7ORx2" target="_blank">REPORT</a></span>
+              </div>
             </header>
             <article class="resource-content">
               {# TODO: fully flesh this out. content_fields are simply the list of fields from the resource object that we display for each resource object, in the order that we want them displayed (so this says description goes first, and non_english_services, if available, goes last #}
