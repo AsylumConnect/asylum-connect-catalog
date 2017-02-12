@@ -265,9 +265,10 @@ def save_associations(resource, form, descriptors, resource_existed):
                 ]
             keyword = 'option'
         else:
-            AssociationClass = TextAssociation
-            values = [form[descriptor.name].data]
-            keyword = 'text'
+            if descriptor.name != 'report count':
+                AssociationClass = TextAssociation
+                values = [form[descriptor.name].data]
+                keyword = 'text'
         for value in values:
             arguments = {
                 'resource_id': resource.id,
