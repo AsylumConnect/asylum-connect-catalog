@@ -82,9 +82,9 @@ def create():
                     SingleResourceForm,
                     descriptor.name,
                     SelectMultipleField(choices=choices))
-            else:
-                pass
-        else:  # Fields for text descriptors
+
+    for descriptor in descriptors:
+        if not descriptor.is_option_descriptor:  # Fields for text descriptors
             setattr(SingleResourceForm, descriptor.name, TextAreaField())
     form = SingleResourceForm()
     if form.validate_on_submit():
