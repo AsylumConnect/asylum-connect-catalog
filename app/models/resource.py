@@ -249,11 +249,11 @@ class Resource(ResourceBase):
             values=[
                 'Medical Clinics', 'Women\'s Health', 'Sexual Health',
                 'Trans Health', 'Dental Care', 'Legal Aid', 'Documentation',
-                'Housing', 'Food', 'Hygiene', 'Computers & Internet',
+                'Housing', 'Food', 'Hygiene', 'Computers and Internet',
                 'Employment', 'English Classes', 'Libraries',
                 'Community Centers', 'LGBT Centers', 'Cultural Centers',
                 'Support Groups', 'Private Counseling', 'Psychiatry', 'Mail',
-                'Sport & Entertainment'
+                'Sport and Entertainment'
             ],
             is_searchable=True)
 
