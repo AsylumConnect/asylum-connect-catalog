@@ -3,7 +3,7 @@ from datetime import datetime
 import pytz
 
 from .. import db
-from ..models.resource import ResourceBase, Resource
+from ..models.resource import Resource, ResourceBase
 
 
 class ResourceSuggestion(ResourceBase):

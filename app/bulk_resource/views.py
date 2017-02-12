@@ -1,6 +1,6 @@
+import datetime
 import json
 import os
-import datetime
 
 import geocoder
 from flask import (abort, flash, jsonify, redirect, render_template, request,
