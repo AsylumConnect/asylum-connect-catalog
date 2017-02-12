@@ -90,18 +90,18 @@ def suggest_create():
     """Create a suggestion for a resource."""
     descriptors = Descriptor.query.all()
     for descriptor in descriptors:
-        if descriptor.is_option_descriptor:  # Fields for option descriptors.
-            if descriptor.name != 'supercategories' and \
-                            descriptor.name != 'reports_count':
-                choices = [(str(i), v)
-                           for i, v in enumerate(descriptor.values)]
-                setattr(
-                    ResourceSuggestionForm,
-                    descriptor.name,
-                    SelectMultipleField(choices=choices))
+        if descriptor.is_option_descriptor and \
+                        descriptor.name != 'supercategories':
+            choices = [(str(i), v)
+                       for i, v in enumerate(descriptor.values)]
+            setattr(
+                ResourceSuggestionForm,
+                descriptor.name,
+                SelectMultipleField(choices=choices))
 
     for descriptor in descriptors:
-        if not descriptor.is_option_descriptor:  # Fields for text descriptors.
+        if not descriptor.is_option_descriptor and \
+                        descriptor.name != 'report count':
             setattr(ResourceSuggestionForm, descriptor.name, TextAreaField())
 
     # Add form fields asking for the suggester's name, email, and phone number.
@@ -148,7 +148,8 @@ def suggest_edit(resource_id):
     resource_field_names = Resource.__table__.columns.keys()
     descriptors = Descriptor.query.all()
     for descriptor in descriptors:
-        if descriptor.is_option_descriptor:
+        if descriptor.is_option_descriptor and \
+                        descriptor.name != 'supercategories':
             choices = [(str(i), v) for i, v in enumerate(descriptor.values)]
             default = None
             option_associations = OptionAssociation.query.filter_by(
@@ -157,7 +158,11 @@ def suggest_edit(resource_id):
                 default = [assoc.option for assoc in option_associations]
             setattr(ResourceSuggestionForm, descriptor.name,
                     SelectMultipleField(choices=choices, default=default))
-        else:
+
+    for descriptor in descriptors:
+        if not descriptor.is_option_descriptor and \
+                        descriptor.name != 'report count':
+            print descriptor.name
             default = None
             text_association = TextAssociation.query.filter_by(
                 resource_id=resource_id, descriptor_id=descriptor.id).first()

@@ -74,17 +74,17 @@ def create():
     descriptors = Descriptor.query.all()
     # req_opt_desc = RequiredOptionDescriptor.query.all()[0]
     for descriptor in descriptors:
-        if descriptor.is_option_descriptor:  # Fields for option descriptors.
-            if descriptor.name != 'supercategories':
-                choices = [(str(i), v)
-                           for i, v in enumerate(descriptor.values)]
-                setattr(
-                    SingleResourceForm,
-                    descriptor.name,
-                    SelectMultipleField(choices=choices))
+        if descriptor.is_option_descriptor and \
+                        descriptor.name != 'supercategories':
+            choices = [(str(i), v)
+                       for i, v in enumerate(descriptor.values)]
+            setattr(
+                SingleResourceForm,
+                descriptor.name,
+                SelectMultipleField(choices=choices))
 
     for descriptor in descriptors:
-        if not descriptor.is_option_descriptor:  # Fields for text descriptors
+        if not descriptor.is_option_descriptor:
             setattr(SingleResourceForm, descriptor.name, TextAreaField())
     form = SingleResourceForm()
     if form.validate_on_submit():
@@ -122,8 +122,8 @@ def create_from_suggestion(suggestion_id):
     descriptors = Descriptor.query.all()
     # req_opt_desc = RequiredOptionDescriptor.query.all()[0]
     for descriptor in descriptors:
-        if descriptor.is_option_descriptor:  # Fields for option descriptors.
-            if descriptor.name != 'supercategories':
+        if descriptor.is_option_descriptor and \
+                        descriptor.name != 'supercategories':
                 choices = [(str(i), v)
                            for i, v in enumerate(descriptor.values)]
                 default = None
@@ -133,9 +133,9 @@ def create_from_suggestion(suggestion_id):
                     default = [assoc.option for assoc in option_associations]
                 setattr(SingleResourceForm, descriptor.name,
                         SelectMultipleField(choices=choices, default=default))
-            else:
-                pass
-        else:  # Fields for text descriptors
+    for descriptor in descriptors:
+        if not descriptor.is_option_descriptor and \
+                        descriptor.name != 'report count':  # Fields for text descriptors
             default = None
             text_association = TextAssociation.query.filter_by(
                 resource_id=suggestion_id, descriptor_id=descriptor.id).first()
@@ -196,7 +196,8 @@ def edit(resource_id):
     descriptors = Descriptor.query.all()
     # req_opt_desc = RequiredOptionDescriptor.query.all()[0]
     for descriptor in descriptors:
-        if descriptor.values:  # Fields for option descriptors.
+        if descriptor.values and \
+                        descriptor.name != 'supercategories':
             choices = [(str(i), v) for i, v in enumerate(descriptor.values)]
             default = None
             option_associations = OptionAssociation.query.filter_by(
@@ -205,7 +206,8 @@ def edit(resource_id):
                 default = [assoc.option for assoc in option_associations]
             setattr(SingleResourceForm, descriptor.name,
                     SelectMultipleField(choices=choices, default=default))
-        else:  # Fields for text descriptors.
+    for descriptor in descriptors:
+        if not descriptor.values:  # Fields for text descriptors.
             default = None
             text_association = TextAssociation.query.filter_by(
                 resource_id=resource_id, descriptor_id=descriptor.id).first()
@@ -259,8 +261,8 @@ def edit_from_suggestion(suggestion_id):
     descriptors = Descriptor.query.all()
     # req_opt_desc = RequiredOptionDescriptor.query.all()[0]
     for descriptor in descriptors:
-        if descriptor.is_option_descriptor:  # Fields for option descriptors.
-            if descriptor.name != 'supercategories':
+        if descriptor.is_option_descriptor and \
+                        descriptor.name != 'supercategories':
                 choices = [(str(i), v)
                            for i, v in enumerate(descriptor.values)]
 
@@ -288,9 +290,9 @@ def edit_from_suggestion(suggestion_id):
                 setattr(SingleResourceForm, descriptor.name,
                         SelectMultipleField(
                             choices=choices, default=default_suggestion))
-            else:
-                pass
-        else:  # Fields for text descriptors
+    for descriptor in descriptors:
+        if not descriptor.is_option_descriptor and \
+                        descriptor.name != 'report count':
             default_resource = None
             text_association_resource = TextAssociation.query.filter_by(
                 resource_id=resource.id, descriptor_id=descriptor.id).first()
