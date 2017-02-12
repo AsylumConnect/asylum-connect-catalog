@@ -316,13 +316,14 @@ class Resource(ResourceBase):
                                         descriptor=this_descriptor,
                                         option=this_descriptor.values.index(
                                             item)
-                                ))
+                                    )
+                                )
 
                 for text_descriptors_name in text_descriptors_names:
                     print text_descriptors_name
                     key_name = '_'.join(text_descriptors_name.split(' '))
-                    if key_name in doc and doc[key_name] and \
-                                    key_name != "report_count":
+                    if key_name in doc and doc[key_name] and key_name !=\
+                            "report_count":
                         this_text = doc[key_name]
                         print doc[key_name]
                         if text_descriptors_name in list_text_descriptor_names:

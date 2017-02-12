@@ -91,16 +91,17 @@ def suggest_create():
     descriptors = Descriptor.query.all()
     for descriptor in descriptors:
         if descriptor.is_option_descriptor:  # Fields for option descriptors.
-            if descriptor.name != 'supercategories':
+            if descriptor.name != 'supercategories' and \
+                            descriptor.name != 'reports_count':
                 choices = [(str(i), v)
                            for i, v in enumerate(descriptor.values)]
                 setattr(
                     ResourceSuggestionForm,
                     descriptor.name,
                     SelectMultipleField(choices=choices))
-            else:
-                pass
-        else:  # Fields for text descriptors.
+
+    for descriptor in descriptors:
+        if not descriptor.is_option_descriptor:  # Fields for text descriptors.
             setattr(ResourceSuggestionForm, descriptor.name, TextAreaField())
 
     # Add form fields asking for the suggester's name, email, and phone number.
