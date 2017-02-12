@@ -129,7 +129,9 @@
               {% if resource.report_count|int > 0 %}
                 <span class="icon-housing btn-icon" title="This resource has been reported {{ resource.report_count }} time(s) to AsylumConnect for negative user experience"></span>
               {% endif %}
-              <a href="{{ url_for('suggestion.suggest_edit', resource_id=resource.id) }}">EDIT</h3></a>
+              <a href="{{ url_for('suggestion.suggest_edit', resource_id=resource.id) }}">EDIT</a>
+              <a href="https://goo.gl/forms/8bWRpNs7P2pj7ORx2">REPORT</a>
+
             </header>
             <article class="resource-content">
               {# TODO: fully flesh this out. content_fields are simply the list of fields from the resource object that we display for each resource object, in the order that we want them displayed (so this says description goes first, and non_english_services, if available, goes last #}
