@@ -135,7 +135,7 @@ def create_from_suggestion(suggestion_id):
                         SelectMultipleField(choices=choices, default=default))
     for descriptor in descriptors:
         if not descriptor.is_option_descriptor and \
-                        descriptor.name != 'report count':  # Fields for text descriptors
+                        descriptor.name != 'report count':
             default = None
             text_association = TextAssociation.query.filter_by(
                 resource_id=suggestion_id, descriptor_id=descriptor.id).first()
