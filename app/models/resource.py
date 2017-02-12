@@ -503,7 +503,8 @@ class Resource(ResourceBase):
             descriptor=city_descriptor).filter_by(option=city_option)
         resources = []
         for opt_resource in opt_resources:
-            resources.append(opt_resource.resource)
+            if opt_resource.resource.type == 'resource':
+                resources.append(opt_resource.resource)
 
         return resources
 
