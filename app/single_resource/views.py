@@ -168,6 +168,13 @@ def create_from_suggestion(suggestion_id):
         try:
             db.session.commit()
             flash('Resource added', 'form-success')
+            db.session.delete(suggestion)
+            try:
+                db.session.commit()
+                flash('Suggestion successfully deleted.', 'success')
+            except:
+                db.session.rollback()
+                flash('Database error occurred. Please try again.', 'error')
             return redirect(url_for('single_resource.index'))
         except IntegrityError:
             db.session.rollback()
@@ -324,6 +331,13 @@ def edit_from_suggestion(suggestion_id):
         try:
             db.session.commit()
             flash('Resource added', 'form-success')
+            db.session.delete(suggestion)
+            try:
+                db.session.commit()
+                flash('Suggestion successfully deleted.', 'success')
+            except:
+                db.session.rollback()
+                flash('Database error occurred. Please try again.', 'error')
             return redirect(url_for('single_resource.index'))
         except IntegrityError:
             db.session.rollback()
