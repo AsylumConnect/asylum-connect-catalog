@@ -6,8 +6,8 @@
       <thead>
         <tr>
           <th>Submission Time</th>
-          <th>Additional Information</th>
-          <th>Contact Info</th>
+          <th>Resource Name</th>
+          <th>Resource Address</th>
           <th>Action</th>
           <th></th>
         </tr>
@@ -15,9 +15,9 @@
       <tbody>
         {% for suggestion in suggestions %}
           <tr>
-            <td>{{ suggestion.submission_time }}</td>
-            <td>{{ suggestion.additional_information }}</td>
-            <td>{{ suggestion.contact_name }}
+            <td>{{ suggestion.submission_time.strftime("%Y-%m-%d %H:%M") }}</td>
+            <td>{{ suggestion.name }}</td>
+            <td>{{ suggestion.address }}
               <br>
               {% if not suggestion.contact_email or suggestion.contact_email == '' %}
                 {{ suggestion.contact_number }}
