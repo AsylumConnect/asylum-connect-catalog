@@ -135,8 +135,8 @@
             </header>
             <article class="resource-content">
               {# TODO: fully flesh this out. content_fields are simply the list of fields from the resource object that we display for each resource object, in the order that we want them displayed (so this says description goes first, and non_english_services, if available, goes last #}
-              {% set content_fields = ['description', 'populations_served', 'address', 'hours', 'phone_number', 'email', 'additional_information', 'non_english_services', 'requirements'] %}
-              {% for field in content_fields %}
+              {% set singleton_fields = ['description', 'populations_served', 'address', 'hours', 'email', 'additional_information'] %}
+              {% for field in singleton_fields %}
                 {% if field in resource and resource[field] is not none and resource[field]|length > 0 %}
                 <p>
                   <span style="font-weight: BOLD">{{ field.replace('_', ' ').title() }}: </span>
@@ -144,11 +144,42 @@
                 </p>
                 {% endif %}
               {% endfor %}
-              <p>
-                {% if 'website' in resource and resource['website'] is not none and resource['website']|length > 0 %}
-                <span style="font-weight: BOLD">Website: </span><a href="{{ resource['website'] }}">{{ resource['website'] }}</a>
-              </p>
-              {% endif %}
+              {% set hyperlink_fields = ['website'] %}
+              {% for field in hyperlink_fields %}
+                {% if field in resource and resource[field] is not none and resource[field]|length > 0 %}
+                <p>
+                  <span style="font-weight: BOLD">{{ field.replace('_', ' ').title() }}: </span>
+                  <a href="{{ resource[field] }}">{{ resource[field] }}</a>
+                </p>
+                {% endif %}
+              {% endfor %}
+              {% set comma_separated_list_fields = ['phone_numbers', 'non_english_services'] %}
+              {% for field in comma_separated_list_fields %}
+                {% if field in resource and resource[field] is not none and resource[field]|length > 0 %}
+                <p>
+                  <span style="font-weight: BOLD">{{ field.replace('_', ' ').title() }}</span>
+                  {% set list = resource[field].split(',') %}
+                  <ul>
+                    {% for item in list %}
+                    <li>{{ item }}</li>
+                    {% endfor %}
+                  </ul>
+                </p>
+                {% endif %}
+              {% endfor %}
+              {% set list_fields = ['requirements'] %}
+              {% for field in list_fields %}
+                {% if field in resource and resource[field] is not none and resource[field]|length > 0 %}
+                <p>
+                  <span style="font-weight: BOLD">{{ field.replace('_', ' ').title() }}</span>
+                  <ul>
+                    {% for item in resource[field] %}
+                    <li>{{ item }}</li>
+                    {% endfor %}
+                  </ul>
+                </p>
+                {% endif %}
+              {% endfor %}
             </article>
 
             {% for group in resource.supercategories %}
