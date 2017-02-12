@@ -222,9 +222,9 @@ class Resource(ResourceBase):
         resources = os.listdir("_seattle")
 
         text_descriptors_names =\
-            ['description', 'website', 'populations served', 'hours',
-             'phone numbers', 'email', 'mailing address', 'contact form',
-             'non english services', 'additional information', 'report count']
+            ['description', 'mailing address', 'website', 'phone numbers',
+             'email', 'hours', 'populations served', 'additional information',
+             'non english services', 'contact form', 'report count']
 
         list_text_descriptor_names = ['phone numbers', 'non english services']
 
@@ -291,15 +291,12 @@ class Resource(ResourceBase):
                     longitude=doc['long'])
 
                 for option_descriptor_name in option_descriptor_names:
-                    print option_descriptor_name
                     if option_descriptor_name in doc and \
                             doc[option_descriptor_name]:
-                        print doc[option_descriptor_name]
                         if option_descriptor_name in \
                                 singleton_option_descriptor_names:
                             this_descriptor = \
                                 option_descriptors[option_descriptor_name]
-                            print this_descriptor.values
                             resource.option_descriptors.append(
                                 OptionAssociation(
                                     descriptor=this_descriptor,
@@ -309,7 +306,6 @@ class Resource(ResourceBase):
                         else:
                             this_descriptor = \
                                 option_descriptors[option_descriptor_name]
-                            print this_descriptor
                             for item in doc[option_descriptor_name]:
                                 resource.option_descriptors.append(
                                     OptionAssociation(
@@ -320,12 +316,10 @@ class Resource(ResourceBase):
                                 )
 
                 for text_descriptors_name in text_descriptors_names:
-                    print text_descriptors_name
                     key_name = '_'.join(text_descriptors_name.split(' '))
                     if key_name in doc and doc[key_name] and key_name !=\
                             "report_count":
                         this_text = doc[key_name]
-                        print doc[key_name]
                         if text_descriptors_name in list_text_descriptor_names:
                             this_text = ', '.join(doc[key_name])
                         resource.text_descriptors.append(TextAssociation(
