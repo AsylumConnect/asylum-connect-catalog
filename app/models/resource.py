@@ -229,16 +229,16 @@ class Resource(ResourceBase):
             name='populations served', values=[], is_searchable=True)
         hours_descriptor = Descriptor(
             name='hours', values=[], is_searchable=True)
-        # phone_numbers_descriptor = Descriptor(
-        #     name='phone numbers', values=[], is_searchable=True)
+        phone_numbers_descriptor = Descriptor(
+            name='phone numbers', values=[], is_searchable=True)
         email_descriptor = Descriptor(
             name='email', values=[], is_searchable=True)
         mailing_address_descriptor = Descriptor(
             name='mailing address', values=[], is_searchable=True)
         contact_form_descriptor = Descriptor(
             name='contact form', values=[], is_searchable=True)
-        # non_english_services_descriptor = Descriptor(
-        #     name='non english services', values=[], is_searchable=True)
+        non_english_services_descriptor = Descriptor(
+            name='non english services', values=[], is_searchable=True)
         additional_information_descriptor = Descriptor(
             name='additional information', values=[], is_searchable=True)
         report_count_descriptor = Descriptor(
@@ -346,20 +346,20 @@ class Resource(ResourceBase):
             resource.text_descriptors.append(
                 report_count_association)
 
-            # if doc['phone_numbers']:
-            #     phone_numbers = doc['phone_numbers']
-            #     phone_numbers_association = TextAssociation(
-            #         text=', '.join(phone_numbers),
-            #         descriptor=phone_numbers_descriptor)
-            #     resource.text_descriptors.append(phone_numbers_association)
+            if doc['phone_numbers']:
+                phone_numbers = doc['phone_numbers']
+                phone_numbers_association = TextAssociation(
+                    text=', '.join(phone_numbers),
+                    descriptor=phone_numbers_descriptor)
+                resource.text_descriptors.append(phone_numbers_association)
 
-            # if doc['non_english_services']:
-            #     non_english_services = doc['non_english_services']
-            #     non_english_services_association = TextAssociation(
-            #         text=', '.join(non_english_services),
-            #         descriptor=non_english_services_descriptor)
-            #     resource.text_descriptors.append(
-            #         non_english_services_association)
+            if doc['non_english_services']:
+                non_english_services = doc['non_english_services']
+                non_english_services_association = TextAssociation(
+                    text=', '.join(non_english_services),
+                    descriptor=non_english_services_descriptor)
+                resource.text_descriptors.append(
+                    non_english_services_association)
 
             categories = doc['categories']
             supercategories = doc['supercategories']
