@@ -292,31 +292,37 @@ class Resource(ResourceBase):
 
                 for option_descriptor_name in option_descriptor_names:
                     print option_descriptor_name
-                    if option_descriptor_name in doc and doc[option_descriptor_name]:
+                    if option_descriptor_name in doc and \
+                            doc[option_descriptor_name]:
                         print doc[option_descriptor_name]
-                        if option_descriptor_name in singleton_option_descriptor_names:
+                        if option_descriptor_name in \
+                                singleton_option_descriptor_names:
                             this_descriptor = \
                                 option_descriptors[option_descriptor_name]
                             print this_descriptor.values
                             resource.option_descriptors.append(
                                 OptionAssociation(
                                     descriptor=this_descriptor,
-                                    option=this_descriptor.values.index(doc[option_descriptor_name])
+                                    option=this_descriptor.values.index(
+                                        doc[option_descriptor_name])
                                 ))
                         else:
                             this_descriptor = \
                                 option_descriptors[option_descriptor_name]
                             print this_descriptor
                             for item in doc[option_descriptor_name]:
-                                resource.option_descriptors.append(OptionAssociation(
-                                    descriptor=this_descriptor,
-                                    option=this_descriptor.values.index(item)
+                                resource.option_descriptors.append(
+                                    OptionAssociation(
+                                        descriptor=this_descriptor,
+                                        option=this_descriptor.values.index(
+                                            item)
                                 ))
 
                 for text_descriptors_name in text_descriptors_names:
                     print text_descriptors_name
                     key_name = '_'.join(text_descriptors_name.split(' '))
-                    if key_name in doc and doc[key_name] and key_name != "report_count":
+                    if key_name in doc and doc[key_name] and \
+                                    key_name != "report_count":
                         this_text = doc[key_name]
                         print doc[key_name]
                         if text_descriptors_name in list_text_descriptor_names:
