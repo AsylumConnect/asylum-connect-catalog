@@ -8,15 +8,15 @@
     <div class="main col-md-7 col-sm-12">
       <div class="header">
         <div id="logo">
-          <a href="http://www.asylumconnect.org/"><img style="width: 100px;" src="/static/asylum-assets/images/logo.jpeg" alt="AsylumConnect"></a>
+          <a href="http://www.asylumconnect.org/" target="_blank"><img style="width: 100px;" src="/static/asylum-assets/images/logo.jpeg" alt="AsylumConnect"></a>
         </div>
         <div class="left-header">
           <div id="google_translate_element" class="translate"></div>
           <div id="links" class="hidden-xs">
-            <a href="http://www.asylumconnect.org/our-catalog/">ABOUT</a>
-            <a href="http://goo.gl/forms/UjxEbg6H3O">SHARE FEEDBACK</a>
-            <a href="{{ url_for('suggestion.suggest_create') }}">SUBMIT A RESOURCE</a>
-            <a href="http://www.asylumconnect.org/contact-us/">CONTACT US</a>
+            <a href="http://www.asylumconnect.org/our-catalog/" target="_blank">ABOUT</a>
+            <a href="http://goo.gl/forms/UjxEbg6H3O" target="_blank">SHARE FEEDBACK</a>
+            <a href="{{ url_for('suggestion.suggest_create') }}" target="_blank">SUBMIT A RESOURCE</a>
+            <a href="http://www.asylumconnect.org/contact-us/" target="_blank">CONTACT US</a>
           </div>
         </div>
       </div>
@@ -31,14 +31,17 @@
             </button>
             <ul class="dropdown-menu" role="menu">
               {% for option in cities %}
-                <li><a href="{{ url_for('.city_view', city_name=option.lower()) }}">{{ option.title() }}</a></li>
+                <li><a href="{{ url_for('.city_view', city_name=option.lower()) }}" target="_blank">{{ option.title() }}</a></li>
               {% endfor %}
             </ul>
           </div>
         .</h3>
-      <h4 id="category-query" class="hide-in-print">What types of service are you looking for? Select all that apply:</h4>
-      <h4 id="category-query" class="hide-in-screen">Listing services in the following categories:</h4>
-      <span id="hidden-buttons" class="hide-in-screen"> </span>
+      <div>
+        <h4 id="category-query" class="hide-in-print">What types of service are you looking for? Select all that apply:</h4>
+        <h4 id="category-query" class="hide-in-screen">Listing services in the following categories:</h4>
+        <span id="hidden-buttons" class="hide-in-screen"> </span>
+      </div>
+      <div>
         <div class="btn-group">
           <button type="button" id="medical" class="btn-category-group btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="icon-medical btn-icon"></span>Medical<span class="fa fa-angle-down"></span></button>
           <ul class="dropdown-menu">
@@ -86,13 +89,17 @@
         </div>
         <button type="button" id="mail" class="btn-category btn btn-default" data-toggle="button"><span class="icon-mail btn-icon"></span>Mail</button>
         <button type="button" id="sport-and-entertainment" class="btn-category btn btn-default" data-toggle="button"><span class="icon-recreation btn-icon"></span>Sport and Entertainment</button>
+      </div>
 
+      <div>
         <h4 id="feature-query" class="hide-in-print">What additional features are important to you? Select all that apply:</h4>
         <h4 id="feature-query" class="hide-in-screen">With these additional required features:</h4>
         <button type="button" id="has-a-confidentiality-policy" class="btn-filter btn btn-default" data-toggle="button"><span class="icon-confidential btn-icon"></span>Has a Confidentiality Policy</button>
         <button type="button" id="is-free" class="btn-filter btn btn-default" data-toggle="button"><span class="icon-free btn-icon"></span>Is Free</button>
         <button type="button" id="has-translation-services" class="btn-filter btn btn-default" data-toggle="button"><span class="icon-translation btn-icon"></span>Has Translation Services</button>
-
+      </div>
+      <br>
+      <div>
         <h4 id="requirement-query" class="hide-in-screen">With these additional requirements:</h4>
         <div class="panel panel-default" id="requirement-query" class="hide-in-print">
           <div class="panel-heading">
@@ -119,7 +126,7 @@
         <div class="catalog">
           <div class="disclaimer">
             <p><strong>Disclaimer:</strong> The AsylumConnect team will do its best to confirm basic facts about service providers listed on this website. However, we lack the necessary resources to adequately vet service providers and make no representations regarding the viability or capabilities of any such providers. Consequently, AsylumConnect assumes no responsibility for the actions of providers listed on this website and asylum seekers who contact any such providers do so at their own risk.</p>
-            <strong>User Privacy:</strong> The AsylumConnect Catalog uses Google Analytics with <a href="https://support.google.com/analytics/answer/2763052?hl=en" style="color:blue;">anonymized IP addresses</a> to help analyze how visitors use this site. Google Analytics uses cookies, which are small text files placed on your computer, to collect standard visitor behaviour information in an anonymous form. No personally identifiable information is collected about you, unless you explicitly submit that information on this website. If you would like to opt-out of Google Analytics, you may do so by clicking <a href="https://tools.google.com/dlpage/gaoptout" style="color:blue;">here</a>.
+            <strong>User Privacy:</strong> The AsylumConnect Catalog uses Google Analytics with <a href="https://support.google.com/analytics/answer/2763052?hl=en" style="color:blue;" target="_blank">anonymized IP addresses</a> to help analyze how visitors use this site. Google Analytics uses cookies, which are small text files placed on your computer, to collect standard visitor behaviour information in an anonymous form. No personally identifiable information is collected about you, unless you explicitly submit that information on this website. If you would like to opt-out of Google Analytics, you may do so by clicking <a href="https://tools.google.com/dlpage/gaoptout" style="color:blue;" target="_blank">here</a>.
           </div>
 
           {% for resource in resources %}
@@ -129,8 +136,8 @@
               {% if resource.report_count|int > 0 %}
                 <span class="icon-housing btn-icon" title="This resource has been reported {{ resource.report_count }} time(s) to AsylumConnect for negative user experience"></span>
               {% endif %}
-              <span class="hide-in-print"><a href="{{ url_for('suggestion.suggest_edit', resource_id=resource.id) }}">EDIT</a></span>
-              <span class="hide-in-print"><a href="https://goo.gl/forms/8bWRpNs7P2pj7ORx2">REPORT</a></span>
+              <span class="hide-in-print"><a href="{{ url_for('suggestion.suggest_edit', resource_id=resource.id) }}" target="_blank">EDIT</a></span>
+              <span class="hide-in-print"><a href="https://goo.gl/forms/8bWRpNs7P2pj7ORx2" target="_blank">REPORT</a></span>
 
             </header>
             <article class="resource-content">
@@ -149,7 +156,7 @@
                 {% if field in resource and resource[field] is not none and resource[field]|length > 0 %}
                 <p>
                   <span style="font-weight: BOLD">{{ field.replace('_', ' ').title() }}: </span>
-                  <a href="{{ resource[field] }}">{{ resource[field] }}</a>
+                  <a href="{{ resource[field] }}" target="_blank">{{ resource[field] }}</a>
                 </p>
                 {% endif %}
               {% endfor %}
@@ -201,9 +208,9 @@
             {% if 'address' in resource %}
             <div class="mapping">
               <div class="map-point" address="{{ resource.address }}"{% if 'lat' in resource %} lat="{{ resource.lat }}" long="{{ resource.long }}"{% endif %}>
-                <b><a href="{{ resource.website }}">{{ resource.name }}</a></b><br>
+                <b><a href="{{ resource.website }}" target="_blank">{{ resource.name }}</a></b><br>
                 {{ resource.address }}<br>
-                <a href="#{{ resource.name.lower().replace(' ', '-') }}">See More Info</a><br>
+                <a href="#{{ resource.name.lower().replace(' ', '-') }}" target="_blank">See More Info</a><br>
 
                 {% for group in resource.supercategories%}
                 <span class="icon-{{ group.lower().replace(' ', '-') }} btn-icon small"></span>
@@ -227,8 +234,8 @@
         </div>
       </div>
       <div class="footer">
-        <a href="{{ url_for('suggestion.suggest_create') }}">SUGGEST A RESOURCE</a> |
-        <a href="http://goo.gl/forms/UjxEbg6H3O">SHARE FEEDBACK</a>
+        <a href="{{ url_for('suggestion.suggest_create') }}" target="_blank">SUGGEST A RESOURCE</a> |
+        <a href="http://goo.gl/forms/UjxEbg6H3O" target="_blank">SHARE FEEDBACK</a>
       </div>
     </div>
     <div class="map hidden-sm hidden-xs">
