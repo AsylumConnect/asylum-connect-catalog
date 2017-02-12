@@ -13,6 +13,7 @@ class ContactInformationForm(Form):
         description='Is there anything else about this resource you would '
         'like to share?')
 
+
 class ResourceForm(Form):
     name = StringField(
         'Resource Name', validators=[InputRequired(), Length(1, 512)])
@@ -20,6 +21,7 @@ class ResourceForm(Form):
         'Address', validators=[InputRequired(), Length(1, 512)])
     latitude = HiddenField('Latitude', validators=[InputRequired()])
     longitude = HiddenField('Longitude', validators=[InputRequired()])
+
 
 class ResourceSuggestionForm(ResourceForm):
     submit = SubmitField('Suggest Resource')

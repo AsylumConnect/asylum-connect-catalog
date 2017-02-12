@@ -7,9 +7,9 @@ from . import single_resource
 from .. import db
 from ..models import (Descriptor, OptionAssociation, RequiredOptionDescriptor,
                       Resource, ResourceSuggestion, TextAssociation)
-from .forms import SingleResourceForm
 from ..suggestion.forms import ResourceForm
 from ..suggestion.views import save_associations
+from .forms import SingleResourceForm
 
 
 @single_resource.route('/')
@@ -109,6 +109,7 @@ def create():
                   'form-error')
     return render_template('single_resource/create.html', form=form)
 
+
 @single_resource.route('/create/<int:suggestion_id>', methods=['GET', 'POST'])
 @login_required
 def create_from_suggestion(suggestion_id):
@@ -131,10 +132,8 @@ def create_from_suggestion(suggestion_id):
                     resource_id=suggestion_id, descriptor_id=descriptor.id)
                 if option_associations is not None:
                     default = [assoc.option for assoc in option_associations]
-                setattr(
-                    SingleResourceForm,
-                    descriptor.name,
-                    SelectMultipleField(choices=choices, default=default))
+                setattr(SingleResourceForm, descriptor.name,
+                        SelectMultipleField(choices=choices, default=default))
             else:
                 pass
         else:  # Fields for text descriptors
@@ -159,7 +158,7 @@ def create_from_suggestion(suggestion_id):
         for field_name in suggestion_field_names[1:]:
             if field_name in form:
                 setattr(new_resource, field_name, form[field_name].data)
-        db.session.add(new_resource) #Why here?
+        db.session.add(new_resource)  #Why here?
         save_associations(
             resource=new_resource,
             form=form,
@@ -185,7 +184,6 @@ def create_from_suggestion(suggestion_id):
             form[field_name].data = suggestion.__dict__[field_name]
 
     return render_template('single_resource/create.html', form=form)
-
 
 
 @single_resource.route('/<int:resource_id>', methods=['GET', 'POST'])
@@ -272,21 +270,24 @@ def edit_from_suggestion(suggestion_id):
                 option_associations_resource = OptionAssociation.query.filter_by(
                     resource_id=resource.id, descriptor_id=descriptor.id)
                 if option_associations_resource is not None:
-                    default_resource = [assoc.option for assoc in option_associations_resource]
-                setattr(
-                    ResourceForm,
-                    descriptor.name,
-                    SelectMultipleField(choices=choices, default=default_resource))
+                    default_resource = [
+                        assoc.option for assoc in option_associations_resource
+                    ]
+                setattr(ResourceForm, descriptor.name,
+                        SelectMultipleField(
+                            choices=choices, default=default_resource))
 
                 default_suggestion = None
                 option_associations_suggestion = OptionAssociation.query.filter_by(
                     resource_id=suggestion_id, descriptor_id=descriptor.id)
                 if option_associations_suggestion is not None:
-                    default_suggestion = [assoc.option for assoc in option_associations_suggestion]
-                setattr(
-                    SingleResourceForm,
-                    descriptor.name,
-                    SelectMultipleField(choices=choices, default=default_suggestion))
+                    default_suggestion = [
+                        assoc.option
+                        for assoc in option_associations_suggestion
+                    ]
+                setattr(SingleResourceForm, descriptor.name,
+                        SelectMultipleField(
+                            choices=choices, default=default_suggestion))
             else:
                 pass
         else:  # Fields for text descriptors
@@ -314,10 +315,10 @@ def edit_from_suggestion(suggestion_id):
     form_suggestion = SingleResourceForm()
     if form_suggestion.validate_on_submit():
         # replace reosurce's fields
-        resource.name=form_suggestion.name.data
-        resource.address=form_suggestion.address.data
-        resource.latitude=form_suggestion.latitude.data
-        resource.longitude=form_suggestion.longitude.data
+        resource.name = form_suggestion.name.data
+        resource.address = form_suggestion.address.data
+        resource.latitude = form_suggestion.latitude.data
+        resource.longitude = form_suggestion.longitude.data
         # Field id is not needed for the form, hence omitted with [1:].
         for field_name in suggestion_field_names[1:]:
             if field_name in form_suggestion:
@@ -352,8 +353,10 @@ def edit_from_suggestion(suggestion_id):
         if field_name in form_suggestion:
             form_suggestion[field_name].data = suggestion.__dict__[field_name]
 
-    return render_template('single_resource/edit_from_suggestion.html',
-                           form_resource=form_resource, form=form_suggestion)
+    return render_template(
+        'single_resource/edit_from_suggestion.html',
+        form_resource=form_resource,
+        form=form_suggestion)
 
 
 category_to_supercategory = {
@@ -373,7 +376,6 @@ category_to_supercategory = {
     "Private Counseling": "Mental Health",
     "Psychiatry": "Mental Health"
 }
-
 
 
 @single_resource.route('/<int:resource_id>/delete', methods=['POST'])

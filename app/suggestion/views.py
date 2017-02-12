@@ -124,11 +124,7 @@ def suggest_create():
             # additional_information=form.contact_information.
             # additional_information.data,
             submission_time=datetime.now(pytz.timezone('US/Eastern')))
-        save_associations(
-            resource_suggestion,
-            form,
-            descriptors,
-            False)
+        save_associations(resource_suggestion, form, descriptors, False)
         db.session.add(resource_suggestion)
         try:
             db.session.commit()
@@ -197,11 +193,7 @@ def suggest_edit(resource_id):
         for field_name in resource_field_names[1:]:
             if field_name in form:
                 setattr(resource_suggestion, field_name, form[field_name].data)
-        save_associations(
-            resource_suggestion,
-            form,
-            descriptors,
-            False)
+        save_associations(resource_suggestion, form, descriptors, False)
         db.session.add(resource_suggestion)
         try:
             db.session.commit()

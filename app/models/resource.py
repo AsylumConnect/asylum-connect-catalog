@@ -341,10 +341,8 @@ class Resource(ResourceBase):
                 additional_information_association)
 
             report_count_association = TextAssociation(
-                text=0,
-                descriptor=report_count_descriptor)
-            resource.text_descriptors.append(
-                report_count_association)
+                text=0, descriptor=report_count_descriptor)
+            resource.text_descriptors.append(report_count_association)
 
             if doc['phone_numbers']:
                 phone_numbers = doc['phone_numbers']
@@ -403,8 +401,10 @@ class Resource(ResourceBase):
                 for requirement in requirements:
                     requirements_association = OptionAssociation(
                         descriptor=requirements_descriptor,
-                        option=requirements_descriptor.values.index(requirement))
-                    resource.option_descriptors.append(requirements_association)
+                        option=requirements_descriptor.values.index(
+                            requirement))
+                    resource.option_descriptors.append(
+                        requirements_association)
 
             db.session.add(resource)
             try:
