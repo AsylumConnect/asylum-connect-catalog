@@ -1,14 +1,13 @@
-from flask import abort, flash, redirect, render_template, url_for
-from flask.ext.login import current_user, login_required
-from flask.ext.rq import get_queue
+from flask import abort, flash, redirect, render_template, url_for, request
+from flask_login import current_user, login_required
+from flask_rq import get_queue
 
-from forms import (ChangeAccountTypeForm, ChangeUserEmailForm, InviteUserForm,
-                   NewUserForm)
-
+from .forms import (ChangeAccountTypeForm, ChangeUserEmailForm, InviteUserForm,
+                    NewUserForm)
 from . import admin
 from .. import db
 from ..email import send_email
-from ..models import Rating, Resource, Role, User
+from ..models import Role, User, EditableHTML
 
 
 @admin.route('/')
@@ -154,14 +153,22 @@ def delete_user(user_id):
     return redirect(url_for('admin.registered_users'))
 
 
-@admin.route('/ratings-table')
+@admin.route('/_update_editor_contents', methods=['POST'])
 @login_required
-def ratings_table():
-    """Ratings and Reviews Table."""
-    ratings = Rating.query.all()
-    for rating in ratings:
-        if rating.resource_id is not None:
-            temp = Resource.query.filter_by(id=rating.resource_id)
-            if temp is not None:
-                rating.resource_name = temp.first().name
-    return render_template('rating/index.html', ratings=ratings)
+@admin_required
+def update_editor_contents():
+    """Update the contents of an editor."""
+
+    edit_data = request.form.get('edit_data')
+    editor_name = request.form.get('editor_name')
+
+    editor_contents = EditableHTML.query.filter_by(
+        editor_name=editor_name).first()
+    if editor_contents is None:
+        editor_contents = EditableHTML(editor_name=editor_name)
+    editor_contents.value = edit_data
+
+    db.session.add(editor_contents)
+    db.session.commit()
+
+    return 'OK', 200

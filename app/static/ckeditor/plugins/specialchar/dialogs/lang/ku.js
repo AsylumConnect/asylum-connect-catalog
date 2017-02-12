@@ -1,5 +1,9 @@
 ﻿/*
+<<<<<<< HEAD
  Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
+=======
+ Copyright (c) 2003-2015, CKSource - Frederico Knabben. All rights reserved.
+>>>>>>> 69b7a740b97390f278638b9bf8f460ac0d3b4585
  For licensing, see LICENSE.md or http://ckeditor.com/license
 */
 CKEDITOR.plugins.setLang("specialchar","ku",{euro:"نیشانەی یۆرۆ",lsquo:"نیشانەی فاریزەی سەرووژێری تاکی چەپ",rsquo:"نیشانەی فاریزەی سەرووژێری تاکی ڕاست",ldquo:"نیشانەی فاریزەی سەرووژێری دووهێندەی چه‌پ",rdquo:"نیشانەی فاریزەی سەرووژێری دووهێندەی ڕاست",ndash:"تەقەڵی کورت",mdash:"تەقەڵی درێژ",iexcl:"نیشانەی هەڵەوگێڕی سەرسوڕهێنەر",cent:"نیشانەی سەنت",pound:"نیشانەی پاوەند",curren:"نیشانەی دراو",yen:"نیشانەی یەنی ژاپۆنی",brvbar:"شریتی ئەستوونی پچڕاو",sect:"نیشانەی دوو s لەسەریەک",uml:"خاڵ",copy:"نیشانەی مافی چاپ",

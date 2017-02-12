@@ -3,8 +3,8 @@ import os
 import subprocess
 from config import Config
 
-from flask.ext.migrate import Migrate, MigrateCommand
-from flask.ext.script import Manager, Shell
+from flask_migrate import Migrate, MigrateCommand
+from flask_script import Manager, Shell
 from redis import Redis
 from rq import Connection, Queue, Worker
 
@@ -14,10 +14,9 @@ from app.models import (CsvBodyCell, CsvBodyRow, CsvContainer, CsvHeaderCell,
                         RequiredOptionDescriptor, Resource, ResourceBase,
                         ResourceSuggestion, Role, TextAssociation, User)
 
-# Import settings from .env file. Must define FLASK_CONFIG
-if os.path.exists('.env'):
+if os.path.exists('config.env'):
     print('Importing environment from .env file')
-    for line in open('.env'):
+    for line in open('config.env'):
         var = line.strip().split('=')
         if len(var) == 2:
             os.environ[var[0]] = var[1]
@@ -108,9 +107,22 @@ def setup_prod():
 
 
 def setup_general():
-    """Runs the set-up needed for both local development and production."""
+    """Runs the set-up needed for both local development and production.
+       Also sets up first admin user."""
     Role.insert_roles()
     RequiredOptionDescriptor.init_required_option_descriptor()
+    admin_query = Role.query.filter_by(name='Administrator')
+    if admin_query.first() is not None:
+        if User.query.filter_by(email=Config.ADMIN_EMAIL).first() is None:
+            user = User(
+                first_name='Admin',
+                last_name='Account',
+                password=Config.ADMIN_PASSWORD,
+                confirmed=True,
+                email=Config.ADMIN_EMAIL)
+            db.session.add(user)
+            db.session.commit()
+            print('Added administrator {}'.format(user.full_name()))
 
 
 @manager.command
@@ -134,10 +146,10 @@ def format():
     isort = 'isort -rc *.py app/'
     yapf = 'yapf -r -i *.py app/'
 
-    print 'Running {}'.format(isort)
+    print('Running {}'.format(isort))
     subprocess.call(isort, shell=True)
 
-    print 'Running {}'.format(yapf)
+    print('Running {}'.format(yapf))
     subprocess.call(yapf, shell=True)
 
 

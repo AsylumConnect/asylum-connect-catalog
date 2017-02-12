@@ -1,10 +1,10 @@
-from flask.ext.assets import Bundle
+from flask_assets import Bundle
 
-app_css = Bundle('*.scss', filters='scss', output='styles/app.css')
+app_css = Bundle('app.scss', filters='scss', output='styles/app.css')
 
 app_js = Bundle('*.js', filters='jsmin', output='scripts/app.js')
 
-vendor_css = Bundle('vendor/*.css', output='styles/vendor.css')
+vendor_css = Bundle('vendor/semantic.min.css', output='styles/vendor.css')
 
 # Need to specify vendor order or JS errors on heroku
 vendor_js = Bundle(

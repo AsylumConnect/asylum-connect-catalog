@@ -1,5 +1,9 @@
 ﻿/*
+<<<<<<< HEAD
  Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
+=======
+ Copyright (c) 2003-2015, CKSource - Frederico Knabben. All rights reserved.
+>>>>>>> 69b7a740b97390f278638b9bf8f460ac0d3b4585
  For licensing, see LICENSE.md or http://ckeditor.com/license
 */
 CKEDITOR.dialog.add("cellProperties",function(g){function d(a){return function(b){for(var c=a(b[0]),d=1;d<b.length;d++)if(a(b[d])!==c){c=null;break}"undefined"!=typeof c&&(this.setValue(c),CKEDITOR.env.gecko&&"select"==this.type&&!c&&(this.getInputElement().$.selectedIndex=-1))}}function l(a){if(a=n.exec(a.getStyle("width")||a.getAttribute("width")))return a[2]}var h=g.lang.table,c=h.cell,e=g.lang.common,k=CKEDITOR.dialog.validate,n=/^(\d+(?:\.\d+)?)(px|%)$/,f={type:"html",html:"\x26nbsp;"},p="rtl"==

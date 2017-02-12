@@ -9,6 +9,7 @@ from twilio.rest import TwilioRestClient
 from twilio.rest.lookups import TwilioLookupsClient
 
 from app import csrf
+from ..models import EditableHTML
 
 from . import main
 from .. import db

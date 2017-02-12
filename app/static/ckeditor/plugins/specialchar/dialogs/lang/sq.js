@@ -1,5 +1,9 @@
 ﻿/*
+<<<<<<< HEAD
  Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
+=======
+ Copyright (c) 2003-2015, CKSource - Frederico Knabben. All rights reserved.
+>>>>>>> 69b7a740b97390f278638b9bf8f460ac0d3b4585
  For licensing, see LICENSE.md or http://ckeditor.com/license
 */
 CKEDITOR.plugins.setLang("specialchar","sq",{euro:"Shenja e Euros",lsquo:"Thonjëza majtas me një vi",rsquo:"Thonjëza djathtas me një vi",ldquo:"Thonjëza majtas",rdquo:"Thonjëza djathtas",ndash:"En viza lidhëse",mdash:"Em viza lidhëse",iexcl:"Pikëçuditëse e përmbysur",cent:"Shenja e Centit",pound:"Shejna e Funtit",curren:"Shenja e valutës",yen:"Shenja e Jenit",brvbar:"Viza e këputur",sect:"Shenja e pjesës",uml:"Diaeresis",copy:"Shenja e të drejtave të kopjimit",ordf:"Feminine ordinal indicator",laquo:"Left-pointing double angle quotation mark",

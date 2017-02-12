@@ -1,5 +1,9 @@
 ﻿/*
+<<<<<<< HEAD
  Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
+=======
+ Copyright (c) 2003-2015, CKSource - Frederico Knabben. All rights reserved.
+>>>>>>> 69b7a740b97390f278638b9bf8f460ac0d3b4585
  For licensing, see LICENSE.md or http://ckeditor.com/license
 */
 CKEDITOR.plugins.setLang("specialchar","nb",{euro:"Eurosymbol",lsquo:"Venstre enkelt anførselstegn",rsquo:"Høyre enkelt anførselstegn",ldquo:"Venstre dobbelt anførselstegn",rdquo:"Høyre anførsesltegn",ndash:"Kort tankestrek",mdash:"Lang tankestrek",iexcl:"Omvendt utropstegn",cent:"Centsymbol",pound:"Pundsymbol",curren:"Valutategn",yen:"Yensymbol",brvbar:"Brutt loddrett strek",sect:"Paragraftegn",uml:"Tøddel",copy:"Copyrighttegn",ordf:"Feminin ordensindikator",laquo:"Venstre anførselstegn",not:"Negasjonstegn",

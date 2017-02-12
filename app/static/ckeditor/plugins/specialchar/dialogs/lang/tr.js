@@ -1,5 +1,9 @@
 ﻿/*
+<<<<<<< HEAD
  Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
+=======
+ Copyright (c) 2003-2015, CKSource - Frederico Knabben. All rights reserved.
+>>>>>>> 69b7a740b97390f278638b9bf8f460ac0d3b4585
  For licensing, see LICENSE.md or http://ckeditor.com/license
 */
 CKEDITOR.plugins.setLang("specialchar","tr",{euro:"Euro işareti",lsquo:"Sol tek tırnak işareti",rsquo:"Sağ tek tırnak işareti",ldquo:"Sol çift tırnak işareti",rdquo:"Sağ çift tırnak işareti",ndash:"En tire",mdash:"Em tire",iexcl:"Ters ünlem işareti",cent:"Cent işareti",pound:"Pound işareti",curren:"Para birimi işareti",yen:"Yen işareti",brvbar:"Kırık bar",sect:"Bölüm işareti",uml:"İki sesli harfin ayrılması",copy:"Telif hakkı işareti",ordf:"Dişil sıralı gösterge",laquo:"Sol-işaret çift açı tırnak işareti",

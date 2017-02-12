@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
 Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
+=======
+Copyright (c) 2003-2015, CKSource - Frederico Knabben. All rights reserved.
+>>>>>>> 69b7a740b97390f278638b9bf8f460ac0d3b4585
 For licensing, see LICENSE.md or http://ckeditor.com/license
 */
 
@@ -22,9 +26,12 @@ body
 {
 	font-size: 13px;
 	line-height: 1.6;
+<<<<<<< HEAD
 
 	/* Fix for missing scrollbars with RTL texts. (#10488) */
 	word-wrap: break-word;
+=======
+>>>>>>> 69b7a740b97390f278638b9bf8f460ac0d3b4585
 }
 
 blockquote
@@ -133,6 +140,7 @@ a > img {
 	border: none;
 	outline: 1px solid #0782C1;
 }
+<<<<<<< HEAD
 
 /* Widget Styles */
 .code-featured
@@ -206,3 +214,5 @@ a > img {
 	max-height: 1080px;
 	margin:0 auto;
 }
+=======
+>>>>>>> 69b7a740b97390f278638b9bf8f460ac0d3b4585

@@ -1,7 +1,6 @@
 import logging
 import os
-import sys
-import urlparse
+import urllib.parse
 
 # from raygun4py.middleware import flask as flask_raygun
 
@@ -14,7 +13,7 @@ class Config:
         SECRET_KEY = os.environ.get('SECRET_KEY')
     else:
         SECRET_KEY = 'SECRET_KEY_ENV_VAR_NOT_SET'
-        print 'SECRET KEY ENV VAR NOT SET! SHOULD NOT SEE IN PRODUDCTION'
+        print('SECRET KEY ENV VAR NOT SET! SHOULD NOT SEE IN PRODUDCTION')
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
 
     MAIL_SERVER = 'smtp.sendgrid.net'
@@ -24,6 +23,9 @@ class Config:
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
 
     ADMIN_EMAIL = 'maps4all.team@gmail.com'
+    ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD') or 'password'
+    ADMIN_EMAIL = os.environ.get(
+        'ADMIN_EMAIL') or 'flask-base-admin@example.com'
     EMAIL_SUBJECT_PREFIX = '[{}]'.format(APP_NAME)
     EMAIL_SENDER = '{app_name} Admin <{email}>'.format(
         app_name=APP_NAME, email=MAIL_USERNAME)
@@ -33,8 +35,8 @@ class Config:
     RAYGUN_APIKEY = os.environ.get('RAYGUN_APIKEY')
 
     # Parse the REDIS_URL to set RQ config variables
-    urlparse.uses_netloc.append('redis')
-    url = urlparse.urlparse(REDIS_URL)
+    urllib.parse.uses_netloc.append('redis')
+    url = urllib.parse.urlparse(REDIS_URL)
 
     RQ_DEFAULT_HOST = url.hostname
     RQ_DEFAULT_PORT = url.port
@@ -62,7 +64,7 @@ class DevelopmentConfig(Config):
     ASSETS_DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
         'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
-    print 'THIS APP IS IN DEBUG MODE. YOU SHOULD NOT SEE THIS IN PRODUCTION.'
+    print('THIS APP IS IN DEBUG MODE. YOU SHOULD NOT SEE THIS IN PRODUCTION.')
 
 
 class TestingConfig(Config):
