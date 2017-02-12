@@ -117,7 +117,6 @@ def create_from_suggestion(suggestion_id):
     suggestion = ResourceSuggestion.query.get(suggestion_id)
     if suggestion is None:
         abort(404)
-    name = suggestion.name
 
     suggestion_field_names = Resource.__table__.columns.keys()
     descriptors = Descriptor.query.all()
@@ -158,12 +157,12 @@ def create_from_suggestion(suggestion_id):
         for field_name in suggestion_field_names[1:]:
             if field_name in form:
                 setattr(new_resource, field_name, form[field_name].data)
-        db.session.add(new_resource)  #Why here?
         save_associations(
             resource=new_resource,
             form=form,
             descriptors=descriptors,
             resource_existed=False)
+        db.session.add(new_resource)
         try:
             db.session.commit()
             flash('Resource added', 'form-success')
@@ -254,7 +253,6 @@ def edit_from_suggestion(suggestion_id):
     resource = Resource.query.get(suggestion.resource_id)
     if resource is None:
         abort(404)
-    name = suggestion.name
 
     resource_field_names = Resource.__table__.columns.keys()
     suggestion_field_names = ResourceSuggestion.__table__.columns.keys()
@@ -267,8 +265,9 @@ def edit_from_suggestion(suggestion_id):
                            for i, v in enumerate(descriptor.values)]
 
                 default_resource = None
-                option_associations_resource = OptionAssociation.query.filter_by(
-                    resource_id=resource.id, descriptor_id=descriptor.id)
+                option_associations_resource = OptionAssociation.query.\
+                    filter_by(resource_id=resource.id,
+                              descriptor_id=descriptor.id)
                 if option_associations_resource is not None:
                     default_resource = [
                         assoc.option for assoc in option_associations_resource
@@ -278,8 +277,9 @@ def edit_from_suggestion(suggestion_id):
                             choices=choices, default=default_resource))
 
                 default_suggestion = None
-                option_associations_suggestion = OptionAssociation.query.filter_by(
-                    resource_id=suggestion_id, descriptor_id=descriptor.id)
+                option_associations_suggestion = OptionAssociation.query.\
+                    filter_by(resource_id=suggestion_id,
+                              descriptor_id=descriptor.id)
                 if option_associations_suggestion is not None:
                     default_suggestion = [
                         assoc.option

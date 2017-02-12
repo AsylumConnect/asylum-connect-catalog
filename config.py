@@ -3,7 +3,7 @@ import os
 import sys
 import urlparse
 
-from raygun4py.middleware import flask as flask_raygun
+# from raygun4py.middleware import flask as flask_raygun
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 

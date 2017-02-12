@@ -41,8 +41,8 @@ class OptionAssociation(db.Model):
 class TextAssociation(db.Model):
     """
     Association between a resource and a descriptor with a text field for the
-    value of the descriptor. Currently only support one text association between
-    a resource and descriptor.
+    value of the descriptor. Currently only support one text association
+    between a resource and descriptor.
     """
     __tablename__ = 'text_associations'
     id = db.Column(db.Integer, primary_key=True)

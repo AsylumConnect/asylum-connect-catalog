@@ -4,9 +4,9 @@ import pytz
 from flask import abort, flash, redirect, render_template, url_for
 from flask.ext.login import login_required
 from sqlalchemy.exc import IntegrityError
-from wtforms.fields import FormField, SelectMultipleField, TextAreaField
+from wtforms.fields import SelectMultipleField, TextAreaField
 
-from forms import ContactInformationForm, ResourceSuggestionForm
+from forms import ResourceSuggestionForm
 
 from . import suggestion
 from .. import db
@@ -213,7 +213,8 @@ def suggest_edit(resource_id):
 def save_associations(resource, form, descriptors, resource_existed):
     """Save associations from the forms received by 'create' and 'edit' route
     handlers to the database."""
-    #first delete all the associations for this resource if it already existed (to handle the "empty" case)
+    # first delete all the associations for this resource if it already
+    # existed (to handle the "empty" case)
     if resource_existed:
         options = OptionAssociation.query.filter_by(
             resource_id=resource.id).all()

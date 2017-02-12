@@ -4,10 +4,9 @@ from datetime import datetime
 
 from flask import jsonify, redirect, render_template, request, url_for
 from flask.ext.login import login_required
-from twilio import twiml
+# from twilio import twiml
 from twilio.rest import TwilioRestClient
 from twilio.rest.lookups import TwilioLookupsClient
-from wtforms.fields import SelectMultipleField, TextAreaField
 
 from app import csrf
 
@@ -15,7 +14,6 @@ from . import main
 from .. import db
 from ..models import (Descriptor, EditableHTML, OptionAssociation, Rating,
                       RequiredOptionDescriptor, Resource)
-from ..single_resource.forms import SingleResourceForm
 
 
 @main.route('/')
@@ -28,7 +26,8 @@ def index():
     # if req_opt_desc is not None:
     #     req_opt_id = req_opt_desc.id
     # options = Descriptor.query.all()
-    # options = [o for o in options if len(o.text_resources) == 0 and o.id != req_opt_id]
+    # options = [o for o in options if len(o.text_resources) == 0 and o.id !=
+    # req_opt_id]
     # options_dict = {}
     # for o in options:
     #     options_dict[o.name] = o.values
@@ -36,7 +35,8 @@ def index():
     # if req_opt_desc is not None:
     #     for val in req_opt_desc.values:
     #         req_options[val] = False
-    # return render_template('main/index.html', options=options_dict, req_options=req_options, req_desc=req_opt_desc)
+    # return render_template('main/index.html', options=options_dict,
+    # req_options=req_options, req_desc=req_opt_desc)
     return redirect(url_for('.city_view', city_name='seattle, washington'))
 
 
@@ -127,7 +127,7 @@ def search_resources():
                 else:
                     option_map[key_val[0]] = [key_val[1]]
 
-    descriptors = Descriptor.query.all()
+    # descriptors = Descriptor.query.all()
     new_pool = resource_pool
     if len(req_options) > 0:
         new_pool = resources

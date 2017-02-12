@@ -33,7 +33,8 @@ class CsvStorage(db.Model):
             [(d.name, d) for d in all_descs if d.descriptor_type == 'option'])
         for row in self.csv_rows:
             for key in row.data:
-                if key and key != 'Name' and key != 'Address' and key in opt_descs:
+                if key and key != 'Name' and key != 'Address' and key in \
+                        opt_descs:
                     val = row.data[key]
                     if val:
                         desc = opt_descs[key]
@@ -70,9 +71,9 @@ class CsvRow(db.Model):
 class CsvDescriptor(db.Model):
     """ Representation of a descriptor (header) in a CSV
     - can be linked to an existing descriptor in the app for updates
-    - values field will only contain values found from the CSV so if it links to
-    an existing descriptor in the app, the existing values won't show up here unless
-    also present in the CSV
+    - values field will only contain values found from the CSV so if it links
+    to an existing descriptor in the app, the existing values won't show up
+    here unless also present in the CSV
     """
     __tablename__ = 'csv_descriptors'
     id = db.Column(db.Integer, primary_key=True)

@@ -3,7 +3,7 @@ from datetime import datetime
 import pytz
 
 from .. import db
-from ..models.resource import Resource, ResourceBase
+from ..models.resource import ResourceBase, Resource
 
 
 class ResourceSuggestion(ResourceBase):
@@ -64,7 +64,6 @@ class ResourceSuggestion(ResourceBase):
         from sqlalchemy.exc import IntegrityError
         from faker import Faker
         from random import choice
-        from ..models import Resource
 
         fake = Faker()
 

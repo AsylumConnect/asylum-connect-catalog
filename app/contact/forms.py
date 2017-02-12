@@ -1,6 +1,6 @@
 from flask.ext.wtf import Form
-from wtforms.fields import (SelectField, StringField, SubmitField,
-                            TextAreaField, TextField)
+from wtforms.fields import (StringField, SubmitField,
+                            TextField)
 from wtforms.fields.html5 import EmailField
 from wtforms.validators import Email, InputRequired, Length
 

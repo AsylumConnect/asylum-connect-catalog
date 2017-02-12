@@ -1,6 +1,6 @@
 import json
 import os
-import time
+import datetime
 
 import geocoder
 from flask import (abort, flash, jsonify, redirect, render_template, request,
@@ -9,7 +9,7 @@ from flask.ext.login import current_user, login_required
 
 from app import csrf
 from forms import (DetermineDescriptorTypesForm, DetermineOptionsForm,
-                   DetermineRequiredOptionDescriptorForm, NavigationForm,
+                   DetermineRequiredOptionDescriptorForm,
                    RequiredOptionDescriptorMissingForm, SaveCsvDataForm)
 
 from . import bulk_resource
@@ -103,7 +103,8 @@ def upload_row():
             for f in keep:
                 existing_desc = descriptors.get(f)
                 existing_type = 'option' if existing_desc.values else 'text'
-                # CSVDescriptor only stores values from CSV, not existing values in app
+                # CSVDescriptor only stores values from CSV, not existing
+                # values in app
                 desc = CsvDescriptor(
                     csv_storage=csv_storage,
                     name=f,
@@ -154,7 +155,8 @@ def upload_row():
                 g = geocoder.google(
                     address, key=os.environ.get('GOOGLE_API_KEY'))
                 if g.status != 'OK':
-                    msg = 'Address cannot be geocoded due to ' + g.status + ": " + address
+                    msg = 'Address cannot be geocoded due to ' + g.status + \
+                          ": " + address
                     return jsonify({"status": "Error", "message": msg})
                 else:
                     geo = GeocoderCache(
@@ -201,7 +203,8 @@ def upload_row():
                 g = geocoder.google(
                     address, key=os.environ.get('GOOGLE_API_KEY'))
                 if g.status != 'OK':
-                    msg = 'Address cannot be geocoded due to ' + g.status + ": " + address
+                    msg = 'Address cannot be geocoded due to ' + g.status + \
+                          ": " + address
                     return jsonify({"status": "Error", "message": msg})
                 else:
                     geo = GeocoderCache(
@@ -262,7 +265,8 @@ def set_descriptor_types():
         if form.navigation.data['submit_next']:
             contains_options = False
             descriptor_types_iter = iter(form.descriptor_types.data)
-            # Set the chosen descriptor types for the new descriptors in the CSV
+            # Set the chosen descriptor types for the new descriptors in the
+            # CSV
             for desc in csv_storage.csv_descriptors:
                 if not desc.descriptor_id:
                     desc.descriptor_type = next(descriptor_types_iter)
@@ -304,7 +308,8 @@ def set_descriptor_types():
     # Remove auto form label
     form.descriptor_types.label = ''
 
-    # Show what type is for each existing descriptor (but don't allow to change)
+    # Show what type is for each existing descriptor (but don't allow to
+    # change)
     existing_descs = []
     if csv_storage.action == 'update':
         existing_descs = Descriptor.query.all()
@@ -315,8 +320,8 @@ def set_descriptor_types():
         num=num)
 
 
-''' If there are option descriptors in the CSV, display the option values parsed
-from the CSV for verification '''
+''' If there are option descriptors in the CSV, display the option values
+parsed from the CSV for verification '''
 
 
 @bulk_resource.route('/review-desc-options', methods=['GET', 'POST'])
@@ -396,7 +401,8 @@ def set_required_option_descriptor():
 
             # See if required option descriptor is in CSV
             for desc in csv_storage.csv_descriptors:
-                if desc.name == form.required_option_descriptor.data and desc.descriptor_type == 'option':
+                if desc.name == form.required_option_descriptor.data and \
+                                desc.descriptor_type == 'option':
                     values = desc.values
                     # see if existing descriptor
                     if csv_storage.action == 'update':
@@ -419,7 +425,8 @@ def set_required_option_descriptor():
             if req_opt_desc.descriptor_id != -1:
                 descriptor = Descriptor.query.filter_by(
                     id=req_opt_desc.descriptor_id).first()
-                if descriptor is not None and descriptor.name == form.required_option_descriptor.data:
+                if descriptor is not None and descriptor.name == \
+                        form.required_option_descriptor.data:
                     req_opt_desc_const = RequiredOptionDescriptorConstructor(
                         name=descriptor.name, values=descriptor.values)
                     db.session.add(req_opt_desc_const)
@@ -463,8 +470,9 @@ def set_required_option_descriptor():
         form=form)
 
 
-''' If there are resources that don't have the selected required option descriptor value set,
-enforce that they are updated to have the required option descriptor'''
+''' If there are resources that don't have the selected required option
+descriptor value set, enforce that they are updated to have the required option
+descriptor'''
 
 
 @bulk_resource.route(
@@ -480,8 +488,8 @@ def validate_required_option_descriptor():
     missing_resources = set()
     form = RequiredOptionDescriptorMissingForm()
 
-    # Find resources in the CSV that lack association with chosen required option
-    # descriptor
+    # Find resources in the CSV that lack association with chosen required
+    # option descriptor
     csv_resources = set()
     for row in csv_storage.csv_rows:
         csv_resources.add(row.data['Name'])
@@ -558,7 +566,8 @@ def validate_required_option_descriptor():
         required=req_opt_desc, )
 
 
-''' Last step in CSV workflow to update the resource and descriptor data models'''
+''' Last step in CSV workflow to update the resource and descriptor data
+models'''
 
 
 @bulk_resource.route('/save-csv', methods=['GET', 'POST'])
@@ -572,7 +581,8 @@ def save_csv():
 
     if form.validate_on_submit():
         if form.data['submit_back']:
-            req_opt_desc_const = RequiredOptionDescriptorConstructor.query.all()
+            req_opt_desc_const = RequiredOptionDescriptorConstructor.query.\
+                all()
             if not req_opt_desc_const:
                 return redirect(url_for('bulk_resource.set_descriptor_types'))
             elif req_opt_desc_const[0].missing_dict:
@@ -593,7 +603,7 @@ def save_csv():
             TextAssociation.query.delete()
             # on delete suggestions linked to resources
             ResourceSuggestion.query.filter(
-                ResourceSuggestion.resource_id != None).delete()
+                ResourceSuggestion.resource_id is not None).delete()
             Rating.query.delete()
             Descriptor.query.delete()
             Resource.query.delete()
@@ -677,18 +687,20 @@ def save_csv():
                                 curr_opts.append(values.index(s))
                         # see if same descriptor already exists
                         if csv_storage.action == 'update':
-                            option_associations = OptionAssociation.query.filter_by(
-                                resource_id=resource.id,
-                                descriptor_id=descriptor.id)
+                            option_associations = OptionAssociation.query.\
+                                filter_by(resource_id=resource.id,
+                                          descriptor_id=descriptor.id)
                             if option_associations is None:
                                 assocValues.extend(curr_opts)
                             else:
-                                # Check if existing options same as new ones in CSV
+                                # Check if existing options same as new ones
+                                # in CSV
                                 old_opts = [
                                     opt.option for opt in option_associations
                                 ]
                                 if set(curr_opts) != set(old_opts):
-                                    # If options different, delete existing and add new ones after
+                                    # If options different, delete existing and
+                                    # add new ones after
                                     for o in option_associations:
                                         db.session.delete(o)
                                     assocValues.extend(curr_opts)
@@ -722,7 +734,8 @@ def save_csv():
             req_opt_desc = RequiredOptionDescriptor(
                 descriptor_id=required_option_descriptor.id)
 
-            # Add associations for the resources missing values for the required option descriptor
+            # Add associations for the resources missing values for the
+            # required option descriptor
             if req_opt_desc_const.missing_dict:
                 for name in req_opt_desc_const.missing_dict.keys():
                     resource = Resource.query.filter_by(name=name).first()
