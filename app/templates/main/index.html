@@ -196,7 +196,7 @@
             {% for category in resource.categories %}
               {% set subcategory = category.lower().replace(' ', '-') %}
               {% if subcategory in category_icons %}
-                <span class="icon-{{ subcategory }} btn-icon" title="{{ subcategory }}"></span>
+                <span class="icon-{{ subcategory }} btn-icon" title="{{ subcategory.title() }}"></span>
               {% endif %}
             {% endfor %}
 
@@ -210,7 +210,7 @@
               <div class="map-point" address="{{ resource.address }}"{% if 'lat' in resource %} lat="{{ resource.lat }}" long="{{ resource.long }}"{% endif %}>
                 <b><a href="{{ resource.website }}" target="_blank">{{ resource.name }}</a></b><br>
                 {{ resource.address }}<br>
-                <a href="#{{ resource.name.lower().replace(' ', '-') }}" target="_blank">See More Info</a><br>
+                <a href="#{{ resource.name.lower().replace(' ', '-') }}">See More Info</a><br>
 
                 {% for group in resource.supercategories%}
                 <span class="icon-{{ group.lower().replace(' ', '-') }} btn-icon small"></span>
