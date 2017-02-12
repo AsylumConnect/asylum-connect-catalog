@@ -241,6 +241,8 @@ class Resource(ResourceBase):
         #     name='non english services', values=[], is_searchable=True)
         additional_information_descriptor = Descriptor(
             name='additional information', values=[], is_searchable=True)
+        report_count_descriptor = Descriptor(
+            name='report_count', values=[], is_searchable=True)
 
         categories_descriptor = Descriptor(
             name='categories',
@@ -337,6 +339,12 @@ class Resource(ResourceBase):
                 descriptor=additional_information_descriptor)
             resource.text_descriptors.append(
                 additional_information_association)
+
+            report_count_association = TextAssociation(
+                text=0,
+                descriptor=report_count_descriptor)
+            resource.text_descriptors.append(
+                report_count_association)
 
             # if doc['phone_numbers']:
             #     phone_numbers = doc['phone_numbers']

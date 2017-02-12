@@ -126,6 +126,9 @@
           <div class="resource{% for category in resource.categories %} {{ category.lower().replace(' ', '-') }}{% endfor %}{% for feature in resource.features %} {{ feature.lower().replace(' ', '-') }}{% endfor %}{% for requirement in resource.requirements %} {{ requirement.lower().replace(' ', '-') }}{% endfor %}">
             <header class="resource-header">
               <h3 class="resource-name" id="{{ resource.name.lower().replace(' ', '-') }}">{{ resource.name }}</h3>
+              {% if resource.report_count|int > 0 %}
+                <span class="icon-housing btn-icon" title="This resource has been reported {{ resource.report_count }} time(s) to AsylumConnect for negative user experience"></span>
+              {% endif %}
               <a href="{{ url_for('suggestion.suggest_edit', resource_id=resource.id) }}">EDIT</h3></a>
             </header>
             <article class="resource-content">
