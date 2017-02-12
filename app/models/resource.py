@@ -221,69 +221,56 @@ class Resource(ResourceBase):
 
         resources = os.listdir("_seattle")
 
-        description_descriptor = Descriptor(
-            name='description', values=[], is_searchable=True)
-        website_descriptor = Descriptor(
-            name='website', values=[], is_searchable=True)
-        populations_served_descriptor = Descriptor(
-            name='populations served', values=[], is_searchable=True)
-        hours_descriptor = Descriptor(
-            name='hours', values=[], is_searchable=True)
-        phone_numbers_descriptor = Descriptor(
-            name='phone numbers', values=[], is_searchable=True)
-        email_descriptor = Descriptor(
-            name='email', values=[], is_searchable=True)
-        mailing_address_descriptor = Descriptor(
-            name='mailing address', values=[], is_searchable=True)
-        contact_form_descriptor = Descriptor(
-            name='contact form', values=[], is_searchable=True)
-        non_english_services_descriptor = Descriptor(
-            name='non english services', values=[], is_searchable=True)
-        additional_information_descriptor = Descriptor(
-            name='additional information', values=[], is_searchable=True)
-        report_count_descriptor = Descriptor(
-            name='report_count', values=[], is_searchable=True)
+        text_descriptors_names =\
+            ['description', 'website', 'populations served', 'hours',
+             'phone numbers', 'email', 'mailing address', 'contact form',
+             'non english services', 'additional information', 'report count']
 
-        categories_descriptor = Descriptor(
-            name='categories',
-            values=[
-                'Medical Clinics', 'Women\'s Health', 'Sexual Health',
-                'Trans Health', 'Dental Care', 'Legal Aid', 'Documentation',
-                'Housing', 'Food', 'Hygiene', 'Computers and Internet',
-                'Employment', 'English Classes', 'Libraries',
-                'Community Centers', 'LGBT Centers', 'Cultural Centers',
-                'Support Groups', 'Private Counseling', 'Psychiatry', 'Mail',
-                'Sport and Entertainment'
-            ],
-            is_searchable=True)
+        list_text_descriptor_names = ['phone numbers', 'non english services']
 
-        supercategories_descriptor = Descriptor(
-            name='supercategories',
-            values=[
-                'Medical', 'Legal', 'Education', 'Community', 'Mental Health'
-            ],
-            is_searchable=True)
+        text_descriptors = {}
+        for text_descriptors_name in text_descriptors_names:
+            text_descriptors[text_descriptors_name] = Descriptor(
+                name=text_descriptors_name, values=[], is_searchable=True
+            )
 
-        features_descriptor = Descriptor(
-            name='features',
-            values=[
-                'Has A Confidentiality Policy', 'Is Free',
-                'Has Translation Services'
-            ],
-            is_searchable=True)
+        option_descriptor_values = {}
+        option_descriptor_values['categories'] =\
+            ['Medical Clinics', 'Women\'s Health', 'Sexual Health',
+             'Trans Health', 'Dental Care', 'Legal Aid', 'Documentation',
+             'Housing', 'Food', 'Hygiene', 'Computers and Internet',
+             'Employment', 'English Classes', 'Libraries',
+             'Community Centers', 'LGBT Centers', 'Cultural Centers',
+             'Support Groups', 'Private Counseling', 'Psychiatry', 'Mail',
+             'Sport and Entertainment']
 
-        city_descriptor = Descriptor(
-            name='city',
-            values=['Seattle, Washington', 'Philadelphia, Pennsylvania'],
-            is_searchable=True)
+        option_descriptor_values['supercategories'] =\
+            ['Medical', 'Legal', 'Education', 'Community', 'Mental Health']
 
-        requirements_descriptor = Descriptor(
-            name='requirements',
-            values=[
-                'Photo ID', 'Proof of Age', 'Proof of Residence',
-                'Proof of Income', 'Medical Insurance', 'A Referral'
-            ],
-            is_searchable=True)
+        option_descriptor_values['features'] =\
+            ['Has A Confidentiality Policy', 'Is Free',
+             'Has Translation Services']
+
+        option_descriptor_values['requirements'] = \
+            ['Photo ID', 'Proof of Age', 'Proof of Residence',
+             'Proof of Income', 'Medical Insurance', 'A Referral']
+
+        option_descriptor_values['city'] =\
+            ['Seattle, Washington', 'Philadelphia, Pennsylvania']
+
+        option_descriptor_names = \
+            ['city', 'categories', 'supercategories', 'features',
+             'requirements']
+
+        singleton_option_descriptor_names = ['city']
+
+        option_descriptors = {}
+        for option_descriptor_name in option_descriptor_names:
+            option_descriptors[option_descriptor_name] = Descriptor(
+                name=option_descriptor_name,
+                values=option_descriptor_values[option_descriptor_name],
+                is_searchable=True
+            )
 
         script_dir = os.path.dirname("__file__")
 
@@ -297,120 +284,56 @@ class Resource(ResourceBase):
             with open(abs_file_path, 'r') as f:
                 doc = yaml.load(f)
 
-            address = doc['address']
-            resource = Resource(
-                name=doc['name'],
-                address=address,
-                latitude=doc['lat'],
-                longitude=doc['long'])
+                resource = Resource(
+                    name=doc['name'],
+                    address=doc['address'],
+                    latitude=doc['lat'],
+                    longitude=doc['long'])
 
-            description_association = TextAssociation(
-                text=doc['description'], descriptor=description_descriptor)
-            resource.text_descriptors.append(description_association)
+                for option_descriptor_name in option_descriptor_names:
+                    print option_descriptor_name
+                    if option_descriptor_name in doc and doc[option_descriptor_name]:
+                        print doc[option_descriptor_name]
+                        if option_descriptor_name in singleton_option_descriptor_names:
+                            this_descriptor = \
+                                option_descriptors[option_descriptor_name]
+                            print this_descriptor.values
+                            resource.option_descriptors.append(
+                                OptionAssociation(
+                                    descriptor=this_descriptor,
+                                    option=this_descriptor.values.index(doc[option_descriptor_name])
+                                ))
+                        else:
+                            this_descriptor = \
+                                option_descriptors[option_descriptor_name]
+                            print this_descriptor
+                            for item in doc[option_descriptor_name]:
+                                resource.option_descriptors.append(OptionAssociation(
+                                    descriptor=this_descriptor,
+                                    option=this_descriptor.values.index(item)
+                                ))
 
-            website_association = TextAssociation(
-                text=doc['website'], descriptor=website_descriptor)
-            resource.text_descriptors.append(website_association)
+                for text_descriptors_name in text_descriptors_names:
+                    print text_descriptors_name
+                    key_name = '_'.join(text_descriptors_name.split(' '))
+                    if key_name in doc and doc[key_name] and key_name != "report_count":
+                        this_text = doc[key_name]
+                        print doc[key_name]
+                        if text_descriptors_name in list_text_descriptor_names:
+                            this_text = ', '.join(doc[key_name])
+                        resource.text_descriptors.append(TextAssociation(
+                            text=this_text,
+                            descriptor=text_descriptors[text_descriptors_name]
+                        ))
 
-            populations_served_association = TextAssociation(
-                text=doc['populations_served'],
-                descriptor=populations_served_descriptor)
-            resource.text_descriptors.append(populations_served_association)
+                resource.text_descriptors.append(TextAssociation(
+                    text=0, descriptor=text_descriptors["report count"]))
 
-            hours_association = TextAssociation(
-                text=doc['hours'], descriptor=hours_descriptor)
-            resource.text_descriptors.append(hours_association)
-
-            email_association = TextAssociation(
-                text=doc['email'], descriptor=email_descriptor)
-            resource.text_descriptors.append(email_association)
-
-            mailing_address_association = TextAssociation(
-                text=doc['mailing_address'],
-                descriptor=mailing_address_descriptor)
-            resource.text_descriptors.append(mailing_address_association)
-
-            contact_form_association = TextAssociation(
-                text=doc['contact_form'], descriptor=contact_form_descriptor)
-            resource.text_descriptors.append(contact_form_association)
-
-            additional_information_association = TextAssociation(
-                text=doc['additional_information'],
-                descriptor=additional_information_descriptor)
-            resource.text_descriptors.append(
-                additional_information_association)
-
-            report_count_association = TextAssociation(
-                text=0, descriptor=report_count_descriptor)
-            resource.text_descriptors.append(report_count_association)
-
-            if doc['phone_numbers']:
-                phone_numbers = doc['phone_numbers']
-                phone_numbers_association = TextAssociation(
-                    text=', '.join(phone_numbers),
-                    descriptor=phone_numbers_descriptor)
-                resource.text_descriptors.append(phone_numbers_association)
-
-            if doc['non_english_services']:
-                non_english_services = doc['non_english_services']
-                non_english_services_association = TextAssociation(
-                    text=', '.join(non_english_services),
-                    descriptor=non_english_services_descriptor)
-                resource.text_descriptors.append(
-                    non_english_services_association)
-
-            categories = doc['categories']
-            supercategories = doc['supercategories']
-            if 'features' in doc:
-                features = doc['features']
-
-            if 'city' in doc:
-                city = doc['city']
-
-            if categories:
-                for category in categories:
-                    category_association = OptionAssociation(
-                        descriptor=categories_descriptor,
-                        option=categories_descriptor.values.index(category))
-                    resource.option_descriptors.append(category_association)
-
-            if supercategories:
-                for supercategory in supercategories:
-                    supercategory_association = OptionAssociation(
-                        descriptor=supercategories_descriptor,
-                        option=supercategories_descriptor.values.index(
-                            supercategory))
-                    resource.option_descriptors.append(
-                        supercategory_association)
-
-            if features:
-                for feature in features:
-                    feature_association = OptionAssociation(
-                        descriptor=features_descriptor,
-                        option=features_descriptor.values.index(feature))
-                    resource.option_descriptors.append(feature_association)
-
-            if city:
-                city_association = OptionAssociation(
-                    descriptor=city_descriptor,
-                    option=city_descriptor.values.index(city))
-                resource.option_descriptors.append(city_association)
-
-            if 'requirements' in doc:
-                requirements = doc['requirements']
-                for requirement in requirements:
-                    requirements_association = OptionAssociation(
-                        descriptor=requirements_descriptor,
-                        option=requirements_descriptor.values.index(
-                            requirement))
-                    resource.option_descriptors.append(
-                        requirements_association)
-
-            db.session.add(resource)
-            try:
-                db.session.commit()
-            except IntegrityError:
-                db.session.rollback()
+                db.session.add(resource)
+                try:
+                    db.session.commit()
+                except IntegrityError:
+                    db.session.rollback()
 
     @staticmethod
     def get_resources_as_dicts(resources):
