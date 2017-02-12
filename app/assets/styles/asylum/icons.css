@@ -74,12 +74,12 @@
 .icon-community:before {
   content: "\6c";
 }
-.icon-free:before {
+.icon-is-free:before {
   content: "\6d";
 }
-.icon-confidential:before {
+.icon-has-a-confidentiality-policy:before {
   content: "\6e";
 }
-.icon-translation:before {
+.icon-has-translation-services:before {
   content: "\6f";
 }
