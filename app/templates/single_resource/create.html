@@ -1,6 +1,10 @@
 {% extends 'layouts/base.html' %}
 
 {% block content %}
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhkKJDnPxq0_xvF6pLAFcKfVAL6GbARBs&libraries=places&callback=initAutocomplete"
+        async defer>
+</script>
+
     <div class="ui text container">
         <h2 class="ui dividing header">Add Resource</h2>
         {% include 'single_resource/resource_form.html' %}
