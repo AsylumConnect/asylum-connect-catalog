@@ -353,7 +353,7 @@ category_to_supercategory = {
     "English Classes": "Education",
     "Libraries": "Education",
     "Community Centers": "Community",
-    "LGBTQ+ Centers": "Community",
+    "LGBT Centers": "Community",
     "Cultural Centers": "Community",
     "Support Groups": "Mental Health",
     "Private Counseling": "Mental Health",
