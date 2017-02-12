@@ -223,8 +223,8 @@ class Resource(ResourceBase):
 
         text_descriptors_names =\
             ['description', 'mailing address', 'website', 'phone numbers',
-             'email', 'hours', 'populations served', 'additional information',
-             'non english services', 'contact form', 'report count']
+             'email', 'contact form', 'hours', 'populations served',
+             'non english services','additional information', 'report count']
 
         list_text_descriptor_names = ['phone numbers', 'non english services']
 
