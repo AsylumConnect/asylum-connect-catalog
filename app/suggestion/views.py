@@ -4,7 +4,7 @@ import pytz
 from flask import abort, flash, redirect, render_template, url_for
 from flask.ext.login import login_required
 from sqlalchemy.exc import IntegrityError
-from wtforms.fields import SelectMultipleField, TextAreaField
+from wtforms.fields import SelectMultipleField, TextAreaField, SelectField
 
 from forms import ResourceSuggestionForm
 
@@ -94,10 +94,16 @@ def suggest_create():
                         descriptor.name != 'supercategories':
             choices = [(str(i), v)
                        for i, v in enumerate(descriptor.values)]
-            setattr(
-                ResourceSuggestionForm,
-                descriptor.name,
-                SelectMultipleField(choices=choices))
+            if descriptor.name == 'city':
+                setattr(
+                    ResourceSuggestionForm,
+                    descriptor.name,
+                    SelectField(choices=choices))
+            else:
+                setattr(
+                    ResourceSuggestionForm,
+                    descriptor.name,
+                    SelectMultipleField(choices=choices))
 
     for descriptor in descriptors:
         if not descriptor.is_option_descriptor and \
@@ -156,13 +162,18 @@ def suggest_edit(resource_id):
                 resource_id=resource_id, descriptor_id=descriptor.id)
             if option_associations is not None:
                 default = [assoc.option for assoc in option_associations]
-            setattr(ResourceSuggestionForm, descriptor.name,
-                    SelectMultipleField(choices=choices, default=default))
+
+            if descriptor.name == 'city':
+                default = default[0]
+                setattr(ResourceSuggestionForm, descriptor.name,
+                        SelectField(choices=choices, default=default))
+            else:
+                setattr(ResourceSuggestionForm, descriptor.name,
+                        SelectMultipleField(choices=choices, default=default))
 
     for descriptor in descriptors:
         if not descriptor.is_option_descriptor and \
                         descriptor.name != 'report count':
-            print descriptor.name
             default = None
             text_association = TextAssociation.query.filter_by(
                 resource_id=resource_id, descriptor_id=descriptor.id).first()

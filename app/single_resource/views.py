@@ -1,7 +1,7 @@
 from flask import abort, flash, redirect, render_template, request, url_for
 from flask.ext.login import login_required
 from sqlalchemy.exc import IntegrityError
-from wtforms.fields import SelectMultipleField, TextAreaField
+from wtforms.fields import SelectMultipleField, TextAreaField, SelectField
 
 from . import single_resource
 from .. import db
@@ -78,10 +78,16 @@ def create():
                         descriptor.name != 'supercategories':
             choices = [(str(i), v)
                        for i, v in enumerate(descriptor.values)]
-            setattr(
-                SingleResourceForm,
-                descriptor.name,
-                SelectMultipleField(choices=choices))
+            if descriptor.name == 'city':
+                setattr(
+                    SingleResourceForm,
+                    descriptor.name,
+                    SelectField(choices=choices))
+            else:
+                setattr(
+                    SingleResourceForm,
+                    descriptor.name,
+                    SelectMultipleField(choices=choices))
 
     for descriptor in descriptors:
         if not descriptor.is_option_descriptor:
@@ -131,8 +137,15 @@ def create_from_suggestion(suggestion_id):
                     resource_id=suggestion_id, descriptor_id=descriptor.id)
                 if option_associations is not None:
                     default = [assoc.option for assoc in option_associations]
-                setattr(SingleResourceForm, descriptor.name,
-                        SelectMultipleField(choices=choices, default=default))
+
+                if descriptor.name == 'city':
+                    setattr(SingleResourceForm, descriptor.name,
+                        SelectField(choices=choices, default=default))
+                else:
+                    setattr(SingleResourceForm, descriptor.name,
+                            SelectMultipleField(choices=choices,
+                                                default=default))
+
     for descriptor in descriptors:
         if not descriptor.is_option_descriptor and \
                         descriptor.name != 'report count':
@@ -196,7 +209,7 @@ def edit(resource_id):
     descriptors = Descriptor.query.all()
     # req_opt_desc = RequiredOptionDescriptor.query.all()[0]
     for descriptor in descriptors:
-        if descriptor.values and \
+        if descriptor.is_option_descriptor and \
                         descriptor.name != 'supercategories':
             choices = [(str(i), v) for i, v in enumerate(descriptor.values)]
             default = None
@@ -204,8 +217,13 @@ def edit(resource_id):
                 resource_id=resource_id, descriptor_id=descriptor.id)
             if option_associations is not None:
                 default = [assoc.option for assoc in option_associations]
-            setattr(SingleResourceForm, descriptor.name,
-                    SelectMultipleField(choices=choices, default=default))
+
+            if descriptor.name == 'city':
+                setattr(SingleResourceForm, descriptor.name,
+                        SelectField(choices=choices, default=default))
+            else:
+                setattr(SingleResourceForm, descriptor.name,
+                        SelectMultipleField(choices=choices, default=default))
     for descriptor in descriptors:
         if not descriptor.values:  # Fields for text descriptors.
             default = None
@@ -274,9 +292,15 @@ def edit_from_suggestion(suggestion_id):
                     default_resource = [
                         assoc.option for assoc in option_associations_resource
                     ]
-                setattr(ResourceForm, descriptor.name,
-                        SelectMultipleField(
-                            choices=choices, default=default_resource))
+
+                if descriptor.name == 'city':
+                    setattr(ResourceForm, descriptor.name,
+                            SelectField(
+                                choices=choices, default=default_resource))
+                else:
+                    setattr(ResourceForm, descriptor.name,
+                            SelectMultipleField(
+                                choices=choices, default=default_resource))
 
                 default_suggestion = None
                 option_associations_suggestion = OptionAssociation.query.\
