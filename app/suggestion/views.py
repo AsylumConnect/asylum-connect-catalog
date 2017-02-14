@@ -164,7 +164,7 @@ def suggest_edit(resource_id):
                 default = [assoc.option for assoc in option_associations]
 
             if descriptor.name == 'city':
-                default = default[0]
+                # default = default[0]
                 setattr(ResourceSuggestionForm, descriptor.name,
                         SelectField(choices=choices, default=default))
             else:
