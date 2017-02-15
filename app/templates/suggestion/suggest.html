@@ -12,20 +12,20 @@ $(document).ready(function() {
 });
 </script>
 
-<div class="form-page">
-  <div class="ui text container" id="suggest-resource">
+  <div class="ui text container">
     <a class="ui basic compact button" href="{{ url_for('main.index') }}">
       <i class="caret left icon"></i>
       Back
     </a>
-    <h1>
-      {% if name %}
-        <a class="ui basic compact button" href="{{ url_for('main.index') }}">
-          <i class="caret left icon"></i>
-          Back
-        </a>
-      {% endif %}
-    </h1>
+  <div class="form-page">
+    <div class="ui text container" id="suggest-resource">
+      <h1 class="ui dividing header">
+        {% if name %}
+          Suggestion for {{ name }}
+        {% else %}
+          Suggest New Resource
+        {% endif %}
+      </h1>
     <p>
       Thank you for your interest in contributing to the AsylumConnect resource catalog! Use this form to suggest a
       resource you think should be included. It's ok if you do not have all of the information the form asks for -
@@ -35,5 +35,4 @@ $(document).ready(function() {
     </p>
     {{ f.render_form(form) }}
   </div>
-</div>
 {% endblock %}
