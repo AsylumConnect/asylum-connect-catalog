@@ -17,11 +17,14 @@ from .forms import SingleResourceForm
 def index():
     """View resources in a list."""
     resources = Resource.query.all()
-    req_opt_desc = RequiredOptionDescriptor.query.all()[0]
-    req_opt_desc = Descriptor.query.filter_by(
-        id=req_opt_desc.descriptor_id).first()
+    req_opt_desc = RequiredOptionDescriptor.query.all()
+    if req_opt_desc:
+        req_opt_desc = req_opt_desc[0]
+        req_opt_desc = Descriptor.query.filter_by(
+            id=req_opt_desc.descriptor_id
+        ).first()
     req_options = {}
-    if req_opt_desc is not None:
+    if req_opt_desc:
         for val in req_opt_desc.values:
             req_options[val] = False
     return render_template(
@@ -39,12 +42,15 @@ def search_resources():
     req_options = request.args.getlist('reqoption')
     if req_options is None:
         req_options = []
-    resource_pool = Resource.query.filter(Resource.name.contains(name)).all()
-    req_opt_desc = RequiredOptionDescriptor.query.all()[0]
-    req_opt_desc = Descriptor.query.filter_by(
-        id=req_opt_desc.descriptor_id).first()
+    resource_pool = Resource.query.filter(Resource.name.ilike('%{}%'.format(name))).all()
+    req_opt_desc = RequiredOptionDescriptor.query.all()
+    if req_opt_desc:
+        req_opt_desc = req_opt_desc[0]
+        req_opt_desc = Descriptor.query.filter_by(
+            id=req_opt_desc.descriptor_id
+        ).first()
     resources = list(resource_pool)
-    if req_opt_desc is not None and len(req_options) > 0:
+    if req_opt_desc and len(req_options) > 0:
         resources = []
         int_req_options = []
         for o in req_options:
@@ -72,7 +78,6 @@ def search_resources():
 def create():
     """Add a resource."""
     descriptors = Descriptor.query.all()
-    # req_opt_desc = RequiredOptionDescriptor.query.all()[0]
     for descriptor in descriptors:
         if descriptor.is_option_descriptor and \
                         descriptor.name != 'supercategories':
@@ -94,11 +99,20 @@ def create():
             setattr(SingleResourceForm, descriptor.name, TextAreaField())
     form = SingleResourceForm()
     if form.validate_on_submit():
-        new_resource = Resource(
-            name=form.name.data,
-            address=form.address.data,
-            latitude=form.latitude.data,
-            longitude=form.longitude.data)
+        req_opt_desc = RequiredOptionDescriptor.query.all()
+        if req_opt_desc:
+            req_opt_desc = req_opt_desc[0]
+            descriptor = Descriptor.query.filter_by(
+                id=req_opt_desc.descriptor_id
+            ).first()
+            if descriptor is not None:
+                if not form[descriptor.name].data:
+                    flash('Error: Must set required descriptor: {}'.format(descriptor.name), 'form-error')
+                    return render_template('single_resource/create.html', form=form)
+        new_resource = Resource(name=form.name.data,
+                                address=form.address.data,
+                                latitude=form.latitude.data,
+                                longitude=form.longitude.data)
         db.session.add(new_resource)
         save_associations(
             resource=new_resource,
@@ -207,7 +221,6 @@ def edit(resource_id):
         abort(404)
     resource_field_names = Resource.__table__.columns.keys()
     descriptors = Descriptor.query.all()
-    # req_opt_desc = RequiredOptionDescriptor.query.all()[0]
     for descriptor in descriptors:
         if descriptor.is_option_descriptor and \
                         descriptor.name != 'supercategories':
@@ -237,6 +250,18 @@ def edit(resource_id):
                 TextAreaField(default=default))
     form = SingleResourceForm()
     if form.validate_on_submit():
+        req_opt_desc = RequiredOptionDescriptor.query.all()
+        if req_opt_desc:
+            req_opt_desc = req_opt_desc[0]
+            descriptor = Descriptor.query.filter_by(
+                id=req_opt_desc.descriptor_id
+            ).first()
+            if descriptor is not None:
+                if not form[descriptor.name].data:
+                    flash('Error: Must set required descriptor: {}'.format(descriptor.name), 'form-error')
+                    return render_template('single_resource/edit.html',
+                                           form=form,
+                                           resource_id=resource_id)
         # Field id is not needed for the form, hence omitted with [1:].
         for field_name in resource_field_names[1:]:
             # Avoid KeyError from polymorphic, contact variables.

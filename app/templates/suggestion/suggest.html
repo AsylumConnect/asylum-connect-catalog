@@ -17,13 +17,15 @@ $(document).ready(function() {
       <i class="caret left icon"></i>
       Back
     </a>
-    <h1>
-      {% if name %}
-        Suggestion for {{ name }}
-      {% else %}
-        Suggest New Resource
-      {% endif %}
-    </h1>
+  <div class="form-page">
+    <div class="ui text container" id="suggest-resource">
+      <h1 class="ui dividing header">
+        {% if name %}
+          Suggestion for {{ name }}
+        {% else %}
+          Suggest New Resource
+        {% endif %}
+      </h1>
     <p>
       Thank you for your interest in contributing to the AsylumConnect resource catalog! Use this form to suggest a
       resource you think should be included. It's ok if you do not have all of the information the form asks for -
