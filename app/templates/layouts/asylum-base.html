@@ -17,9 +17,6 @@
         {% assets 'vendor_js' %}<script type="text/javascript" src="{{ ASSET_URL }}"></script>{% endassets %}
         {% assets 'app_js' %}<script type="text/javascript" src="{{ ASSET_URL }}"></script>{% endassets %}
         {% assets 'asylum_js' %}<script type="text/javascript" src="{{ ASSET_URL }}"></script>{% endassets %}
-
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhkKJDnPxq0_xvF6pLAFcKfVAL6GbARBs&libraries=places&callback=initMap"
-        async defer></script>
     </head>
 
     <body>
@@ -38,5 +35,6 @@
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             </div>
         {% endif %}
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhkKJDnPxq0_xvF6pLAFcKfVAL6GbARBs&libraries=places&callback=initMap" async defer></script>
     </body>
 </html>
