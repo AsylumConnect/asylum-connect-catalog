@@ -122,6 +122,12 @@
         </div>
       </div>
 
+      <p>
+        <button type="button" class="btn btn-primary" onclick="window.print()">
+          <span class="glyphicon glyphicon-print"></span> Print
+        </button>
+      </p>
+
       <div class="resources">
         <div class="catalog">
           <div class="disclaimer">
@@ -143,8 +149,8 @@
             </header>
             <article class="resource-content">
               {# TODO: fully flesh this out. content_fields are simply the list of fields from the resource object that we display for each resource object, in the order that we want them displayed (so this says description goes first, and non_english_services, if available, goes last #}
-              {% set singleton_fields = ['description', 'populations_served', 'address', 'hours', 'email', 'additional_information'] %}
-              {% for field in singleton_fields %}
+              {% set fields = ['description', 'populations_served', 'website', 'phone_numbers', 'non_english_services', 'address', 'hours', 'email', 'additional_information'] %}
+              {% for field in fields %}
                 {% if field in resource and resource[field] is not none and resource[field]|length > 0 %}
                 <p>
                   <span style="font-weight: BOLD">{{ field.replace('_', ' ').title() }}: </span>
@@ -152,42 +158,52 @@
                 </p>
                 {% endif %}
               {% endfor %}
-              {% set hyperlink_fields = ['website'] %}
-              {% for field in hyperlink_fields %}
-                {% if field in resource and resource[field] is not none and resource[field]|length > 0 %}
-                <p>
-                  <span style="font-weight: BOLD">{{ field.replace('_', ' ').title() }}: </span>
-                  <a href="{{ resource[field] }}" target="_blank">{{ resource[field] }}</a>
-                </p>
-                {% endif %}
-              {% endfor %}
-              {% set comma_separated_list_fields = ['phone_numbers', 'non_english_services'] %}
-              {% for field in comma_separated_list_fields %}
-                {% if field in resource and resource[field] is not none and resource[field]|length > 0 %}
-                <p>
-                  <span style="font-weight: BOLD">{{ field.replace('_', ' ').title() }}</span>
-                  {% set list = resource[field].split(',') %}
-                  <ul>
-                    {% for item in list %}
-                    <li>{{ item }}</li>
-                    {% endfor %}
-                  </ul>
-                </p>
-                {% endif %}
-              {% endfor %}
-              {% set list_fields = ['requirements'] %}
-              {% for field in list_fields %}
-                {% if field in resource and resource[field] is not none and resource[field]|length > 0 %}
-                <p>
-                  <span style="font-weight: BOLD">{{ field.replace('_', ' ').title() }}</span>
-                  <ul>
-                    {% for item in resource[field] %}
-                    <li>{{ item }}</li>
-                    {% endfor %}
-                  </ul>
-                </p>
-                {% endif %}
-              {% endfor %}
+
+              <!--{% set singleton_fields = ['description', 'populations_served', 'address', 'hours', 'email', 'additional_information'] %}-->
+              <!--{% for field in singleton_fields %}-->
+                <!--{% if field in resource and resource[field] is not none and resource[field]|length > 0 %}-->
+                <!--<p>-->
+                  <!--<span style="font-weight: BOLD">{{ field.replace('_', ' ').title() }}: </span>-->
+                  <!--{{ resource[field]|safe }}-->
+                <!--</p>-->
+                <!--{% endif %}-->
+              <!--{% endfor %}-->
+              <!--{% set hyperlink_fields = ['website'] %}-->
+              <!--{% for field in hyperlink_fields %}-->
+                <!--{% if field in resource and resource[field] is not none and resource[field]|length > 0 %}-->
+                <!--<p>-->
+                  <!--<span style="font-weight: BOLD">{{ field.replace('_', ' ').title() }}: </span>-->
+                  <!--<a href="{{ resource[field] }}" target="_blank">{{ resource[field] }}</a>-->
+                <!--</p>-->
+                <!--{% endif %}-->
+              <!--{% endfor %}-->
+              <!--{% set comma_separated_list_fields = ['phone_numbers', 'non_english_services'] %}-->
+              <!--{% for field in comma_separated_list_fields %}-->
+                <!--{% if field in resource and resource[field] is not none and resource[field]|length > 0 %}-->
+                <!--<p>-->
+                  <!--<span style="font-weight: BOLD">{{ field.replace('_', ' ').title() }}</span>-->
+                  <!--{% set list = resource[field].split(',') %}-->
+                  <!--<ul>-->
+                    <!--{% for item in list %}-->
+                    <!--<li>{{ item }}</li>-->
+                    <!--{% endfor %}-->
+                  <!--</ul>-->
+                <!--</p>-->
+                <!--{% endif %}-->
+              <!--{% endfor %}-->
+              <!--{% set list_fields = ['requirements'] %}-->
+              <!--{% for field in list_fields %}-->
+                <!--{% if field in resource and resource[field] is not none and resource[field]|length > 0 %}-->
+                <!--<p>-->
+                  <!--<span style="font-weight: BOLD">{{ field.replace('_', ' ').title() }}</span>-->
+                  <!--<ul>-->
+                    <!--{% for item in resource[field] %}-->
+                    <!--<li>{{ item }}</li>-->
+                    <!--{% endfor %}-->
+                  <!--</ul>-->
+                <!--</p>-->
+                <!--{% endif %}-->
+              <!--{% endfor %}-->
             </article>
 
             {% for group in resource.supercategories %}
