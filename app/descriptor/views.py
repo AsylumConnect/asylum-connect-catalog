@@ -310,12 +310,14 @@ def delete_descriptor_request(desc_id):
     if descriptor is None:
         abort(404)
     is_option = len(descriptor.values) != 0
-    # req_opt_desc = RequiredOptionDescriptor.query.all()[0]
-    # is_required = req_opt_desc.descriptor_id == descriptor.id
-    return render_template(
-        'descriptor/manage_descriptor.html',
-        desc=descriptor,
-        is_option=is_option)
+    req_opt_desc = RequiredOptionDescriptor.query.all()
+    is_required = False
+    if req_opt_desc:
+        req_opt_desc = req_opt_desc[0]
+        is_required = req_opt_desc.descriptor_id == descriptor.id
+    return render_template('descriptor/manage_descriptor.html',
+                           desc=descriptor, is_option=is_option,
+                           is_required=is_required)
 
 
 @descriptor.route('/<int:desc_id>/delete')

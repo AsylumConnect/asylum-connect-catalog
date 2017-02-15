@@ -3,11 +3,12 @@
 {% import 'macros/check_password.html' as check %}
 
 {% block content %}
+  <div class="form-page">
     <div class="ui grid container">
         <div class="eight wide computer sixteen wide mobile centered column">
             <h2 class="ui dividing header">Create your password</h2>
             {{ f.render_form(form) }}
         </div>
     </div>
-    {{ check.password_check('password', 0) }}
-{% endblock %}
+  </div>
+{% endblock %}<!---->

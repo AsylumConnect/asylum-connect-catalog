@@ -12,16 +12,18 @@ $(document).ready(function() {
 });
 </script>
 
-  <div class="ui text container">
+<div class="form-page">
+  <div class="ui text container" id="suggest-resource">
     <a class="ui basic compact button" href="{{ url_for('main.index') }}">
       <i class="caret left icon"></i>
       Back
     </a>
     <h1>
       {% if name %}
-        Suggestion for {{ name }}
-      {% else %}
-        Suggest New Resource
+        <a class="ui basic compact button" href="{{ url_for('main.index') }}">
+          <i class="caret left icon"></i>
+          Back
+        </a>
       {% endif %}
     </h1>
     <p>
@@ -33,4 +35,5 @@ $(document).ready(function() {
     </p>
     {{ f.render_form(form) }}
   </div>
+</div>
 {% endblock %}

@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+<<<<<<< HEAD
     <div class="main col-md-7 col-sm-12">
       <div class="header">
         <div id="logo">
@@ -32,9 +33,55 @@
             <ul class="dropdown-menu" role="menu">
               {% for option in cities %}
                 <li><a href="{{ url_for('.city_view', city_name=option.lower()) }}" target="_blank">{{ option.title() }}</a></li>
+=======
+<div id="map-list-grid" class="ui two column horizontally padded grid">
+  <div class="four wide column" id="left-column">
+    <div id="search">
+      <div class="ui fluid icon input" id="location-search">
+        <i class="search icon"></i>
+        <input type="text" id="pac-input" class="controls" placeholder="Go to a location">
+      </div>
+      <div class="ui horizontal divider" id="search-divider">Search</div>
+      <div class="ui segment" id="resource-search">
+        <div class="ui fluid icon input" id="search-keyword">
+          <i class="search icon" id="resources-input-searchicon"></i>
+          <input type="text" id="resources-input" class="controls"
+          placeholder="Search by name">
+        </div>
+        {% if req_desc %}
+          <div class="req-desc-name">{{ req_desc.name }}</div>
+          <select id="search-resources-req-options" multiple="" class="ui fluid dropdown">
+              {% for req_option in req_options.keys() %}
+              {% if req_options[req_option] %}
+                <option value="{{ req_option }}" selected="selected">{{ req_option }}</option>
+              {% else %}
+                <option value="{{ req_option }}" >{{ req_option }}</option>
+              {% endif %}
+            {% endfor %}
+          </select>
+        {% endif %}
+        {% if options %}
+          <div id="advanced-filters-show">
+              <i class="plus icon"></i>
+              Show Advanced Filters
+          </div>
+          <div id="advanced-filters-hide">
+              <i class="minus icon"></i>
+              Hide Advanced Filters
+          </div>
+          <div id="advanced-search" class="option-group-advanced">
+              {% for o in options.keys() %}
+                  <div>{{ o }}</div>
+                  <select multiple="" class="ui fluid dropdown search-resources-options" placeholder="Select">
+                      {% for val in options[o] %}
+                              <option value="{{ o }}:{{ val }}">{{ val }}</option>
+                      {% endfor %}
+                  </select>
+>>>>>>> 0a0f5e61c8a2b7851ab4c667b4c7a07d7c42efcf
               {% endfor %}
             </ul>
           </div>
+<<<<<<< HEAD
         </h3>
         <div>
           <h4 id="category-query" class="hide-in-print">What types of service are you looking for? Select all that apply:</h4>
@@ -70,6 +117,112 @@
               <li><a href="#"><label><input type="checkbox" data-label="English Classes" data-ic="education" id="english-classes" class="checkbox-category"/>English Classes</label></a></li>
               <li><a href="#"><label><input type="checkbox" data-label="Libraries" data-ic="education" id="libraries" class="checkbox-category"/>Libraries</label></a></li>
             </ul>
+=======
+        {% endif %}
+            <button class="ui fluid button" id="search-user-resources">Search</button>
+            <button class="ui fluid button" id="reset-button">Reset</button>
+      </div>
+    </div>
+
+    <div class="ui horizontal divider" id="results-divider">Results</div>
+    <div id="list" class="ui middle aligned divided list"></div>
+  </div>
+
+  <div class="twelve wide column" id="right-column">
+    <div id="map"></div>
+    <div id="map-footer"></div>
+    <div id="resource-info"></div>
+  </div>
+</div>
+
+<!-- HANDLEBARS.JS TEMPLATES COMPILED IN MAP.JS -->
+<!-- Populate location search marker info-->
+<script id="searched-location-info-window-template" type="text/x-handlebars-template">
+  <div class="loc-marker-info">
+    <h3 class="ui header" id="marker-resource-name">
+      {% raw %}{{ name }}{% endraw %}
+      <div class="sub header" id="marker-resource-info">
+        {% raw %}{{ address }}{% endraw %}
+      </div>
+    </h3>
+  </div>
+</script>
+
+<!-- Populate resource marker info-->
+<script id="marker-info-window-template" type="text/x-handlebars-template">
+  <div class="marker-info">
+    <h3 class="ui header">
+      {% raw %}{{ name }}{% endraw %}
+      <div class="sub header">
+        <div id="address-marker">{% raw %}{{ address }}{% endraw %}</div>
+        {% raw %}{{#if avg_rating}}{% endraw %}
+          <div class="ui label" id="avg_rating-marker">
+            <i class="yellow star icon"></i>
+            {% raw %}{{ avg_rating }}{% endraw %}
+          </div>
+        {% raw %}{{/if}}{% endraw %}
+        <a class="more-info">
+          <div class="ui label" id="more-info-label">More Information</div>
+        </a>
+      </div>
+    </h3>
+    {% raw %}{{#if responsive}}{% endraw %}
+      <a class="ui label" id="mobile-list-btn">
+        <i class="chevron left icon"></i>
+        <p>Back to List</p>
+      </a>
+    {% raw %}{{/if}}{% endraw %}
+  </div>
+</script>
+
+<!-- Populate resource information view-->
+<script id="resource-template" type="text/x-handlebars-template">
+  <i class="big link remove icon" id="back-button"></i>
+  <h1 class="ui header" id="resource-name">
+    {% raw %}{{ name }}{% endraw %}
+    <div class="sub header">
+      {% raw %}{{ address }}{% endraw %}
+      <br>
+      {% raw %}{{#if avg_rating}}{% endraw %}
+      <div class="ui label" id="avg_rating">
+        <i class="yellow star icon"></i>
+        {% raw %}{{ avg_rating }}{% endraw %}
+      </div>
+      {% raw %}{{/if}}{% endraw %}
+      {% raw %}{{#each requiredOpts}}{% endraw %}
+          <span class="ui large label" id="category">
+            {% raw %}{{ this }}{% endraw %}
+          </span>
+      {% raw %}{{/each}}{% endraw %}
+    </div>
+  </h1>
+  <div id="single-resource-map"></div>
+  <div class="ui hidden divider"></div>
+  <div class="descriptors">
+    <h2 class="ui dividing header">Information</h2>
+    <div class="ui list">
+      {% raw %}{{#each descriptors}}{% endraw %}
+        {% raw %}{{#if value}}{% endraw %}
+          <div class="item descriptor">
+            <div class="header" id="descriptor-name">{% raw %}{{ key }}{% endraw %}</div>
+            <div id={% raw %}{{ concat 'descriptor-value-' key }}{% endraw %}>
+              {% raw %}{{ value }}{% endraw %}
+            </div>
+          </div>
+        {% raw %}{{/if}}{% endraw %}
+      {% raw %}{{/each}}{% endraw %}
+    </div>
+  </div>
+  <div class="ui hidden divider"></div>
+  <div class="actions">
+    <h2 class="ui dividing header">Actions</h2>
+    <div class="text-save">
+        <div class="ui form">
+          <h3 class="ui header" id="sms-header">Save this resource through SMS</h3>
+          <p class="disclaimer-sms">Standard messaging rates apply</p>
+          <div class="ui input" id="twilio-input">
+            <input type="text" id="phone-number" placeholder="ex: 1234567890">
+>>>>>>> 0a0f5e61c8a2b7851ab4c667b4c7a07d7c42efcf
           </div>
           <div class="btn-group">
             <button type="button" id="community" class="btn-category-group btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="icon-community btn-icon"></span>Community Support<span class="fa fa-angle-down"></span></button>
@@ -90,6 +243,7 @@
           <button type="button" id="mail" class="btn-category btn btn-default" data-toggle="button"><span class="icon-mail btn-icon"></span>Mail</button>
           <button type="button" id="sport-and-entertainment" class="btn-category btn btn-default" data-toggle="button"><span class="icon-recreation btn-icon"></span>Sport and Entertainment</button>
         </div>
+<<<<<<< HEAD
 
         <div>
           <h4 id="feature-query" class="hide-in-print">What additional features are important to you? Select all that apply:</h4>
@@ -193,6 +347,75 @@
             {% for group in resource.supercategories %}
             <span class="icon-{{ group.lower().replace(' ', '-') }} btn-icon" title="{{ group }}"></span>
             {% endfor %}
+=======
+    </div>
+    <div class="textSentSuccess">
+      <div class="ui positive message">
+        <i class="close icon" id="sms-success-close"></i>
+        Your text was sent!
+      </div>
+    </div>
+    <div class="userRating">
+      <div class="ui segment" id="user-rating">
+        <div class="ui form">
+          <h3 class="ui dividing header" id="rating-header">Submit a Review</h3>
+          <div class="field">
+            <label>Rating (Required)</label>
+            <div class="ui star rating" id="rating-input"></div>
+          </div>
+          <div class="field">
+            <label>Review (Optional)</label>
+            <textarea rows="2" id="review"></textarea>
+          </div>
+          <button class="ui disabled button" id="submit-rating">Submit</button>
+        </div>
+      </div>
+    </div>
+    <div class="successMessage">
+      <div class="ui positive message">
+        Thanks, your rating has been posted!
+      </div>
+    </div>
+    <a href="{% raw %}{{ suggestionUrl }}{% endraw %}">
+      Suggest an edit for this resource
+    </a>
+  </div>
+</script>
+
+<!-- Populate list view-->
+<script id="listview-template" type="text/x-handlebars-template">
+  {% raw %}{{#each resource}}{% endraw %}
+  <div class="item list-resource">
+    <div class="ui grid">
+      <div class="ui fourteen wide column">
+        <h3 class="ui left aligned header">
+          <a>{% raw %}{{ name }}{% endraw %}</a>
+        </h3>
+        <div class="list-resource-details">
+          <div>{% raw %}{{ address }}{% endraw %}</div>
+          <div>
+          {% raw %}{{#if avg_rating}}{% endraw %}
+            <a class="ui small label" id="avg_rating">
+              <i class="yellow star icon"></i>
+              {% raw %}{{ avg_rating }}{% endraw %}
+            </a>
+          {% raw %}{{/if}}{% endraw %}
+          {% raw %}{{#each requiredOpts}}{% endraw %}
+              <div class="ui small label" id="category">
+                {% raw %}{{ this }}{% endraw %}
+              </div>
+          {% raw %}{{/each}}{% endraw %}
+          </div>
+        </div>
+      </div>
+      <div class="two wide column" id="resource-list-chevron">
+        <a><i class="large right chevron icon"></i></a>
+      </div>
+    </div>
+  </div>
+  {% raw %}{{/each}}{% endraw %}
+</script>
+>>>>>>> 0a0f5e61c8a2b7851ab4c667b4c7a07d7c42efcf
 
             {% for category in resource.categories %}
               {% set subcategory = category.lower().replace(' ', '-') %}
@@ -205,6 +428,7 @@
               <span class="icon-{{ feature.lower().replace(' ', '-') }} btn-icon" title="{{ feature }}"></span>
             {% endfor %}
 
+<<<<<<< HEAD
             <!-- Google Maps -->
             {% if 'address' in resource %}
             <div class="mapping">
@@ -212,11 +436,25 @@
                 <b><a href="{{ resource.website }}" target="_blank">{{ resource.name }}</a></b><br>
                 {{ resource.address }}<br>
                 <a href="#{{ resource.name.lower().replace(' ', '-') }}">See More Info</a><br>
+=======
+    $('#advanced-filters-show').click(function() {
+      $('#advanced-filters-show').hide();
+      $('#advanced-filters-hide').show();
+      $('#advanced-search').show();
+    });
+
+    $('#advanced-filters-hide').click(function() {
+      $('#advanced-filters-show').show();
+      $('#advanced-filters-hide').hide();
+      $('#advanced-search').hide();
+    });
+>>>>>>> 0a0f5e61c8a2b7851ab4c667b4c7a07d7c42efcf
 
                 {% for group in resource.supercategories%}
                 <span class="icon-{{ group.lower().replace(' ', '-') }} btn-icon small"></span>
                 {% endfor %}
 
+<<<<<<< HEAD
                 {% for category in resource.categories %}
                 {% set subcategory = category.lower().replace(' ', '-') %}
                 {% if subcategory in category_icons %}
@@ -244,3 +482,6 @@
       </div>
     </div>
 {% endblock %}
+=======
+{% endblock %}
+>>>>>>> 0a0f5e61c8a2b7851ab4c667b4c7a07d7c42efcf
