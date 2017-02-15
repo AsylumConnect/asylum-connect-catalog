@@ -13,8 +13,7 @@ phone_numbers:
   - "Office Number: 206-467-9976"
 email: info@apichaya.org
 mailing_address: API Chaya, P.O. Box 14047, Seattle, WA 98114
-contact_form:
-non_english_services: 
+non_english_services:
   - Arabic 
   - Bengali 
   - Farsi
