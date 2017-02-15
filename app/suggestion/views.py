@@ -141,18 +141,18 @@ def suggest_create():
             db.session.commit()
             app = create_app(os.getenv('FLASK_CONFIG') or 'default')
             contact_email = app.config['ADMIN_EMAIL']
-            get_queue().enqueue(
-                send_email,
-                recipient=contact_email,
-                subject='New Suggestion',
-                template='suggestion/email/suggestion',
-                name=basic_form.contact_name.data,
-                email=basic_form.contact_email.data,
-                phone=basic_form.contact_phone_number.data,
-                message=basic_form.suggestion_text.data,
-                resource_name=basic_form.name.data,
-                resource_address=basic_form.address.data,
-            )
+            # get_queue().enqueue(
+            #     send_email,
+            #     recipient=contact_email,
+            #     subject='New Suggestion',
+            #     template='suggestion/email/suggestion',
+            #     # name=form.contact_name.data,
+            #     # email=form.contact_email.data,
+            #     # phone=form.contact_phone_number.data,
+            #     # message=form.suggestion_text.data,
+            #     resource_name=form.name.data,
+            #     resource_address=form.address.data,
+            # )
             flash('Thanks for the suggestion!', 'success')
             return redirect(url_for('main.index'))
         except IntegrityError:
