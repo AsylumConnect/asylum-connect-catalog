@@ -95,7 +95,7 @@ def setup_dev():
     """Runs the set-up needed for local development."""
     setup_general()
 
-    admin_email = os.environ.get('ADMIN_EMAIL')
+    admin_email = os.environ.get('ADMIN_EMAIL') or 'maps4all.team@gmail.com'
     if User.query.filter_by(email=admin_email).first() is None:
         User.create_confirmed_admin('Default', 'Admin', admin_email,
                                     'password')
