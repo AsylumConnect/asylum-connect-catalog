@@ -5,6 +5,12 @@
         async defer>
 </script>
 
+<script>
+$(document).ready(function() {
+    $(".ui.dropdown.multiple>.text").text("Click to choose options");
+});
+</script>
+
     <div class="ui text container">
         <h2 class="ui dividing header">Add Resource</h2>
         {% include 'single_resource/resource_form.html' %}
