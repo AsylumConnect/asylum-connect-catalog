@@ -149,11 +149,11 @@ class Resource(ResourceBase):
     """
     Schema for approved resources.
     """
-    suggestions = db.relationship(
-        'ResourceSuggestion',
-        backref='resource',
-        uselist=True,
-        remote_side='ResourceSuggestion.id')
+    # suggestions = db.relationship(
+    #     'ResourceSuggestion',
+    #     backref='resource',
+    #     uselist=True,
+    #     remote_side='ResourceSuggestion.id')
 
     __mapper_args__ = {'polymorphic_identity': 'resource'}
 
