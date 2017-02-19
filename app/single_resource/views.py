@@ -232,6 +232,7 @@ def edit(resource_id):
                 default = [assoc.option for assoc in option_associations]
 
             if descriptor.name == 'city':
+                default = default[0]
                 setattr(SingleResourceForm, descriptor.name,
                         SelectField(choices=choices, default=default))
             else:
