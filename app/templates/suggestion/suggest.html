@@ -2,10 +2,6 @@
 {% import 'macros/form_macros.html' as f %}
 
 {% block content %}
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhkKJDnPxq0_xvF6pLAFcKfVAL6GbARBs&libraries=places&callback=initAutocomplete"
-        async defer>
-</script>
-
 <script>
 $(document).ready(function() {
     $(".ui.dropdown.multiple>.text").text("Click to choose options");
@@ -17,6 +13,7 @@ $(document).ready(function() {
       <i class="caret left icon"></i>
       Back
     </a>
+  </div>
   <div class="form-page">
     <div class="ui text container" id="suggest-resource">
       <h1 class="ui dividing header">
@@ -34,5 +31,6 @@ $(document).ready(function() {
       before being published.
     </p>
     {{ f.render_form(form) }}
+    </div>
   </div>
 {% endblock %}
