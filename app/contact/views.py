@@ -4,6 +4,7 @@ from flask import abort, flash, redirect, render_template, url_for
 from flask.ext.login import login_required
 from flask.ext.rq import get_queue
 from wtforms.fields import SelectField
+from sqlalchemy.exc import IntegrityError
 
 from app import create_app
 from forms import ContactCategoryForm, ContactForm, EditCategoryNameForm
@@ -11,7 +12,7 @@ from forms import ContactCategoryForm, ContactForm, EditCategoryNameForm
 from . import contact
 from .. import db
 from ..email import send_email
-from ..models import ContactCategory, EditableHTML, Resource
+from ..models import ContactCategory, EditableHTML
 
 
 @contact.route('/', methods=['GET', 'POST'])

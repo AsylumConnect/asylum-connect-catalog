@@ -428,14 +428,17 @@ def set_required_option_descriptor():
                 if req_opt_desc.descriptor_id != -1:
                     descriptor = Descriptor.query.filter_by(
                         id=req_opt_desc.descriptor_id).first()
-                    if descriptor is not None and descriptor.name == form.required_option_descriptor.data:
-                        req_opt_desc_const = RequiredOptionDescriptorConstructor(
-                            name=descriptor.name, values=descriptor.values)
+                    if descriptor is not None and descriptor.name == form.\
+                            required_option_descriptor.data:
+                        req_opt_desc_const = \
+                            RequiredOptionDescriptorConstructor(
+                                name=descriptor.name, values=descriptor.values)
                         db.session.add(req_opt_desc_const)
                         db.session.commit()
                         return redirect(
                             url_for(
-                                'bulk_resource.validate_required_option_descriptor'
+                                'bulk_resource.'
+                                'validate_required_option_descriptor'
                             ))
             # If no descriptor found
             flash('Error: No required option descriptor. Please try again.',
@@ -453,7 +456,8 @@ def set_required_option_descriptor():
             if req_opt_desc.descriptor_id != -1:
                 descriptor = Descriptor.query.filter_by(
                     id=req_opt_desc.descriptor_id).first()
-                if descriptor is not None and descriptor.name not in remove_descs:
+                if descriptor is not None and descriptor.name not in \
+                        remove_descs:
                     req_name = descriptor.name
                     descriptors.append(req_name)
 

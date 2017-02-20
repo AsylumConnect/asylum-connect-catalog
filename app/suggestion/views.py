@@ -4,7 +4,7 @@ from datetime import datetime
 import pytz
 from flask import abort, flash, redirect, render_template, url_for
 from flask.ext.login import login_required
-from flask.ext.rq import get_queue
+# from flask.ext.rq import get_queue
 from sqlalchemy.exc import IntegrityError
 from wtforms.fields import SelectField, SelectMultipleField, TextAreaField
 
@@ -13,7 +13,7 @@ from forms import ResourceSuggestionForm
 
 from . import suggestion
 from .. import db
-from ..email import send_email
+# from ..email import send_email
 from ..models import (Descriptor, OptionAssociation, Resource,
                       ResourceSuggestion, TextAssociation)
 
@@ -137,8 +137,8 @@ def suggest_create():
         db.session.add(resource_suggestion)
         try:
             db.session.commit()
-            app = create_app(os.getenv('FLASK_CONFIG') or 'default')
-            contact_email = app.config['ADMIN_EMAIL']
+            # app = create_app(os.getenv('FLASK_CONFIG') or 'default')
+            # contact_email = app.config['ADMIN_EMAIL']
             # get_queue().enqueue(
             #     send_email,
             #     recipient=contact_email,

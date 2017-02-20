@@ -54,7 +54,8 @@ def city_view(city_name):
     #     if req_opt_desc is not None:
     #         req_opt_id = req_opt_desc.id
     # options = Descriptor.query.all()
-    # options = [o for o in options if len(o.text_resources) == 0 and o.id != req_opt_id]
+    # options = [o for o in options if len(o.text_resources) == 0
+    # and o.id != req_opt_id]
     # options_dict = {}
     # for o in options:
     #     options_dict[o.name] = o.values
@@ -62,7 +63,8 @@ def city_view(city_name):
     # if req_opt_desc:
     #     for val in req_opt_desc.values:
     #         req_options[val] = False
-    # return render_template('main/index.html', options=options_dict, req_options=req_options, req_desc=req_opt_desc)
+    # return render_template('main/index.html', options=options_dict,
+    # req_options=req_options, req_desc=req_opt_desc)
 
     return render_template(
         'main/index.html',

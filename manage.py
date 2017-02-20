@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import os
 import subprocess
-from config import Config
+# from config import Config
 
 from flask.ext.migrate import Migrate, MigrateCommand
 from flask.ext.script import Manager, Shell
