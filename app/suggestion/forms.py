@@ -14,12 +14,9 @@ class ContactInformationForm(Form):
         'like to share?')
 
 
-class ResourceForm(Form):
+class ResourceSuggestionForm(Form):
     name = StringField(
         'Resource Name', validators=[InputRequired(), Length(1, 512)])
     address = StringField(
         'Address', validators=[])
-
-
-class ResourceSuggestionForm(ResourceForm):
     submit = SubmitField('Suggest Resource')
