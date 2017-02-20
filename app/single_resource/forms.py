@@ -1,9 +1,13 @@
 from wtforms.fields import SubmitField, StringField
+from flask.ext.wtf import Form
+from wtforms.validators import InputRequired, Length
 
-from ..suggestion.forms import ResourceForm
 
-
-class SingleResourceForm(ResourceForm):
+class SingleResourceForm(Form):
+    name = StringField(
+        'Resource Name', validators=[InputRequired(), Length(1, 512)])
+    address = StringField(
+        'Address', validators=[])
     latitude = StringField('Latitude', validators=[])
     longitude = StringField('Longitude', validators=[])
     submit = SubmitField('Save Resource')
