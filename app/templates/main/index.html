@@ -25,7 +25,7 @@
         <h3 id="location-query"><span class="hide-in-screen">Showing</span><span class="hide-in-print">Find</span> LGBTQ- and asylum-friendly resources in
           <span class="hide-in-screen">{{ city }}</span>
           <div class="hide-in-print btn-group">
-            <button class="btn btn-link" type="button" data-toggle="dropdown">
+            <button class="btn btn-link" type="button" data-toggle="dropdown" style="font-size: 20px; font-weight: 300;">
               {{ city }}
               <span class="caret"></span>
             </button>
@@ -154,7 +154,7 @@
                 {% if field in resource and resource[field] is not none and resource[field]|length > 0 %}
                 <p>
                   <span style="font-weight: BOLD">{{ field.replace('_', ' ').title() }}: </span>
-                  {{ resource[field] }}
+                  {{ resource[field]|safe }}
                 </p>
                 {% endif %}
               {% endfor %}
