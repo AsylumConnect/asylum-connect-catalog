@@ -125,9 +125,6 @@ def suggest_create():
     if form.validate_on_submit():
         resource_suggestion = ResourceSuggestion(
             name=form.name.data,
-            address=form.address.data,
-            latitude=form.latitude.data,
-            longitude=form.longitude.data,
             # contact_name=form.contact_information.contact_name.data,
             # contact_email=form.contact_information.contact_email.data,
             # contact_phone_number=form.contact_information.contact_phone_number.
@@ -135,6 +132,8 @@ def suggest_create():
             # additional_information=form.contact_information.
             # additional_information.data,
             submission_time=datetime.now(pytz.timezone('US/Eastern')))
+        if form.address.data:
+            resource_suggestion.address=form.address.data
         save_associations(resource_suggestion, form, descriptors, False)
         db.session.add(resource_suggestion)
         try:
@@ -182,7 +181,7 @@ def suggest_edit(resource_id):
                 default = [assoc.option for assoc in option_associations]
 
             if descriptor.name == 'city':
-                # default = default[0]
+                default = default[0]
                 setattr(ResourceSuggestionForm, descriptor.name,
                         SelectField(choices=choices, default=default))
             else:
@@ -214,9 +213,6 @@ def suggest_edit(resource_id):
         resource_suggestion = ResourceSuggestion(
             resource_id=resource.id,
             name=form.name.data,
-            address=form.address.data,
-            latitude=form.latitude.data,
-            longitude=form.longitude.data,
             # contact_name=form.contact_information.contact_name.data,
             # contact_email=form.contact_information.contact_email.data,
             # contact_phone_number=form.contact_information.contact_phone_number.
@@ -224,6 +220,9 @@ def suggest_edit(resource_id):
             # additional_information=form.contact_information.
             # additional_information.data,
             submission_time=datetime.now(pytz.timezone('US/Eastern')))
+        if form.address.data:
+            resource_suggestion.address=form.address.data
+
         # Field id is not needed for the form, hence omitted with [1:].
         for field_name in resource_field_names[1:]:
             if field_name in form:
