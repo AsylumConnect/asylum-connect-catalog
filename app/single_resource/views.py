@@ -7,7 +7,6 @@ from . import single_resource
 from .. import db
 from ..models import (Descriptor, OptionAssociation, RequiredOptionDescriptor,
                       Resource, ResourceSuggestion, TextAssociation)
-from ..suggestion.forms import ResourceForm
 from ..suggestion.views import save_associations
 from .forms import SingleResourceForm
 
@@ -109,10 +108,12 @@ def create():
                 if not form[descriptor.name].data:
                     flash('Error: Must set required descriptor: {}'.format(descriptor.name), 'form-error')
                     return render_template('single_resource/create.html', form=form)
-        new_resource = Resource(name=form.name.data,
-                                address=form.address.data,
-                                latitude=form.latitude.data,
-                                longitude=form.longitude.data)
+        new_resource = Resource(name=form.name.data)
+        optional_fields = ['address', 'latitude', 'longitude']
+        for field in optional_fields:
+            if form[field].data:
+                new_resource[field] = form[field].data
+
         db.session.add(new_resource)
         save_associations(
             resource=new_resource,
@@ -161,8 +162,7 @@ def create_from_suggestion(suggestion_id):
                                                 default=default))
 
     for descriptor in descriptors:
-        if not descriptor.is_option_descriptor and \
-                        descriptor.name != 'report count':
+        if not descriptor.is_option_descriptor:
             default = None
             text_association = TextAssociation.query.filter_by(
                 resource_id=suggestion_id, descriptor_id=descriptor.id).first()
@@ -176,13 +176,10 @@ def create_from_suggestion(suggestion_id):
     form = SingleResourceForm()
     if form.validate_on_submit():
         new_resource = Resource(
-            name=form.name.data,
-            address=form.address.data,
-            latitude=form.latitude.data,
-            longitude=form.longitude.data)
+            name=form.name.data)
         # Field id is not needed for the form, hence omitted with [1:].
         for field_name in suggestion_field_names[1:]:
-            if field_name in form:
+            if field_name in form and form[field_name].data:
                 setattr(new_resource, field_name, form[field_name].data)
         save_associations(
             resource=new_resource,
@@ -320,11 +317,12 @@ def edit_from_suggestion(suggestion_id):
                     ]
 
                 if descriptor.name == 'city':
-                    setattr(ResourceForm, descriptor.name,
+                    default_resource = default_resource[0]
+                    setattr(SingleResourceForm, descriptor.name,
                             SelectField(
                                 choices=choices, default=default_resource))
                 else:
-                    setattr(ResourceForm, descriptor.name,
+                    setattr(SingleResourceForm, descriptor.name,
                             SelectMultipleField(
                                 choices=choices, default=default_resource))
 
@@ -337,19 +335,26 @@ def edit_from_suggestion(suggestion_id):
                         assoc.option
                         for assoc in option_associations_suggestion
                     ]
-                setattr(SingleResourceForm, descriptor.name,
+
+                if descriptor.name == 'city':
+                    default_suggestion = default_suggestion[0]
+                    setattr(SingleResourceForm, descriptor.name,
+                            SelectField(
+                                choices=choices, default=default_suggestion))
+                else:
+                    setattr(SingleResourceForm, descriptor.name,
                         SelectMultipleField(
                             choices=choices, default=default_suggestion))
+
     for descriptor in descriptors:
-        if not descriptor.is_option_descriptor and \
-                        descriptor.name != 'report count':
+        if not descriptor.is_option_descriptor:
             default_resource = None
             text_association_resource = TextAssociation.query.filter_by(
                 resource_id=resource.id, descriptor_id=descriptor.id).first()
             if text_association_resource is not None:
                 default_resource = text_association_resource.text
             setattr(
-                ResourceForm,
+                SingleResourceForm,
                 descriptor.name,
                 TextAreaField(default=default_resource))
 
@@ -358,12 +363,14 @@ def edit_from_suggestion(suggestion_id):
                 resource_id=suggestion_id, descriptor_id=descriptor.id).first()
             if text_association_suggestion is not None:
                 default_suggestion = text_association_suggestion.text
+                if descriptor.name == 'report count':
+                    default_suggestion = default_resource
             setattr(
                 SingleResourceForm,
                 descriptor.name,
                 TextAreaField(default=default_suggestion))
 
-    form_resource = ResourceForm()
+    form_resource = SingleResourceForm()
     form_suggestion = SingleResourceForm()
     if form_suggestion.validate_on_submit():
         # replace reosurce's fields
@@ -404,6 +411,8 @@ def edit_from_suggestion(suggestion_id):
     for field_name in suggestion_field_names:
         if field_name in form_suggestion:
             form_suggestion[field_name].data = suggestion.__dict__[field_name]
+            if field_name == 'latitude' or field_name == 'longitude':
+                form_suggestion[field_name].data = resource.__dict__[field_name]
 
     return render_template(
         'single_resource/edit_from_suggestion.html',
