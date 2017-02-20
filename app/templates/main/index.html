@@ -206,8 +206,12 @@
               <!--{% endfor %}-->
             </article>
 
+            {% set seen_supercategories = [] %}
             {% for group in resource.supercategories %}
+            {% if group not in seen_supercategories %}
             <span class="icon-{{ group.lower().replace(' ', '-') }} btn-icon" title="{{ group }}"></span>
+            {% endif %}
+            {% set seen_supercategories = seen_supercategories + [group] %}
             {% endfor %}
 
             {% for category in resource.categories %}
