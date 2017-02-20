@@ -3,8 +3,6 @@ import os
 from datetime import datetime
 
 from flask import jsonify, redirect, render_template, request, url_for
-from twilio.rest.lookups import TwilioLookupsClient
-from twilio.rest import TwilioRestClient
 from flask.ext.login import login_required
 # from twilio import twiml
 from twilio.rest import TwilioRestClient
@@ -90,13 +88,13 @@ def search_resources():
     if req_options is None:
         req_options = []
     # case insensitive search
-    resource_pool = Resource.query.filter(Resource.name.ilike('%{}%'.format(name))).all()
+    resource_pool = Resource.query.filter(
+        Resource.name.ilike('%{}%'.format(name))).all()
     req_opt_desc = RequiredOptionDescriptor.query.all()
     if req_opt_desc:
         req_opt_desc = req_opt_desc[0]
         req_opt_desc = Descriptor.query.filter_by(
-            id=req_opt_desc.descriptor_id
-        ).first()
+            id=req_opt_desc.descriptor_id).first()
     resources = []
     if req_opt_desc and len(req_options) > 0:
         int_req_options = []
@@ -173,9 +171,10 @@ def get_associations(resource_id):
 @main.route('/overview')
 @login_required
 def overview():
-   editable_html_obj = EditableHTML.get_editable_html('overview')
-   return render_template('main/overview.html',
-                          editable_html_obj=editable_html_obj)
+    editable_html_obj = EditableHTML.get_editable_html('overview')
+    return render_template(
+        'main/overview.html', editable_html_obj=editable_html_obj)
+
 
 @main.route('/update-editor-contents', methods=['POST'])
 @login_required
@@ -212,9 +211,7 @@ def send_sms():
                 phone_num, include_carrier_info=False)
             num = number.phone_number
             send_client.messages.create(
-                to=num,
-                from_="+17657692023",
-                body=message)
+                to=num, from_="+17657692023", body=message)
             return jsonify(status='success')
         except:
             return jsonify(status='error')

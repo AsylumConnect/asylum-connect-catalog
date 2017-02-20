@@ -1,22 +1,22 @@
+import os
 from datetime import datetime
 
-import os
 import pytz
 from flask import abort, flash, redirect, render_template, url_for
 from flask.ext.login import login_required
 from flask.ext.rq import get_queue
 from sqlalchemy.exc import IntegrityError
-from wtforms.fields import SelectMultipleField, TextAreaField, SelectField
+from wtforms.fields import SelectField, SelectMultipleField, TextAreaField
 
+from app import create_app
 from forms import ResourceSuggestionForm
 
 from . import suggestion
 from .. import db
+from ..email import send_email
 from ..models import (Descriptor, OptionAssociation, Resource,
                       ResourceSuggestion, TextAssociation)
 
-from app import create_app
-from ..email import send_email
 
 @suggestion.route('/')
 @login_required
@@ -96,8 +96,7 @@ def suggest_create():
     for descriptor in descriptors:
         if descriptor.is_option_descriptor and \
                         descriptor.name != 'supercategories':
-            choices = [(str(i), v)
-                       for i, v in enumerate(descriptor.values)]
+            choices = [(str(i), v) for i, v in enumerate(descriptor.values)]
             if descriptor.name == 'city':
                 setattr(
                     ResourceSuggestionForm,
@@ -133,7 +132,7 @@ def suggest_create():
             # additional_information.data,
             submission_time=datetime.now(pytz.timezone('US/Eastern')))
         if form.address.data:
-            resource_suggestion.address=form.address.data
+            resource_suggestion.address = form.address.data
         save_associations(resource_suggestion, form, descriptors, False)
         db.session.add(resource_suggestion)
         try:
@@ -221,7 +220,7 @@ def suggest_edit(resource_id):
             # additional_information.data,
             submission_time=datetime.now(pytz.timezone('US/Eastern')))
         if form.address.data:
-            resource_suggestion.address=form.address.data
+            resource_suggestion.address = form.address.data
 
         # Field id is not needed for the form, hence omitted with [1:].
         for field_name in resource_field_names[1:]:

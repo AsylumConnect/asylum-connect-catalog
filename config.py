@@ -1,9 +1,8 @@
+# from raygun4py.middleware import flask as flask_raygun
 import logging
 import os
 import sys
 import urlparse
-# from raygun4py.middleware import flask as flask_raygun
-import logging, sys
 from logging.handlers import SMTPHandler
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -98,8 +97,7 @@ class ProductionConfig(Config):
             toaddrs=[cls.ADMIN_EMAIL],
             subject=cls.EMAIL_SUBJECT_PREFIX + ' Application Error',
             credentials=credentials,
-            secure=secure
-        )
+            secure=secure)
         mail_handler.setLevel(logging.ERROR)
         app.logger.addHandler(mail_handler)
 

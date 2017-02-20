@@ -231,8 +231,7 @@ class Resource(ResourceBase):
         text_descriptors = {}
         for text_descriptors_name in text_descriptors_names:
             text_descriptors[text_descriptors_name] = Descriptor(
-                name=text_descriptors_name, values=[], is_searchable=True
-            )
+                name=text_descriptors_name, values=[], is_searchable=True)
 
         option_descriptor_values = {}
         option_descriptor_values['categories'] =\
@@ -269,8 +268,7 @@ class Resource(ResourceBase):
             option_descriptors[option_descriptor_name] = Descriptor(
                 name=option_descriptor_name,
                 values=option_descriptor_values[option_descriptor_name],
-                is_searchable=True
-            )
+                is_searchable=True)
 
         script_dir = os.path.dirname("__file__")
 
@@ -300,9 +298,8 @@ class Resource(ResourceBase):
                             resource.option_descriptors.append(
                                 OptionAssociation(
                                     descriptor=this_descriptor,
-                                    option=this_descriptor.values.index(
-                                        doc[option_descriptor_name])
-                                ))
+                                    option=this_descriptor.values.index(doc[
+                                        option_descriptor_name])))
                         else:
                             this_descriptor = \
                                 option_descriptors[option_descriptor_name]
@@ -311,9 +308,7 @@ class Resource(ResourceBase):
                                     OptionAssociation(
                                         descriptor=this_descriptor,
                                         option=this_descriptor.values.index(
-                                            item)
-                                    )
-                                )
+                                            item)))
 
                 for text_descriptors_name in text_descriptors_names:
                     key_name = '_'.join(text_descriptors_name.split(' '))
@@ -322,13 +317,15 @@ class Resource(ResourceBase):
                         this_text = doc[key_name]
                         if text_descriptors_name in list_text_descriptor_names:
                             this_text = ', '.join(doc[key_name])
-                        resource.text_descriptors.append(TextAssociation(
-                            text=this_text,
-                            descriptor=text_descriptors[text_descriptors_name]
-                        ))
+                        resource.text_descriptors.append(
+                            TextAssociation(
+                                text=this_text,
+                                descriptor=text_descriptors[
+                                    text_descriptors_name]))
 
-                resource.text_descriptors.append(TextAssociation(
-                    text=0, descriptor=text_descriptors["report count"]))
+                resource.text_descriptors.append(
+                    TextAssociation(
+                        text=0, descriptor=text_descriptors["report count"]))
 
                 db.session.add(resource)
                 try:
@@ -343,8 +340,7 @@ class Resource(ResourceBase):
         if req_opt_desc:
             req_opt_desc = req_opt_desc[0]
             req_opt_desc = Descriptor.query.filter_by(
-                id=req_opt_desc.descriptor_id
-            ).first()
+                id=req_opt_desc.descriptor_id).first()
 
         resources_as_dicts = []
         for resource in resources:

@@ -1,7 +1,7 @@
 from flask import abort, flash, redirect, render_template, request, url_for
 from flask.ext.login import login_required
 from sqlalchemy.exc import IntegrityError
-from wtforms.fields import SelectMultipleField, TextAreaField, SelectField
+from wtforms.fields import SelectField, SelectMultipleField, TextAreaField
 
 from . import single_resource
 from .. import db
@@ -20,8 +20,7 @@ def index():
     if req_opt_desc:
         req_opt_desc = req_opt_desc[0]
         req_opt_desc = Descriptor.query.filter_by(
-            id=req_opt_desc.descriptor_id
-        ).first()
+            id=req_opt_desc.descriptor_id).first()
     req_options = {}
     if req_opt_desc:
         for val in req_opt_desc.values:
@@ -41,13 +40,13 @@ def search_resources():
     req_options = request.args.getlist('reqoption')
     if req_options is None:
         req_options = []
-    resource_pool = Resource.query.filter(Resource.name.ilike('%{}%'.format(name))).all()
+    resource_pool = Resource.query.filter(
+        Resource.name.ilike('%{}%'.format(name))).all()
     req_opt_desc = RequiredOptionDescriptor.query.all()
     if req_opt_desc:
         req_opt_desc = req_opt_desc[0]
         req_opt_desc = Descriptor.query.filter_by(
-            id=req_opt_desc.descriptor_id
-        ).first()
+            id=req_opt_desc.descriptor_id).first()
     resources = list(resource_pool)
     if req_opt_desc and len(req_options) > 0:
         resources = []
@@ -80,8 +79,7 @@ def create():
     for descriptor in descriptors:
         if descriptor.is_option_descriptor and \
                         descriptor.name != 'supercategories':
-            choices = [(str(i), v)
-                       for i, v in enumerate(descriptor.values)]
+            choices = [(str(i), v) for i, v in enumerate(descriptor.values)]
             if descriptor.name == 'city':
                 setattr(
                     SingleResourceForm,
@@ -102,12 +100,13 @@ def create():
         if req_opt_desc:
             req_opt_desc = req_opt_desc[0]
             descriptor = Descriptor.query.filter_by(
-                id=req_opt_desc.descriptor_id
-            ).first()
+                id=req_opt_desc.descriptor_id).first()
             if descriptor is not None:
                 if not form[descriptor.name].data:
-                    flash('Error: Must set required descriptor: {}'.format(descriptor.name), 'form-error')
-                    return render_template('single_resource/create.html', form=form)
+                    flash('Error: Must set required descriptor: {}'.format(
+                        descriptor.name), 'form-error')
+                    return render_template(
+                        'single_resource/create.html', form=form)
         new_resource = Resource(name=form.name.data)
         optional_fields = ['address', 'latitude', 'longitude']
         for field in optional_fields:
@@ -145,21 +144,19 @@ def create_from_suggestion(suggestion_id):
     for descriptor in descriptors:
         if descriptor.is_option_descriptor and \
                         descriptor.name != 'supercategories':
-                choices = [(str(i), v)
-                           for i, v in enumerate(descriptor.values)]
-                default = None
-                option_associations = OptionAssociation.query.filter_by(
-                    resource_id=suggestion_id, descriptor_id=descriptor.id)
-                if option_associations is not None:
-                    default = [assoc.option for assoc in option_associations]
+            choices = [(str(i), v) for i, v in enumerate(descriptor.values)]
+            default = None
+            option_associations = OptionAssociation.query.filter_by(
+                resource_id=suggestion_id, descriptor_id=descriptor.id)
+            if option_associations is not None:
+                default = [assoc.option for assoc in option_associations]
 
-                if descriptor.name == 'city':
-                    setattr(SingleResourceForm, descriptor.name,
+            if descriptor.name == 'city':
+                setattr(SingleResourceForm, descriptor.name,
                         SelectField(choices=choices, default=default))
-                else:
-                    setattr(SingleResourceForm, descriptor.name,
-                            SelectMultipleField(choices=choices,
-                                                default=default))
+            else:
+                setattr(SingleResourceForm, descriptor.name,
+                        SelectMultipleField(choices=choices, default=default))
 
     for descriptor in descriptors:
         if not descriptor.is_option_descriptor:
@@ -175,8 +172,7 @@ def create_from_suggestion(suggestion_id):
 
     form = SingleResourceForm()
     if form.validate_on_submit():
-        new_resource = Resource(
-            name=form.name.data)
+        new_resource = Resource(name=form.name.data)
         # Field id is not needed for the form, hence omitted with [1:].
         for field_name in suggestion_field_names[1:]:
             if field_name in form and form[field_name].data:
@@ -252,14 +248,15 @@ def edit(resource_id):
         if req_opt_desc:
             req_opt_desc = req_opt_desc[0]
             descriptor = Descriptor.query.filter_by(
-                id=req_opt_desc.descriptor_id
-            ).first()
+                id=req_opt_desc.descriptor_id).first()
             if descriptor is not None:
                 if not form[descriptor.name].data:
-                    flash('Error: Must set required descriptor: {}'.format(descriptor.name), 'form-error')
-                    return render_template('single_resource/edit.html',
-                                           form=form,
-                                           resource_id=resource_id)
+                    flash('Error: Must set required descriptor: {}'.format(
+                        descriptor.name), 'form-error')
+                    return render_template(
+                        'single_resource/edit.html',
+                        form=form,
+                        resource_id=resource_id)
         # Field id is not needed for the form, hence omitted with [1:].
         for field_name in resource_field_names[1:]:
             # Avoid KeyError from polymorphic, contact variables.
@@ -304,45 +301,42 @@ def edit_from_suggestion(suggestion_id):
     for descriptor in descriptors:
         if descriptor.is_option_descriptor and \
                         descriptor.name != 'supercategories':
-                choices = [(str(i), v)
-                           for i, v in enumerate(descriptor.values)]
+            choices = [(str(i), v) for i, v in enumerate(descriptor.values)]
 
-                default_resource = None
-                option_associations_resource = OptionAssociation.query.\
-                    filter_by(resource_id=resource.id,
-                              descriptor_id=descriptor.id)
-                if option_associations_resource is not None:
-                    default_resource = [
-                        assoc.option for assoc in option_associations_resource
-                    ]
+            default_resource = None
+            option_associations_resource = OptionAssociation.query.\
+                filter_by(resource_id=resource.id,
+                          descriptor_id=descriptor.id)
+            if option_associations_resource is not None:
+                default_resource = [
+                    assoc.option for assoc in option_associations_resource
+                ]
 
-                if descriptor.name == 'city':
-                    default_resource = default_resource[0]
-                    setattr(SingleResourceForm, descriptor.name,
-                            SelectField(
-                                choices=choices, default=default_resource))
-                else:
-                    setattr(SingleResourceForm, descriptor.name,
-                            SelectMultipleField(
-                                choices=choices, default=default_resource))
+            if descriptor.name == 'city':
+                default_resource = default_resource[0]
+                setattr(SingleResourceForm, descriptor.name,
+                        SelectField(choices=choices, default=default_resource))
+            else:
+                setattr(SingleResourceForm, descriptor.name,
+                        SelectMultipleField(
+                            choices=choices, default=default_resource))
 
-                default_suggestion = None
-                option_associations_suggestion = OptionAssociation.query.\
-                    filter_by(resource_id=suggestion_id,
-                              descriptor_id=descriptor.id)
-                if option_associations_suggestion is not None:
-                    default_suggestion = [
-                        assoc.option
-                        for assoc in option_associations_suggestion
-                    ]
+            default_suggestion = None
+            option_associations_suggestion = OptionAssociation.query.\
+                filter_by(resource_id=suggestion_id,
+                          descriptor_id=descriptor.id)
+            if option_associations_suggestion is not None:
+                default_suggestion = [
+                    assoc.option for assoc in option_associations_suggestion
+                ]
 
-                if descriptor.name == 'city':
-                    default_suggestion = default_suggestion[0]
-                    setattr(SingleResourceForm, descriptor.name,
-                            SelectField(
-                                choices=choices, default=default_suggestion))
-                else:
-                    setattr(SingleResourceForm, descriptor.name,
+            if descriptor.name == 'city':
+                default_suggestion = default_suggestion[0]
+                setattr(SingleResourceForm, descriptor.name,
+                        SelectField(
+                            choices=choices, default=default_suggestion))
+            else:
+                setattr(SingleResourceForm, descriptor.name,
                         SelectMultipleField(
                             choices=choices, default=default_suggestion))
 
@@ -412,7 +406,8 @@ def edit_from_suggestion(suggestion_id):
         if field_name in form_suggestion:
             form_suggestion[field_name].data = suggestion.__dict__[field_name]
             if field_name == 'latitude' or field_name == 'longitude':
-                form_suggestion[field_name].data = resource.__dict__[field_name]
+                form_suggestion[field_name].data = resource.__dict__[
+                    field_name]
 
     return render_template(
         'single_resource/edit_from_suggestion.html',
