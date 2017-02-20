@@ -1,4 +1,4 @@
-import os
+# import os
 from datetime import datetime
 
 import pytz
@@ -8,7 +8,7 @@ from flask.ext.login import login_required
 from sqlalchemy.exc import IntegrityError
 from wtforms.fields import SelectField, SelectMultipleField, TextAreaField
 
-from app import create_app
+# from app import create_app
 from forms import ResourceSuggestionForm
 
 from . import suggestion
