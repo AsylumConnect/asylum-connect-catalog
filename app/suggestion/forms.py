@@ -1,5 +1,5 @@
 from flask.ext.wtf import Form
-from wtforms.fields import HiddenField, StringField, SubmitField, TextAreaField
+from wtforms.fields import StringField, SubmitField, TextAreaField
 from wtforms.validators import InputRequired, Length
 
 
@@ -18,9 +18,7 @@ class ResourceForm(Form):
     name = StringField(
         'Resource Name', validators=[InputRequired(), Length(1, 512)])
     address = StringField(
-        'Address', validators=[InputRequired(), Length(1, 512)])
-    latitude = HiddenField('Latitude', validators=[InputRequired()])
-    longitude = HiddenField('Longitude', validators=[InputRequired()])
+        'Address', validators=[])
 
 
 class ResourceSuggestionForm(ResourceForm):
