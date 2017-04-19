@@ -7,6 +7,12 @@ from logging.handlers import SMTPHandler
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
+if os.path.exists('.env'):
+    print('Importing environment from .env file')
+    for line in open('.env'):
+        var = line.strip().split('=')
+        if len(var) == 2:
+            os.environ[var[0]] = var[1]
 
 class Config:
     APP_NAME = 'AsylumConnect Catalog'
