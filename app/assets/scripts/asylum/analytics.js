@@ -1,12 +1,17 @@
 function initAnalytics() {
   trackSearch();
   trackResources();
+  trackMap();
   $('#print').click(function() {
-    logEvent('Print', 'Print - Resources');
+    logEvent('Print', 'Print - Resources', 'N/A');
   });
   $('.feedback').click(function() {
-    logEvent('Feedback', 'Feedback - Click');
+    logEvent('Feedback', 'Feedback - Click', 'N/A');
   })
+  // Track language translation
+  $('#google_translate_element select option:selected').change(function() {
+    logEvent('Translate', 'Language', $(this.text());
+  });
 }
 
 function trackSearch() {
@@ -17,7 +22,7 @@ function trackSearch() {
     }
   });
 
-  $('.btn-category').click(function(){
+  $('.btn-category').click(function() {
     if (!$(this).hasClass('active')) {
       logEvent('Search', 'Category', $(this).attr('data-analytics-label'));
     }
@@ -36,10 +41,37 @@ function trackSearch() {
       logEvent('Search', 'Required Documents', $(this).attr('data-analytics-label'));
     }
   });
+
+  // Location
+  logEvent('Search', 'Location', $('.location').text());
 }
 
 function trackResources() {
 
+  // Submit - Submit
+  // Edit - Submit
+  // Report - Submit
+
+  // Expand Resource
+  $('.resource-header').click(function() {
+    if ($(this).closest('.resource').children('.resource-content').css('display') == 'block') {
+      logEvent('Resource', 'Expand', $(this).find('.resource-name').text());
+    }
+  });
+
+}
+
+function trackMap() {
+
+  // Expand Resource
+  $('.map-expand').click(function() {
+    logEvent('Map', 'Expand', $(this).parent('.map-point').chidren('.map-name').text());
+  });
+
+  // Click Through
+  $('.map-name').click(function() {
+    logEvent('Map', 'Click-Through', $(this).text());
+  });
 }
 
 function logEvent(category, action, label) {
