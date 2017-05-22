@@ -34,7 +34,7 @@ Other branches include even more features
 ##### Clone the repo
 
 ```
-$ git clone https://github.com/hack4impact/asylum-connect-catalog.git
+$ git clone git@github.com:AsylumConnect/asylum-connect-catalog.git
 $ cd asylum-connect-catalog
 ```
 
