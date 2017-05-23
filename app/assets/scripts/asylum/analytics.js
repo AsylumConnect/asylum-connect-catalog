@@ -3,10 +3,10 @@ function initAnalytics() {
   trackResources();
   trackMap();
   $('#print').click(function() {
-    logEvent('Print', 'Print - Resources', 'N/A');
+    logEvent('Print', 'Print - Resources');
   });
   $('.feedback').click(function() {
-    logEvent('Feedback', 'Feedback - Click', 'N/A');
+    logEvent('Feedback', 'Feedback - Click');
   })
   // Track language translation
   $('#google_translate_element select option:selected').change(function() {
@@ -47,10 +47,6 @@ function trackSearch() {
 }
 
 function trackResources() {
-
-  // Submit - Submit
-  // Edit - Submit
-  // Report - Submit
 
   // Expand Resource
   $('.resource-header').click(function() {

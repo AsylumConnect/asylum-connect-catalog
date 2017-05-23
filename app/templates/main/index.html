@@ -15,7 +15,7 @@
           <div id="links" class="hidden-xs">
             <a href="http://www.asylumconnect.org/our-catalog/" target="_blank">ABOUT</a>
             <a href="https://survey.az1.qualtrics.com/SE/?SID=SV_4JylCyjAklvKGVL" target="_blank" class="feedback">SHARE FEEDBACK</a>
-            <a href="{{ url_for('suggestion.suggest_create') }}" target="_blank">SUGGEST A RESOURCE</a>
+            <a href="{{ url_for('suggestion.suggest_create') }}" onclick="ga('send', 'event', 'Resource', 'Submit - Click');" target="_blank">SUGGEST A RESOURCE</a>
             <a href="http://www.asylumconnect.org/contact-us/" target="_blank">CONTACT US</a>
           </div>
         </div>
@@ -139,8 +139,8 @@
                 <span class="icon-report btn-icon" title="This resource has been reported {{ resource.report_count }} time(s) to AsylumConnect for negative user experience"></span>
               {% endif %}
               <div style="float: right">
-                <span style="display: inline-block; margin: 10px"><a class="hide-in-print" href="{{ url_for('suggestion.suggest_edit', resource_id=resource.id) }}" target="_blank">EDIT</a></span>
-                <span style="display: inline-block; margin: 10px"><a class="hide-in-print" href="https://goo.gl/forms/HYtIPYkHHXmPMjAB2" target="_blank">REPORT</a></span>
+                <span style="display: inline-block; margin: 10px"><a class="hide-in-print" href="{{ url_for('suggestion.suggest_edit', resource_id=resource.id) }}" onclick="ga('send', 'event', 'Resource', 'Edit - Click', '{{ resource.name }}');" target="_blank">EDIT</a></span>
+                <span style="display: inline-block; margin: 10px"><a class="hide-in-print" href="https://goo.gl/forms/HYtIPYkHHXmPMjAB2" onclick="ga('send', 'event', 'Resource', 'Report - Click', '{{ resource.name }}');" target="_blank">REPORT</a></span>
               </div>
             </header>
             <article class="resource-content">
@@ -225,9 +225,9 @@
             {% if 'address' in resource %}
             <div class="mapping">
               <div class="map-point" address="{{ resource.address }}"{% if 'lat' in resource %} lat="{{ resource.lat }}" long="{{ resource.long }}"{% endif %}>
-                <b><a href="{{ resource.website }}" target="_blank">{{ resource.name }}</a></b><br>
+                <b><a href="{{ resource.website }}" onclick="ga('send', 'event', 'Map', 'Click-Through', '{{ resource.name }}');" target="_blank">{{ resource.name }}</a></b><br>
                 {{ resource.address }}<br>
-                <a href="#{{ resource.name.lower().replace(' ', '-') }}">See More Info</a><br>
+                <a href="#{{ resource.name.lower().replace(' ', '-') }}" onclick="ga('send', 'event', 'Map', 'Expand', '{{ resource.name }}');">See More Info</a><br>
 
                 {% for group in resource.supercategories%}
                 <span class="icon-{{ group.lower().replace(' ', '-') }} btn-icon small"></span>
