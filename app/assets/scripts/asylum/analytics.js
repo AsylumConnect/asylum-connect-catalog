@@ -2,15 +2,17 @@ function initAnalytics() {
   trackSearch();
   trackResources();
   trackMap();
+  // Print Resources
   $('#print').click(function() {
     logEvent('Print', 'Print - Resources');
   });
+  // Catalog Feedback
   $('.feedback').click(function() {
     logEvent('Feedback', 'Feedback - Click');
-  })
-  // Track language translation
+  });
+  // Page Translate
   $('#google_translate_element select option:selected').change(function() {
-    logEvent('Translate', 'Language', $(this.text());
+    logEvent('Translate', 'Language', $(this.text()));
   });
 }
 
