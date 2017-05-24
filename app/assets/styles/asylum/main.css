@@ -606,4 +606,5 @@ h4 {
 /** CITY BUTTON **/
 #location-query .btn {
   margin-bottom: 0px;
+  padding: 3px 5px;
 }
