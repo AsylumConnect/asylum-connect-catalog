@@ -10,10 +10,11 @@ function initAnalytics() {
   $('.feedback').click(function() {
     logEvent('Feedback', 'Feedback - Click');
   });
-  // Page Translate
-  $('#google_translate_element select option:selected').change(function() {
-    logEvent('Translate', 'Language', $(this.text()));
-  });
+  // Page Translate-- currently does not function. Line 14 in index.html gets
+  // partial tracking of the Google Translate widget
+  // $('#google_translate_element select option:selected').change(function() {
+  //   logEvent('Translate', 'Language', $(this.text()));
+  // });
 }
 
 function trackSearch() {
