@@ -602,3 +602,9 @@ h4 {
 
 .checkbox-requirement {
   font-size: 14px; }
+
+/** CITY BUTTON **/
+#location-query .btn {
+  margin-bottom: 0px;
+  padding: 0 5px;
+}
