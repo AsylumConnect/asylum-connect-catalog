@@ -608,3 +608,8 @@ h4 {
   margin-bottom: 0px;
   padding: 0 5px;
 }
+
+/** REQUIREMENT QUERY **/
+#requirement-query {
+  border-color: #cccccc;
+  box-shadow: none; }
