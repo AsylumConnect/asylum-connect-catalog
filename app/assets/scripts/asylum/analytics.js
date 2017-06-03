@@ -51,7 +51,7 @@ function trackSearch() {
 function trackResources() {
 
   // Expand Resource
-  $('.resource-header').click(function() {
+  $('.resource-name').click(function() {
     if ($(this).closest('.resource').children('.resource-content').css('display') == 'block') {
       logEvent('Resource', 'Expand', $(this).find('.resource-name').text());
     }
