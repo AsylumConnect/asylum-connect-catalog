@@ -219,7 +219,7 @@
             <!-- Google Maps -->
             {% if 'address' in resource %}
             <div class="mapping">
-              <div class="map-point" address="{{ resource.address }}"{% if 'lat' in resource %} lat="{{ resource.lat }}" long="{{ resource.long }}"{% endif %}>
+              <div class="map-point" onclick="ga('send', 'event', 'Map', 'View', '{{ resource.name }}');" address="{{ resource.address }}"{% if 'lat' in resource %} lat="{{ resource.lat }}" long="{{ resource.long }}"{% endif %}>
                 <b><a href="{{ resource.website }}" onclick="ga('send', 'event', 'Map', 'Click-Through', '{{ resource.name }}');" target="_blank">{{ resource.name }}</a></b><br>
                 {{ resource.address }}<br>
                 <a href="#{{ resource.name.lower().replace(' ', '-') }}" onclick="ga('send', 'event', 'Map', 'Expand', '{{ resource.name }}');">See More Info</a><br>

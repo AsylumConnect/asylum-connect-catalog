@@ -1,7 +1,6 @@
 function initAnalytics() {
   trackSearch();
   trackResources();
-  trackMap();
   // Print Resources
   $('#print').click(function() {
     logEvent('Print', 'Print - Resources');
@@ -58,19 +57,6 @@ function trackResources() {
     }
   });
 
-}
-
-function trackMap() {
-
-  // Expand Resource
-  $('.map-expand').click(function() {
-    logEvent('Map', 'Expand', $(this).parent('.map-point').chidren('.map-name').text());
-  });
-
-  // Click Through
-  $('.map-name').click(function() {
-    logEvent('Map', 'Click-Through', $(this).text());
-  });
 }
 
 function logEvent(category, action, label) {
