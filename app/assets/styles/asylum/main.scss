@@ -17,6 +17,8 @@ $grey-color:       #828282;
 $grey-color-light: lighten($grey-color, 40%);
 $grey-color-dark:  darken($grey-color, 25%);
 
+}
+
 // Width of the content area
 $content-width:    1100px;
 
@@ -77,43 +79,6 @@ h4 {
   }
 }
 
-.icon-medical {
-  color: #ed1b24;
-}
-.icon-legal {
-  color: #f15b29;
-}
-.icon-housing {
-  color: #f8931f;
-}
-.icon-food {
-  color: #f8cb18;
-}
-.icon-hygiene {
-  color: #aed137;
-}
-.icon-computers {
-  color: #62bb47;
-}
-.icon-employment {
-  color: #009343;
-}
-.icon-education {
-  color: #4b72b7;
-}
-.icon-community {
-  color: #3bbfef;
-}
-.icon-mental-health {
-  color: #5b54a4;
-}
-.icon-mail {
-  color: #a87b51;
-}
-.icon-recreation {
-  color: #744c29;
-}
-
 .dropdown-menu {
   padding-top: 1em;
   label {
@@ -129,6 +94,7 @@ h4 {
   padding-right: .25em;
   padding-left: .15em;
   vertical-align: middle;
+  display: flex;
 
   &.small {
     font-size: 1.5em;

@@ -12,6 +12,10 @@
 
 }
 
+.icons {
+  display: flex;
+}
+
 [data-icon]:before {
   font-family: "asylumconnect" !important;
   content: attr(data-icon);
@@ -25,6 +29,31 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icons [class^="icon-"],
+[class*=" icon-"] {
+  display: flex;
+  border-radius: 26px;
+  background-color: #000000;
+  padding: 0px;
+  margin-right: 10px;
+}
+
+.icons [class^="icon-"]:before,
+[class*=" icon-"]:before {
+  background-color: #FFFFFF;
+  border-radius: 26px;
+  width: 24px;
+}
+
+[class^="expand-icon-"] {
+  display: none;
+  font-size: 14px;
+  color: #ffffff;
+  align-self: center;
+  white-space: nowrap;
+  margin: 2px 10px 0px 2px;
+}
+
 [class^="icon-"]:before,
 [class*=" icon-"]:before {
   font-family: "asylumconnect" !important;
@@ -36,6 +65,79 @@
   line-height: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-medical {
+  color: #ed1b24;
+}
+.icons .icon-medical {
+  background-color: #ed1b24;
+}
+.icon-legal {
+  color: #f15b29;
+}
+.icons .icon-legal {
+  background-color: #f15b29;
+}
+.icon-housing {
+  color: #f8931f;
+}
+.icons .icon-housing {
+  background-color: #f8931f;
+}
+.icon-food {
+  color: #f8cb18;
+}
+.icons .icon-food {
+  background-color: #f8cb18;
+}
+.icon-hygiene {
+  color: #aed137;
+}
+.icons .icon-hygiene {
+  background-color: #aed137;
+}
+.icon-computers {
+  color: #62bb47;
+}
+.icons .icon-computers {
+  background-color: #62bb47;
+}
+.icon-employment {
+  color: #009343;
+}
+.icons .icon-employment {
+  background-color: #009343;
+}
+.icon-education {
+  color: #4b72b7;
+}
+.icons .icon-education {
+  background-color: #4b72b7;
+}
+.icon-community {
+  color: #3bbfef;
+}
+.icons .icon-community {
+  background-color: #3bbfef;
+}
+.icon-mental-health {
+  color: #5b54a4;
+}
+.icons .icon-mental-health {
+  background-color: #5b54a4;
+}
+.icon-mail {
+  color: #a87b51;
+}
+.icons .icon-mail {
+  background-color: #a87b51;
+}
+.icon-recreation {
+  color: #744c29;
+}
+.icons .icon-recreation {
+  background-color: #744c29;
 }
 
 .icon-computers:before {

@@ -184,6 +184,22 @@ function initMap() {
 //                         'Error: Your browser doesn\'t support geolocation.');
 }
 
+var toggleIconDesc = function() {
+  // $('.icons').find('[class^="icon-"]').click(function () {
+  //   if ($(this).find('[class^="expand-icon-"]').css('display') == 'none') {
+  //     $(this).find('[class^="expand-icon-"]').show();
+  //   }
+  //   else {
+  //     $(this).find('[class^="expand-icon-"]').hide();
+  //   }
+  // });
+  $('.icons').find('[class^="icon-"]').mouseover(function () {
+    $(this).find('[class^="expand-icon-"]').show();
+  });
+  $('.icons').find('[class^="icon-"]').mouseleave(function () {
+    $(this).find('[class^="expand-icon-"]').hide();
+  });
+}
 
 $(document).ready(function(){
   $('.resource-header').click(function() {
@@ -198,6 +214,8 @@ $(document).ready(function(){
   $('.dropdown-menu').click(function(e) {
     e.stopPropagation();
   });
+
+  toggleIconDesc();
 
   initAnalytics();
 });
