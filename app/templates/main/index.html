@@ -133,9 +133,9 @@
           {% if resource.report_count|int > 0 %}
           <span class="icon-report btn-icon" title="This resource has been reported {{ resource.report_count }} time(s) to AsylumConnect for negative user experience"></span>
           {% endif %}
-          <div style="float: right">
-            <span style="display: inline-block; margin: 10px"><a class="hide-in-print" href="{{ url_for('suggestion.suggest_edit', resource_id=resource.id) }}" onclick="ga('send', 'event', 'Resource', 'Edit - Click', '{{ resource.name }}');" target="_blank">EDIT</a></span>
-            <span style="display: inline-block; margin: 10px"><a class="hide-in-print" href="https://goo.gl/forms/HYtIPYkHHXmPMjAB2" onclick="ga('send', 'event', 'Resource', 'Report - Click', '{{ resource.name }}');" target="_blank">REPORT</a></span>
+          <div class="edit-report-container">
+            <span style="display: inline-block; margin-right: 20px"><a class="hide-in-print" href="{{ url_for('suggestion.suggest_edit', resource_id=resource.id) }}" onclick="ga('send', 'event', 'Resource', 'Edit - Click', '{{ resource.name }}');" target="_blank">EDIT</a></span>
+            <span style="display: inline-block;"><a class="hide-in-print" href="https://goo.gl/forms/HYtIPYkHHXmPMjAB2" onclick="ga('send', 'event', 'Resource', 'Report - Click', '{{ resource.name }}');" target="_blank">REPORT</a></span>
           </div>
         </header>
         <article class="resource-content">

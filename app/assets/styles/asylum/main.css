@@ -556,7 +556,8 @@ h4 {
   display: none;
   margin-bottom: 1em; }
   .resource.active {
-    display: block; }
+    display: flex;
+    flex-direction: column; }
 
 .resource-content {
   display: none; }
@@ -564,12 +565,19 @@ h4 {
 .resource-header {
   padding-top: .75em;
   cursor: pointer;
-  cursor: hand; }
+  cursor: hand;
+  display: flex;
+  justify-content: space-between;
+  align-items: center; }
   .resource-header :hover {
     color: #2a7ae2; }
 
 .resource-name {
   display: inline-block; }
+
+.edit-report-container {
+  display: flex;
+  align-self: baseline; }
 
 .mapping {
   display: none; }

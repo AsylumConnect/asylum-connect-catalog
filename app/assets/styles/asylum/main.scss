@@ -146,7 +146,8 @@ h4 {
   display: none;
   margin-bottom: 1em;
   &.active {
-    display: block;
+    display: flex;
+    flex-direction: column;
   }
 }
 
@@ -158,6 +159,9 @@ h4 {
   padding-top: .75em;
   cursor: pointer;
   cursor: hand;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   :hover {
     color:#2a7ae2;
   }
@@ -165,6 +169,12 @@ h4 {
 
 .resource-name {
   display: inline-block;
+  margin-bottom: 0px;
+}
+
+.edit-report-container {
+  display: flex;
+  align-self: baseline;
 }
 
 .mapping {
