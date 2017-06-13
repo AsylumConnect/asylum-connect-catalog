@@ -1,15 +1,8 @@
-# AsylumConnect [![Circle CI](https://circleci.com/gh/hack4impact/asylum-connect-catalog.svg?style=svg)](https://circleci.com/gh/hack4impact/asylum-connect-catalog) [![Stories in Ready](https://badge.waffle.io/hack4impact/asylum-connect-catalog.png?label=ready&title=Ready)](https://waffle.io/hack4impact/asylum-connect-catalog) [![Code Climate](https://codeclimate.com/github/hack4impact/asylum-connect-catalog/badges/gpa.svg)](https://codeclimate.com/github/hack4impact/asylum-connect-catalog) [![Test Coverage](https://codeclimate.com/github/hack4impact/asylum-connect-catalog/badges/coverage.svg)](https://codeclimate.com/github/hack4impact/asylum-connect-catalog/coverage) [![Issue Count](https://codeclimate.com/github/hack4impact/asylum-connect-catalog/badges/issue_count.svg)](https://codeclimate.com/github/hack4impact/asylum-connect-catalog)
+# AsylumConnect
 
-## Team Members
-
-- Hunter Lightman
-- Yoni Nachmany
-- Hana Pearlman
-- Veronica Wharton
-
-## Synopsis
-
-AsylumConnect’s current resource verification model is a bottleneck, as volunteers must search for and independently verify resources for each city that the organization expands into. In addition, volunteers are not (all) members of their target community, and therefore not the best-equipped to verify resource information. By allowing community members to tag, verify, endorse, and report resources, AsylumConnect will leverage its niche and highly marginalized community while also keeping members as safe as possible.
+AsylumConnect is a fiscally sponsored nonprofit creating the first online, centralized resource database for LGBTQ asylum seekers in the U.S.
+  - [AsylumConnect website](http://www.asylumconnect.org/)
+  - [AsylumConnect catalog](http://asylumconnectcatalog.org/)
 
 ## What's included?
 
