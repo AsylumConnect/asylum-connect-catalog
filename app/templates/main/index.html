@@ -200,21 +200,21 @@
           {% set seen_supercategories = [] %}
           {% for group in resource.supercategories %}
           {% if group not in seen_supercategories %}
-          <span class="icon-{{ group.lower().replace(' ', '-') }} btn-icon" title="{{ group }}">
-            <div class="expand-icon-{{ group.lower().replace(' ', '-') }}">
-              <span>{{ group }}</span>
-              <div class="subcategory-container">
-                {% for category in resource.categories %}
-                {% if not category.lower().replace(' ', '-') in category_icons %}
-                {% set supercategory = category_to_supercategory.get(category) %}
-                {% if supercategory == group %}
-                <span>{{ category }}</span>
-                {% endif %}
-                {% endif %}
-                {% endfor %}
-              </div>
+          <div class="category-subcategory-container">
+            <div class="icon-{{ group.lower().replace(' ', '-') }} btn-icon" title="{{ group }}">
+              <div class="expand-icon-{{ group.lower().replace(' ', '-') }}">{{ group }}</div>
             </div>
-          </span>
+            <div class="subcategory-container">
+              {% for category in resource.categories %}
+              {% if not category.lower().replace(' ', '-') in category_icons %}
+              {% set supercategory = category_to_supercategory.get(category) %}
+              {% if supercategory == group %}
+              <span>{{ category }}</span>
+              {% endif %}
+              {% endif %}
+              {% endfor %}
+            </div>
+          </div>
           {% endif %}
           {% set seen_supercategories = seen_supercategories + [group] %}
           {% endfor %}

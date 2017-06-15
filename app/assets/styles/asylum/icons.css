@@ -43,6 +43,9 @@
   background-color: #FFFFFF;
   border-radius: 26px;
   width: 24px;
+  height: 26px;
+  cursor: pointer;
+  cursor: hand;
 }
 
 [class^="expand-icon-"] {
@@ -65,7 +68,6 @@
   line-height: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  height: 26px;
 }
 
 .is-expanded:before {
@@ -77,7 +79,20 @@
 }
 
 .subcategory-container {
-  font-style: italic;
+  display: none;
+  background-color: #fff;
+  border-color: #ccc;
+  border-radius: 4px;
+  border-style: solid;
+  border-width: 1px;
+  padding: 5px 10px;
+  margin-top: 6px;
+  font-size: 14px;
+}
+
+.subcategory-is-expanded {
+  display: flex;
+  flex-direction: column;
 }
 
 .icon-medical {

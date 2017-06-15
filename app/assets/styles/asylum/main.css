@@ -572,10 +572,6 @@ h4 {
   .resource-header :hover {
     color: #2a7ae2; }
 
-.subcategory-container {
-  display: flex;
-  flex-direction: column; }
-
 .resource-name {
   display: inline-block; }
 
