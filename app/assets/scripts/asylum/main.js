@@ -185,19 +185,23 @@ function initMap() {
 }
 
 var toggleIconDesc = function() {
-  // $('.icons').find('[class^="icon-"]').click(function () {
-  //   if ($(this).find('[class^="expand-icon-"]').css('display') == 'none') {
-  //     $(this).find('[class^="expand-icon-"]').show();
-  //   }
-  //   else {
-  //     $(this).find('[class^="expand-icon-"]').hide();
-  //   }
-  // });
   $('.icons').find('[class^="icon-"]').mouseover(function () {
     $(this).find('[class^="expand-icon-"]').show();
+    $(this).addClass("is-expanded");
+    $(this).parents('.icons').find('[class^="icon-"]').each(function() {
+      if (!$(this).hasClass("is-expanded")) {
+        $(this).addClass('fix-height');
+      }
+    });
   });
   $('.icons').find('[class^="icon-"]').mouseleave(function () {
     $(this).find('[class^="expand-icon-"]').hide();
+    $(this).parents('.icons').find('[class^="icon-"]').each(function() {
+      if (!$(this).hasClass("is-expanded")) {
+        $(this).removeClass('fix-height');
+      }
+    });
+    $(this).removeClass("is-expanded");
   });
 }
 

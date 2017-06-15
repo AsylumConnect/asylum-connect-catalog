@@ -44,6 +44,24 @@ def city_view(city_name):
     resources = Resource.get_resources_in_city(city)
     resources_as_dicts = Resource.get_resources_as_full_dicts(resources)
 
+    category_to_supercategory = {
+        "Medical Clinics": "Medical",
+        "Women's Health": "Medical",
+        "Sexual Health": "Medical",
+        "Trans Health": "Medical",
+        "Dental Care": "Medical",
+        "Legal Aid": "Legal",
+        "Documentation": "Legal",
+        "English Classes": "Education",
+        "Libraries": "Education",
+        "Community Centers": "Community",
+        "LGBT Centers": "Community",
+        "Cultural Centers": "Community",
+        "Support Groups": "Mental Health",
+        "Private Counseling": "Mental Health",
+        "Psychiatry": "Mental Health"
+    }
+
     # req_opt_desc = RequiredOptionDescriptor.query.all()
     # req_opt_id = -1
     # if req_opt_desc:
@@ -71,7 +89,8 @@ def city_view(city_name):
         city=city,
         cities=cities,
         resources=resources_as_dicts,
-        category_icons=category_icons)
+        category_icons=category_icons,
+        category_to_supercategory=category_to_supercategory)
 
 
 @main.route('/get-resources')

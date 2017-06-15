@@ -32,7 +32,7 @@
 .icons [class^="icon-"],
 [class*=" icon-"] {
   display: flex;
-  border-radius: 26px;
+  border-radius: 15px;
   background-color: #000000;
   padding: 0px;
   margin-right: 10px;
@@ -51,7 +51,7 @@
   color: #ffffff;
   align-self: center;
   white-space: nowrap;
-  margin: 1px 10px 0px 2px;
+  margin: 3px 15px 3px 5px;
 }
 
 [class^="icon-"]:before,
@@ -65,6 +65,19 @@
   line-height: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  height: 26px;
+}
+
+.is-expanded:before {
+  height: 24px;
+}
+
+.fix-height {
+  height: 26px;
+}
+
+.subcategory-container {
+  font-style: italic;
 }
 
 .icon-medical {
