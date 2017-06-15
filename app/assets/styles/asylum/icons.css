@@ -54,7 +54,7 @@
   color: #ffffff;
   align-self: center;
   white-space: nowrap;
-  margin: 3px 15px 3px 5px;
+  margin: 1px 15px 0px 5px;
 }
 
 [class^="icon-"]:before,
@@ -70,9 +70,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.is-expanded:before {
+/*.is-expanded:before {
   height: 24px;
-}
+}*/
 
 .fix-height {
   height: 26px;
