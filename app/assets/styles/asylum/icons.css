@@ -87,7 +87,7 @@
   border-width: 1px;
   padding: 5px 10px;
   margin-top: 6px;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .subcategory-is-expanded {
@@ -98,71 +98,118 @@
 .icon-medical {
   color: #ed1b24;
 }
+.subcategory-container.medical {
+  border-color: #ed1b24;
+}
 .icons .icon-medical {
   background-color: #ed1b24;
 }
+
 .icon-legal {
   color: #f15b29;
+}
+.subcategory-container.legal {
+  border-color: #f15b29;
 }
 .icons .icon-legal {
   background-color: #f15b29;
 }
+
 .icon-housing {
   color: #f8931f;
+}
+.subcategory-container.housing {
+  border-color: #f8931f;
 }
 .icons .icon-housing {
   background-color: #f8931f;
 }
+
 .icon-food {
   color: #f8cb18;
+}
+.subcategory-container.food {
+  border-color: #f8cb18;
 }
 .icons .icon-food {
   background-color: #f8cb18;
 }
+
 .icon-hygiene {
   color: #aed137;
+}
+.subcategory-container.hygiene {
+  border-color: #aed137;
 }
 .icons .icon-hygiene {
   background-color: #aed137;
 }
+
 .icon-computers {
   color: #62bb47;
+}
+.subcategory-container.computers {
+  border-color: #62bb47;
 }
 .icons .icon-computers {
   background-color: #62bb47;
 }
+
 .icon-employment {
   color: #009343;
+}
+.subcategory-container.employment {
+  border-color: #009343;
 }
 .icons .icon-employment {
   background-color: #009343;
 }
+
 .icon-education {
   color: #4b72b7;
+}
+.subcategory-container.education {
+  border-color: #4b72b7;
 }
 .icons .icon-education {
   background-color: #4b72b7;
 }
+
 .icon-community {
   color: #3bbfef;
+}
+.subcategory-container.community {
+  border-color: #3bbfef;
 }
 .icons .icon-community {
   background-color: #3bbfef;
 }
+
 .icon-mental-health {
   color: #5b54a4;
+}
+.subcategory-container.mental-health {
+  border-color: #5b54a4;
 }
 .icons .icon-mental-health {
   background-color: #5b54a4;
 }
+
 .icon-mail {
   color: #a87b51;
+}
+.subcategory-container.mail {
+  border-color: #a87b51;
 }
 .icons .icon-mail {
   background-color: #a87b51;
 }
+
 .icon-recreation {
   color: #744c29;
+}
+.subcategory-container.recreation {
+  border-color: #744c29;
 }
 .icons .icon-recreation {
   background-color: #744c29;
