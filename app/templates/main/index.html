@@ -201,7 +201,7 @@
           {% for group in resource.supercategories %}
           {% if group not in seen_supercategories %}
           <div class="category-subcategory-container">
-            <div class="icon-{{ group.lower().replace(' ', '-') }} btn-icon" title="{{ group }}">
+            <div class="icon-{{ group.lower().replace(' ', '-') }} btn-icon">
               <div class="expand-icon-{{ group.lower().replace(' ', '-') }}">{{ group }}</div>
             </div>
             <div class="subcategory-container {{ group.lower().replace(' ', '-') }}">
