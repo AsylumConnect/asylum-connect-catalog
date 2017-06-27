@@ -239,8 +239,12 @@
             {{ resource.address }}<br>
             <a href="#{{ resource.name.lower().replace(' ', '-') }}" onclick="ga('send', 'event', 'Map', 'Expand', '{{ resource.name }}');">See More Info</a><br>
 
+            {% set seen_supercategories = [] %}
             {% for group in resource.supercategories%}
+            {% if group not in seen_supercategories %}
             <span class="icon-{{ group.lower().replace(' ', '-') }} btn-icon small"></span>
+            {% endif %}
+            {% set seen_supercategories = seen_supercategories + [group] %}
             {% endfor %}
 
             {% for category in resource.categories %}
