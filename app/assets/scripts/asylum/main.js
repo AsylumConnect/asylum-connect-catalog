@@ -184,6 +184,28 @@ function initMap() {
 //                         'Error: Your browser doesn\'t support geolocation.');
 }
 
+var toggleIconDesc = function() {
+  $('.icons').find('[class^="icon-"]').mouseover(function () {
+    $(this).find('[class^="expand-icon-"]').show();
+    $(this).siblings('.subcategory-container').addClass('subcategory-is-expanded');
+    $(this).addClass("is-expanded");
+    $(this).parents('.icons').find('[class^="icon-"]').each(function() {
+      if (!$(this).hasClass("is-expanded")) {
+        $(this).addClass('fix-height');
+      }
+    });
+  });
+  $('.icons').find('[class^="icon-"]').mouseleave(function () {
+    $(this).find('[class^="expand-icon-"]').hide();
+    $(this).siblings('.subcategory-container').removeClass('subcategory-is-expanded');
+    $(this).parents('.icons').find('[class^="icon-"]').each(function() {
+      if (!$(this).hasClass("is-expanded")) {
+        $(this).removeClass('fix-height');
+      }
+    });
+    $(this).removeClass("is-expanded");
+  });
+}
 
 $(document).ready(function(){
   $('.resource-header').click(function() {
@@ -198,6 +220,8 @@ $(document).ready(function(){
   $('.dropdown-menu').click(function(e) {
     e.stopPropagation();
   });
+
+  toggleIconDesc();
 
   initAnalytics();
 });
